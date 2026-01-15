@@ -4,15 +4,12 @@ const nextConfig: NextConfig = {
 	compress: true,
 	reactStrictMode: true,
 	generateEtags: true,
-	skipMiddlewareUrlNormalize: true,
+	skipProxyUrlNormalize: true,
 	poweredByHeader: false,
 	productionBrowserSourceMaps: false,
 	crossOrigin: 'use-credentials',
 	typescript: {
 		ignoreBuildErrors: true,
-	},
-	eslint: {
-		ignoreDuringBuilds: true,
 	},
 	images: {
 		remotePatterns: [

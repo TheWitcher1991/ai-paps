@@ -29,7 +29,21 @@ export const href = {
 		return this.root
 	},
 
+	get workspace() {
+		return `${this.root}workspace`
+	},
+
 	get dashboard() {
 		return `${this.root}dashboard`
 	},
+
+	directory: hrefFactory('workspace/directory'),
+
+	imports: hrefFactory('workspace/imports'),
+
+	datasets: hrefFactory('workspace/datasets'),
+
+	models: hrefFactory('workspace/models'),
+
+	users: hrefFactory('workspace/users'),
 }

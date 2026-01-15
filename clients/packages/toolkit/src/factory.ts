@@ -1,8 +1,6 @@
 import type { AxiosInstance, CreateAxiosDefaults } from 'axios'
 import axios from 'axios'
 
-import { API_URL } from '@wcsc/system'
-
 export const getAxiosDefaults = (apiUrl: string): CreateAxiosDefaults => ({
 	baseURL: `${apiUrl}/`,
 	withCredentials: true,
@@ -18,3 +16,5 @@ export const getAxiosDefaults = (apiUrl: string): CreateAxiosDefaults => ({
 
 export const createAxiosDefaults = (apiUrl: string): AxiosInstance =>
 	axios.create(getAxiosDefaults(apiUrl))
+
+export const domain = <T>(factory: () => T) => factory()

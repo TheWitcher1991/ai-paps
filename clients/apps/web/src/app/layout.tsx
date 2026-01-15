@@ -1,18 +1,13 @@
 import { Metadata } from 'next'
-import { Manrope } from 'next/font/google'
 import Head from 'next/head'
 import { ReactNode } from 'react'
 
 import WithProviders from '~packages/providers'
 
-import './globals.scss'
-
-const manrope = Manrope({
-	subsets: ['latin'],
-})
+import './global.scss'
 
 export const metadata: Metadata = {
-	title: 'WCSC AF',
+	title: 'НЦМУ «Агроинженерия будущего»',
 	description: '',
 	robots: 'index, follow',
 	authors: [
@@ -23,12 +18,12 @@ export const metadata: Metadata = {
 	],
 
 	openGraph: {
-		title: 'WCSC AF',
+		title: 'НЦМУ «Агроинженерия будущего»',
 		description: '',
 		type: 'website',
 	},
 	twitter: {
-		title: 'WCSC AF',
+		title: 'НЦМУ «Агроинженерия будущего»',
 		description: '',
 	},
 }
@@ -39,17 +34,17 @@ export default function RootLayout({
 	children: ReactNode
 }>) {
 	return (
-		<html lang='ru' className={manrope.className} suppressHydrationWarning>
+		<html lang='ru' suppressHydrationWarning>
 			<Head>
-				<link rel='icon' href='/favicon.ico' />
+				<link rel='icon' href='/favicon.png' />
 				<link
 					rel='apple-touch-icon'
 					sizes='180x180'
-					href='/favicon.ico'
+					href='/favicon.png'
 				/>
 				<link
 					rel='shortcut icon'
-					href='/favicon.ico'
+					href='/favicon.png'
 					type='image/png'
 				/>
 			</Head>

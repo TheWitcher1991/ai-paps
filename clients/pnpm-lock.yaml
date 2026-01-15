@@ -84,6 +84,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@gravity-ui/components':
+        specifier: ^4.17.0
+        version: 4.17.0(@gravity-ui/uikit@7.29.0(@babel/runtime@7.28.6)(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@gravity-ui/date-components':
         specifier: ^3.4.1
         version: 3.4.1(@gravity-ui/date-utils@2.6.0)(@gravity-ui/uikit@7.29.0(@babel/runtime@7.28.6)(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -1075,6 +1078,13 @@ packages:
   '@floating-ui/utils@0.2.10':
     resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
 
+  '@gravity-ui/components@4.17.0':
+    resolution: {integrity: sha512-klg9jgBwoq7hJVyLXYsYNyW/nI4ZX8IpJZbKJID4WOtV8BeCEGiUdEYiH8WoyxWPUwMt+BLg+Szz4j4Y0YHJNg==}
+    peerDependencies:
+      '@gravity-ui/uikit': ^7.21.0
+      react: ^16.14.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.14.0 || ^17.0.0 || ^18.0.0
+
   '@gravity-ui/date-components@3.4.1':
     resolution: {integrity: sha512-Ao93u1mIfR6Zd4c3VziQnsRcXu1sx9lmKS7lodLCbjAxnLIxGeclYg0y6X6b8DbalZWqq/D539BgmhvqxC/C1Q==}
     peerDependencies:
@@ -1732,6 +1742,9 @@ packages:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
 
+  '@types/cookie@0.6.0':
+    resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
+
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
@@ -2182,6 +2195,10 @@ packages:
 
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
+
+  cookie@0.7.2:
+    resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
+    engines: {node: '>= 0.6'}
 
   core-js-compat@3.47.0:
     resolution: {integrity: sha512-IGfuznZ/n7Kp9+nypamBhvwdwLsW6KC8IOaURw2doAK5e98AG3acVLdh0woOnEqCfUtS+Vu882JE4k/DAm3ItQ==}
@@ -3623,6 +3640,9 @@ packages:
     resolution: {integrity: sha512-hpbDzxUY9BFwX+UeBnxv3Sh1q7HFxj48DTmXchNgRa46lO8uj3/1iEn3MiNUYTg1g9ctIqXCCERn8gYZhHC5lQ==}
     engines: {node: '>=4'}
 
+  universal-cookie@7.2.2:
+    resolution: {integrity: sha512-fMiOcS3TmzP2x5QV26pIH3mvhexLIT0HmPa3V7Q7knRfT9HG6kTwq02HZGLPw0sAOXrAmotElGRvTLCMbJsvxQ==}
+
   update-browserslist-db@1.2.3:
     resolution: {integrity: sha512-Js0m9cx+qOgDxo0eMiFGEueWztz+d4+M3rGlmKPT+T4IS/jP4ylw3Nwpu6cpTTP8R1MAC1kF4VbdLt3ARf209w==}
     hasBin: true
@@ -4602,6 +4622,17 @@ snapshots:
 
   '@floating-ui/utils@0.2.10': {}
 
+  '@gravity-ui/components@4.17.0(@gravity-ui/uikit@7.29.0(@babel/runtime@7.28.6)(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      '@bem-react/classname': 1.7.0
+      '@gravity-ui/date-utils': 2.6.0
+      '@gravity-ui/icons': 2.16.0(react@19.2.3)
+      '@gravity-ui/uikit': 7.29.0(@babel/runtime@7.28.6)(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      lodash: 4.17.21
+      react: 19.2.3
+      react-dom: 19.2.3(react@19.2.3)
+      universal-cookie: 7.2.2
+
   '@gravity-ui/date-components@3.4.1(@gravity-ui/date-utils@2.6.0)(@gravity-ui/uikit@7.29.0(@babel/runtime@7.28.6)(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@bem-react/classname': 1.7.0
@@ -5145,6 +5176,8 @@ snapshots:
       - supports-color
 
   '@trysound/sax@0.2.0': {}
+
+  '@types/cookie@0.6.0': {}
 
   '@types/estree@1.0.8': {}
 
@@ -5692,6 +5725,8 @@ snapshots:
   consola@3.4.2: {}
 
   convert-source-map@2.0.0: {}
+
+  cookie@0.7.2: {}
 
   core-js-compat@3.47.0:
     dependencies:
@@ -7347,6 +7382,11 @@ snapshots:
   unicode-match-property-value-ecmascript@2.2.1: {}
 
   unicode-property-aliases-ecmascript@2.2.0: {}
+
+  universal-cookie@7.2.2:
+    dependencies:
+      '@types/cookie': 0.6.0
+      cookie: 0.7.2
 
   update-browserslist-db@1.2.3(browserslist@4.28.1):
     dependencies:

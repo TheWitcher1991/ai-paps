@@ -1,0 +1,21 @@
+.cellIcon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: var(--g-color-text-brand-contrast);
+    background: var(--g-color-base-brand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.cell {
+    transition: all 0.1s ease;
+    cursor: pointer;
+    border-radius: 99px;
+
+    &:hover {
+        background: var(--g-color-base-neutral-light)
+    }
+}
