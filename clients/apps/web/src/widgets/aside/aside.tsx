@@ -1,11 +1,12 @@
 'use client'
 
-import { SparklesFill } from '@gravity-ui/icons'
 import { AsideHeader } from '@gravity-ui/navigation'
 import { PropsWithChildren, useState } from 'react'
 
 import useFooter from '~widgets/aside/hooks/use-footer'
 import useMenuItems from '~widgets/aside/hooks/use-menu-items'
+
+import { projectConfig } from '~packages/system'
 
 import styles from './aside.module.scss'
 
@@ -19,8 +20,8 @@ export default function Aside({ children }: PropsWithChildren) {
 	return (
 		<AsideHeader
 			logo={{
-				icon: SparklesFill,
-				text: 'НЦМУ СтГАУ',
+				icon: projectConfig.icon,
+				text: projectConfig.name,
 				iconSize: 24,
 				textSize: 16,
 				className: styles.text,
