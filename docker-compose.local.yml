@@ -1,0 +1,5 @@
+name: wcsc-local
+
+version: '3'
+
+services:

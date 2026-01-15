@@ -1,0 +1,141 @@
+name: wcsc-base
+
+version: '3'
+
+services:
+  postgres:
+    image: ${IMAGE_NAME_DATABASE}:${IMAGE_TAG_DATABASE}
+    container_name: postgres-service
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+    restart: always
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: ${IMAGE_NAME_REDIS}:${IMAGE_TAG_REDIS}
+    container_name: redis-service
+    volumes:
+      - redis_data:/data
+    networks:
+      - backend
+    restart: always
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 3s
+      timeout: 10s
+      retries: 3
+
+  rabbitmq:
+    image: ${IMAGE_NAME_RABBITMQ}:${IMAGE_TAG_RABBITMQ}
+    container_name: rabbitmq-service
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - backend
+    restart: always
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  portainer:
+    image: ${IMAGE_NAME_PORTAINER}:${IMAGE_TAG_PORTAINER}
+    container_name: portainer-service
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - backend
+      - frontend
+    restart: always
+
+  backend:
+    container_name: backend-service
+    networks:
+      - backend
+      - frontend
+    restart: always
+
+  frontend:
+    container_name: frontend-service
+    networks:
+      - frontend
+      - backend
+    restart: always
+
+  grafana:
+    image: ${IMAGE_NAME_GRAFANA}:${IMAGE_TAG_GRAFANA}
+    container_name: grafana-service
+    volumes:
+      - ./docker/grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./docker/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - grafana_data:/var/lib/grafana
+    networks:
+      - backend
+    restart: unless-stopped
+
+  prometheus:
+    image: ${IMAGE_NAME_PROMETHEUS}:${IMAGE_TAG_PROMETHEUS}
+    container_name: prometheus-service
+    volumes:
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./docker/prometheus/recording.rules:/etc/prometheus/recording.rules
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=200h"
+      - "--web.enable-lifecycle"
+      - "--log.level=warn"
+    networks:
+      - backend
+    restart: unless-stopped
+
+  loki:
+    image: ${IMAGE_NAME_LOKI}:${IMAGE_TAG_LOKI}
+    container_name: loki-service
+    user: root
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./docker/loki/loki-config.yaml:/etc/loki/local-config.yaml
+      - ./docker/loki/compactor:/var/loki/compactor
+      - loki_data:/var/loki
+    networks:
+      - backend
+
+  promtail:
+    image:  ${IMAGE_NAME_PROMTAIL}:${IMAGE_TAG_PROMTAIL}
+    container_name: promtail-service
+    volumes:
+      - ./docker/promtail/promtail-config.yaml:/etc/promtail/config.yml
+      - logs_data:/home/services/config/logs
+    networks:
+      - backend
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  rabbitmq_data:
+  media_data:
+  backups_data:
+  redisinsight_data:
+  portainer_data:
+  grafana_data:
+  prometheus_data:
+  loki_data:
+  logs_data:

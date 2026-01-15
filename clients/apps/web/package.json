@@ -1,0 +1,32 @@
+{
+    "name": "web",
+    "version": "1.0.0",
+    "type": "module",
+    "sideEffects": [
+      "*.scss",
+      "*.sass"
+    ],
+    "scripts": {
+      "dev": "next dev --turbopack --port 3000",
+      "prebuild": "next telemetry disable",
+      "build:web": "next build",
+      "start:web": "cross-env NODE_ENV=production next start --port 3000",
+      "lint": "next lint --max-warnings 0",
+      "check-types": "tsc --noEmit"
+    },
+    "dependencies": {
+      "@wcsc/hooks": "workspace:*",
+      "@wcsc/href": "workspace:*",
+      "@wcsc/models": "workspace:*",
+      "@wcsc/system": "workspace:*",
+      "@wcsc/toolkit": "workspace:*",
+      "next": "16.1.1"
+    },
+    "devDependencies": {
+      "@wcsc/eslint-config": "workspace:*",
+      "@wcsc/types": "workspace:*",
+      "@wcsc/typescript-config": "workspace:*",
+      "sass": "^1.97.2",
+      "sass-loader": "^16.0.6"
+    }
+  }

@@ -1,0 +1,5 @@
+name: wcsc-production
+
+version: '3'
+
+services:

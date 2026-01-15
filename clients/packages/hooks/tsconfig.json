@@ -1,0 +1,4 @@
+{
+    "extends": "@wcsc/typescript-config/base.json",
+    "include": ["src", "index.ts"]
+  }
