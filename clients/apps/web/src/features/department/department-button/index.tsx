@@ -3,6 +3,7 @@ import { Select } from '@gravity-ui/uikit'
 export default function DepartmentButton() {
 	return (
 		<Select
+			disabled
 			value={['Проект «Теплицы»']}
 			options={[
 				{

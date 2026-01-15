@@ -22,8 +22,8 @@ export default function Aside({ children }: PropsWithChildren) {
 			logo={{
 				icon: projectConfig.icon,
 				text: projectConfig.name,
-				iconSize: 24,
-				textSize: 16,
+				iconSize: 26,
+				textSize: 18,
 				className: styles.text,
 				iconClassName: styles.aside,
 			}}

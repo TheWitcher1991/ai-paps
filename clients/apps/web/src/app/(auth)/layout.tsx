@@ -16,7 +16,7 @@ export default function AuthLayout({ children }: Readonly<PropsWithChildren>) {
 					size={26}
 					className={styles.logo__icon}
 				/>
-				{projectConfig.name}
+				{projectConfig.long_name}
 			</div>
 			{children}
 		</div>

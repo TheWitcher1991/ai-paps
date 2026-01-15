@@ -102,8 +102,45 @@ body,
 }
 
 .g-root {
-    --g-font-family-sans: 'Jost';
-    --g-font-family-monospace: 'Jost';
+    --g-text-body-1-font-size: 14px;
+    --g-text-body-1-line-height: 19px;
+    --g-text-body-2-font-size: 16px;
+    --g-text-body-2-line-height: 21px;
+    --g-text-body-3-font-size: 18px;
+    --g-text-body-3-line-height: 25px;
+    --g-text-body-short-font-size: 14px;
+    --g-text-body-short-line-height: 17px;
+    --g-text-caption-1-font-size: 10px;
+    --g-text-caption-1-line-height: 13px;
+    --g-text-caption-2-font-size: 12px;
+    --g-text-caption-2-line-height: 17px;
+    --g-text-header-1-font-size: 21px;
+    --g-text-header-1-line-height: 25px;
+    --g-text-header-2-font-size: 25px;
+    --g-text-header-2-line-height: 29px;
+    --g-text-subheader-1-font-size: 14px;
+    --g-text-subheader-1-line-height: 19px;
+    --g-text-subheader-2-font-size: 16px;
+    --g-text-subheader-2-line-height: 21px;
+    --g-text-subheader-3-font-size: 18px;
+    --g-text-subheader-3-line-height: 25px;
+    --g-text-display-1-font-size: 29px;
+    --g-text-display-1-line-height: 37px;
+    --g-text-display-2-font-size: 33px;
+    --g-text-display-2-line-height: 41px;
+    --g-text-display-3-font-size: 41px;
+    --g-text-display-3-line-height: 49px;
+    --g-text-display-4-font-size: 49px;
+    --g-text-display-4-line-height: 53px;
+    --g-text-code-1-font-size: 13px;
+    --g-text-code-1-line-height: 19px;
+    --g-text-code-2-font-size: 15px;
+
+    --g-border-radius-xs: 10px;
+    --g-border-radius-s: 12px;
+    --g-border-radius-m: 14px;
+    --g-border-radius-l: 18px;
+    --g-border-radius-xl: 22px;
 }
 
 .g-root_theme_light {

@@ -3,12 +3,13 @@ import Head from 'next/head'
 import { ReactNode } from 'react'
 
 import WithProviders from '~packages/providers'
+import { projectConfig } from '~packages/system'
 
 import './global.scss'
 
 export const metadata: Metadata = {
-	title: 'НЦМУ «Агроинженерия будущего»',
-	description: '',
+	title: projectConfig.long_name,
+	description: projectConfig.description,
 	robots: 'index, follow',
 	authors: [
 		{
@@ -18,13 +19,13 @@ export const metadata: Metadata = {
 	],
 
 	openGraph: {
-		title: 'НЦМУ «Агроинженерия будущего»',
-		description: '',
+		title: projectConfig.long_name,
+		description: projectConfig.description,
 		type: 'website',
 	},
 	twitter: {
-		title: 'НЦМУ «Агроинженерия будущего»',
-		description: '',
+		title: projectConfig.long_name,
+		description: projectConfig.description,
 	},
 }
 
