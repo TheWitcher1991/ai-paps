@@ -9,6 +9,8 @@ import { DepartmentButton } from '~features/department'
 import Notifications from '~features/notifications'
 import { ThemeButton } from '~features/shared'
 
+import { ImportButton } from '~models/import'
+
 import { Breadcrumbs } from '~packages/ui'
 
 import { useMemoizedFn } from '@wcsc/hooks'
@@ -42,6 +44,9 @@ export default function Nav() {
 					</ActionBar.Item>
 				</ActionBar.Group>
 				<ActionBar.Group pull='right'>
+					<ActionBar.Item>
+						<ImportButton />
+					</ActionBar.Item>
 					<ActionBar.Item>
 						<ThemeButton />
 					</ActionBar.Item>

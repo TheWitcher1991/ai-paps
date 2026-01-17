@@ -19,6 +19,7 @@
     "@gravity-ui/date-components": "^3.4.1",
     "@gravity-ui/date-utils": "^2.6.0",
     "@gravity-ui/icons": "^2.16.0",
+    "@gravity-ui/illustrations": "^2.1.0",
     "@gravity-ui/navigation": "^4.0.3",
     "@gravity-ui/uikit": "^7.29.0",
     "@wcsc/hooks": "workspace:*",

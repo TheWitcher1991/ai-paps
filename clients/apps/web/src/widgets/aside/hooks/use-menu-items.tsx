@@ -1,6 +1,7 @@
 import {
 	ArrowDownToSquare,
 	BookOpen,
+	Cubes3,
 	House,
 	Molecule,
 	Persons,
@@ -24,6 +25,7 @@ export default function useMenuItems(): MenuItem[] {
 			current: pathname === href.workspace,
 			onItemClick: () => router.push(href.workspace),
 		},
+
 		{
 			id: 'directory',
 			title: 'Справочник',
@@ -39,6 +41,14 @@ export default function useMenuItems(): MenuItem[] {
 			icon: ArrowDownToSquare,
 			current: pathname.startsWith(href.imports.index),
 			onItemClick: () => router.push(href.imports.index),
+		},
+		{
+			id: 'projects',
+			title: 'Проекты',
+			icon: Cubes3,
+			iconSize: 20,
+			current: pathname.startsWith(href.projects.index),
+			onItemClick: () => router.push(href.projects.index),
 		},
 		{
 			id: 'datasets',
@@ -63,6 +73,13 @@ export default function useMenuItems(): MenuItem[] {
 			icon: Persons,
 			current: pathname.startsWith(href.users.index),
 			onItemClick: () => router.push(href.users.index),
+		},
+		{
+			id: 'import',
+			title: 'Импорт датасета',
+			icon: ArrowDownToSquare,
+			type: 'action',
+			afterMoreButton: true,
 		},
 	]
 }
