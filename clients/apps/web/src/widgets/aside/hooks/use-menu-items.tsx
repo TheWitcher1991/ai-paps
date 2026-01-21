@@ -1,12 +1,11 @@
 import {
-	ArrowDownToSquare,
 	BookOpen,
 	Cubes3Overlap,
 	DatabaseMagnifier,
 	House,
+	LocationArrowFill,
 	Molecule,
 	Persons,
-	Shield,
 	SquareDashedCircle,
 } from '@gravity-ui/icons'
 import { MenuItem } from '@gravity-ui/navigation'
@@ -77,8 +76,8 @@ export default function useMenuItems(): MenuItem[] {
 		},
 		{
 			id: 'import',
-			title: 'Импорт датасета',
-			icon: ArrowDownToSquare,
+			title: 'Открыть CVAT',
+			icon: LocationArrowFill,
 			type: 'action',
 			afterMoreButton: true,
 		},
