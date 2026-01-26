@@ -1,7 +1,7 @@
 'use client'
 
-import { BranchesDown, Bug, Cherry, Stethoscope } from '@gravity-ui/icons'
-import { Flex, Icon, PlaceholderContainer } from '@gravity-ui/uikit'
+import { Box, BranchesDown, Bug, Cherry, Stethoscope } from '@gravity-ui/icons'
+import { Button, Flex, Icon, PlaceholderContainer } from '@gravity-ui/uikit'
 
 import { setBreadcrumbs } from '~widgets/nav'
 
@@ -10,6 +10,7 @@ import { DashkitWidget, Group, PageTitle, ValueCard } from '~packages/ui'
 import { useMount } from '@wcsc/hooks'
 import { href } from '@wcsc/href'
 import { NotFound } from '@gravity-ui/illustrations'
+import React from 'react'
 
 export default function Directory() {
 	useMount(() =>
@@ -22,6 +23,12 @@ export default function Directory() {
 				title={'Справочник'}
 				subtitle={
 					'Панель мониторинга и управления ключевыми метриками системы'
+				}
+				action={
+					<Button type={'button'} view={'action'} size={'l'}>
+						<Icon data={Box} size={16} />
+						Новая сущность
+					</Button>
 				}
 			/>
 			<Flex

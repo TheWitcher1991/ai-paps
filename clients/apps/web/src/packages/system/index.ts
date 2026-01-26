@@ -1,8 +1,8 @@
-import { SparklesFill } from '@gravity-ui/icons'
+import { GearBranches } from '@gravity-ui/icons'
 
 export const projectConfig = {
-	name: 'НЦМУ СтГАУ',
-	long_name: 'НЦМУ СтГАУ «Агроинженерия будущего»',
+	name: 'PAPS',
+	long_name: 'PAPS',
 	description: '',
-	icon: SparklesFill,
+	icon: GearBranches,
 }

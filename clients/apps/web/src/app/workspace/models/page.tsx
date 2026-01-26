@@ -3,8 +3,8 @@
 import {
 	BarsDescendingAlignLeftArrowDown,
 	Briefcase,
-	Flask,
 	Clock,
+	Flask,
 	GearBranches,
 	GripHorizontal,
 	LayoutCellsLarge,
@@ -53,7 +53,7 @@ export default function Models() {
 				justifyContent={'space-between'}
 				alignItems={'center'}
 			>
-				<ValueCard value={0} title={'Моделей'} icon={Molecule} />
+				<ValueCard value={1} title={'Моделей'} icon={Molecule} />
 				<ValueCard value={0} title={'Экспериментов'} icon={Flask} />
 				<ValueCard value={0} title={'Затрачено'} icon={Clock} />
 				<ValueCard value={0} title={'Инференсов'} icon={Briefcase} />
