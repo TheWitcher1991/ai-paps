@@ -6,6 +6,7 @@ import {
 	LocationArrowFill,
 	Molecule,
 	Persons,
+	Picture,
 	SquareDashedCircle,
 } from '@gravity-ui/icons'
 import { MenuItem } from '@gravity-ui/navigation'
@@ -43,18 +44,10 @@ export default function useMenuItems(): MenuItem[] {
 			onItemClick: () => router.push(href.projects.index),
 		},
 		{
-			id: 'imports',
-			iconSize: 20,
-			title: 'Разметка',
-			icon: SquareDashedCircle,
-			current: pathname.startsWith(href.imports.index),
-			onItemClick: () => router.push(href.imports.index),
-		},
-		{
 			id: 'datasets',
 			iconSize: 20,
 			title: 'Датасеты',
-			icon: DatabaseMagnifier,
+			icon: SquareDashedCircle,
 			current: pathname.startsWith(href.datasets.index),
 			onItemClick: () => router.push(href.datasets.index),
 		},
@@ -67,6 +60,14 @@ export default function useMenuItems(): MenuItem[] {
 			onItemClick: () => router.push(href.models.index),
 		},
 		{
+			id: 'recognitions',
+			iconSize: 20,
+			title: 'Распознавание',
+			icon: Picture,
+			current: pathname.startsWith(href.recognitions.index),
+			onItemClick: () => router.push(href.recognitions.index),
+		},
+		{
 			id: 'users',
 			iconSize: 20,
 			title: 'Сотрудники',
@@ -74,6 +75,7 @@ export default function useMenuItems(): MenuItem[] {
 			current: pathname.startsWith(href.users.index),
 			onItemClick: () => router.push(href.users.index),
 		},
+
 		{
 			id: 'import',
 			title: 'Открыть CVAT',

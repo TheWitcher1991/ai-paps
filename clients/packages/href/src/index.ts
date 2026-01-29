@@ -41,7 +41,7 @@ export const href = {
 
 	projects: hrefFactory('workspace/projects'),
 
-	imports: hrefFactory('workspace/imports'),
+	recognitions: hrefFactory('workspace/recognitions'),
 
 	datasets: hrefFactory('workspace/datasets'),
 

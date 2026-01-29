@@ -7,15 +7,17 @@ import { Group, PageTitle } from '~packages/ui'
 import { useMount } from '@wcsc/hooks'
 import { href } from '@wcsc/href'
 
-export default function Imports() {
+export default function Recognitions() {
 	useMount(() =>
-		setBreadcrumbs([{ text: 'Разметка', href: href.imports.index }]),
+		setBreadcrumbs([
+			{ text: 'Распознавание', href: href.recognitions.index },
+		]),
 	)
 
 	return (
 		<Group>
 			<PageTitle
-				title={'Разметка'}
+				title={'Распознавание'}
 				subtitle={
 					'Панель мониторинга и управления ключевыми метриками системы'
 				}

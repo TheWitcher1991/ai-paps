@@ -106,9 +106,7 @@ export default function Models() {
 					total={1}
 					compact={true}
 					showPages={true}
-					onUpdate={(page, pageSize) => {
-						setFilter({ page, page_size: pageSize })
-					}}
+					onUpdate={(page, pageSize) => {}}
 				/>
 			</Flex>
 		</Group>
