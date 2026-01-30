@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, Literal
+from typing import Literal, Optional
 
 import urllib3
 from cvat_sdk.api_client.model.meta_user import MetaUser
@@ -20,5 +20,5 @@ class UsersRequest(PaginatedRequest):
     last_name: Optional[str] = None
     org: Optional[str] = None
     org_id: Optional[int] = None
-    sort: Optional[Literal['username', 'first_name', 'last_name', 'id', 'is_active']] = None
+    sort: Optional[Literal["username", "first_name", "last_name", "id", "is_active"]] = None
     username: Optional[str] = None

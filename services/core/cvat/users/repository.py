@@ -1,5 +1,5 @@
-from cvat.users.types import UserListResponse, UserResponse, UsersRequest
 from cvat.shared.repository import CVATRepository
+from cvat.users.types import UserListResponse, UserResponse, UsersRequest
 
 
 class CVATUserRepository(CVATRepository):
@@ -8,7 +8,7 @@ class CVATUserRepository(CVATRepository):
         super().__init__()
         self.api = self.session.users_api
 
-    def list(self, request: UsersRequest) -> UserListResponse:
+    def find_all(self, request: UsersRequest) -> UserListResponse:
         return self.api.list(
             x_organization=request.x_organization,
             filter=request.filter,
@@ -23,8 +23,8 @@ class CVATUserRepository(CVATRepository):
             username=request.username,
         )
 
-    def get_by_id(self, user_id: int) -> UserResponse:
+    def find_one(self, user_id: int) -> UserResponse:
         return self.api.retrieve(user_id)
 
-    def get_me(self) -> UserResponse:
+    def find_me(self) -> UserResponse:
         return self.api.retrieve_self()

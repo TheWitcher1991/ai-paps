@@ -1,9 +1,9 @@
 from cvat_sdk.api_client import ApiException
 
-from cvat.shared.usecase import CVATUsecase
 from cvat.shared.exceptions import CVATServiceError
+from cvat.shared.usecase import CVATUsecase
 from cvat.users.repository import CVATUserRepository
-from cvat.users.types import UsersRequest, UserResponse, UserListResponse
+from cvat.users.types import UserListResponse, UserResponse, UsersRequest
 
 
 class CVATUsersUsecase(CVATUsecase):
@@ -11,23 +11,23 @@ class CVATUsersUsecase(CVATUsecase):
     def __init__(self):
         self.repo = CVATUserRepository()
 
-    def list_users(self, request: UsersRequest) -> UserListResponse:
+    def find_all(self, request: UsersRequest) -> UserListResponse:
         try:
-            return self.repo.list(request)
+            return self.repo.find_all(request)
         except ApiException as e:
             raise CVATServiceError(
                 message=e.reason,
                 status_code=e.status,
             )
 
-    def get_user(self, user_id: int) -> UserResponse:
+    def find_one(self, user_id: int) -> UserResponse:
         try:
-            return self.repo.get_by_id(user_id)
+            return self.repo.find_one(user_id)
         except ApiException as e:
             raise CVATServiceError(e.reason, e.status)
 
-    def get_current_user(self) -> UserResponse:
+    def find_me(self) -> UserResponse:
         try:
-            return self.repo.get_me()
+            return self.repo.find_me()
         except ApiException as e:
             raise CVATServiceError(e.reason, e.status)
