@@ -1,7 +1,7 @@
 from cvat_sdk.api_client import Configuration
 
-from cvat.utils.client import CVATClient
-from cvat.utils.config import CVATConfig
+from cvat.shared.client import CVATClient
+from cvat.shared.config import CVATConfig
 
 
 class CVATRepository:

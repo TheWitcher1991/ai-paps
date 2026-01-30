@@ -1,19 +1,19 @@
-from cvat.projects.types import ProjectResponse, ProjectListResponse, ProjectsRequest
 from cvat.shared.types import RqResponse, CVATDatasetFormat
 from cvat.shared.repository import CVATRepository
+from cvat.tasks.types import TasksRequest, TaskResponse, TaskListResponse
 
 
-class CVATProjectRepository(CVATRepository):
+class CVATTaskRepository(CVATRepository):
 
     def __init__(self):
         super().__init__()
-        self.api = self.session.projects_api
+        self.api = self.session.tasks_api
 
-    def list(self, request: ProjectsRequest) -> ProjectListResponse:
+    def list(self, request: TasksRequest) -> TaskListResponse:
         return self.api.list(request)
 
-    def get_by_id(self, project_id: int) -> ProjectResponse:
-        return self.api.retrieve(project_id)
+    def get_by_id(self, task_id: int) -> TaskResponse:
+        return self.api.retrieve(task_id)
 
     def export_dataset(
         self,

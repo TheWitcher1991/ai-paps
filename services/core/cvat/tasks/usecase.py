@@ -7,7 +7,7 @@ from cvat.shared.types import RqResponse, CVATDatasetFormat
 from cvat.shared.usecase import CVATUsecase
 
 
-class CVATProjectsUsecase(CVATUsecase):
+class CVATTasksUsecase(CVATUsecase):
 
     def __init__(self):
         self.repo = CVATProjectRepository()
