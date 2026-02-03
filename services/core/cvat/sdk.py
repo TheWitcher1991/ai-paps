@@ -1,5 +1,6 @@
 from cvat.jobs.usecase import CVATJobsUsecase
 from cvat.labels.usecase import CVATLabelsUsecase
+from cvat.memberships.usecase import CVATMembershipsUsecase
 from cvat.organizations.usecase import CVATOrganizationsUsecase
 from cvat.projects.usecase import CVATProjectsUsecase
 from cvat.shared.config import CVATConfig
@@ -12,6 +13,7 @@ class CVAT:
         self.config = CVATConfig()
         self.jobs = CVATJobsUsecase()
         self.labels = CVATLabelsUsecase()
+        self.memberships = CVATMembershipsUsecase()
         self.organizations = CVATOrganizationsUsecase()
         self.projects = CVATProjectsUsecase()
         self.tasks = CVATTasksUsecase()

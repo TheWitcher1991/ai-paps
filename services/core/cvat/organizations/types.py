@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 from cvat_sdk.api_client.model.organization_read import OrganizationRead as CVATOrganizationRead
 from cvat_sdk.api_client.model.paginated_organization_read_list import (
@@ -19,4 +19,8 @@ OrganizationReadList = List[OrganizationRead]
 
 @dataclass(frozen=True)
 class OrganizationReadRequest(PaginatedRequest):
-    pass
+    filter: Optional[str] = None
+    name: Optional[str] = None
+    owner: Optional[str] = None
+    slug: Optional[str] = None
+    sort: Optional[Literal["name", "owner", "slug", "id"]] = None

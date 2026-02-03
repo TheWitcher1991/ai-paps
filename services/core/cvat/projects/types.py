@@ -26,6 +26,5 @@ class ProjectReadRequest(PaginatedRequest):
     org: Optional[str] = None
     org_id: Optional[int] = None
     owner: Optional[str] = None
-    search: Optional[str] = None
     sort: Optional[Literal["name", "owner", "assignee", "status", "id", "updated_date"]] = None
     status: Optional[str] = None

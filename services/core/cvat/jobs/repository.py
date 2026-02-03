@@ -13,7 +13,7 @@ class CVATJobRepository(CVATRepository):
         self.api = self.session.jobs_api
 
     def find_all(self, request: Optional[JobReadRequest] = None) -> PaginatedJobReadList:
-        return self.execute(self.api.list, self.params(request)).data
+        return self.execute(self.api.list, **self.params(request)).data
 
     def find_one(self, job_id: int) -> Optional[JobRead]:
         return self.execute(self.api.retrieve, job_id)

@@ -28,7 +28,6 @@ class TaskReadRequest(PaginatedRequest):
     owner: Optional[str] = None
     project_id: Optional[int] = None
     project_name: Optional[str] = None
-    search: Optional[str] = None
     sort: Optional[
         Literal[
             "project_name",

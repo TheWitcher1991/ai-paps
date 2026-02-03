@@ -13,7 +13,7 @@ class CVATTaskRepository(CVATRepository):
         self.api = self.session.tasks_api
 
     def find_all(self, request: Optional[TaskReadRequest] = None) -> PaginatedTaskReadList:
-        return self.execute(self.api.list, self.params(request)).data
+        return self.execute(self.api.list, **self.params(request)).data
 
     def find_one(self, task_id: int) -> Optional[TaskRead]:
         return self.execute(self.api.retrieve, task_id).data

@@ -26,7 +26,6 @@ class JobReadRequest(PaginatedRequest):
     parent_job_id: Optional[str] = None
     project_id: Optional[int] = None
     project_name: Optional[str] = None
-    search: Optional[str] = None
     sort: Optional[
         Literal[
             "task_name",

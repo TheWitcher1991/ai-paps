@@ -27,7 +27,6 @@ class LabelsRequest(PaginatedRequest):
     parent: Optional[int] = None
     parent_id: Optional[int] = None
     project_id: Optional[int] = None
-    search: Optional[str] = None
     sort: Optional[
         Literal[
             "name",

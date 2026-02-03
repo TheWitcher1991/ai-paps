@@ -13,7 +13,7 @@ class CVATProjectRepository(CVATRepository):
         self.api = self.session.projects_api
 
     def find_all(self, request: Optional[ProjectReadRequest] = None) -> PaginatedProjectReadList:
-        return self.execute(self.api.list, self.params(request)).data
+        return self.execute(self.api.list, **self.params(request)).data
 
     def find_one(self, project_id: int) -> Optional[ProjectRead]:
         return self.execute(self.api.retrieve, project_id).data
