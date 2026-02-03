@@ -1,18 +1,22 @@
 from dataclasses import dataclass
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
-import urllib3
-from cvat_sdk.api_client.model.job_read import JobRead
-from cvat_sdk.api_client.model.paginated_job_read_list import PaginatedJobReadList
+from cvat_sdk.api_client.model.job_read import JobRead as CVATJobRead
+from cvat_sdk.api_client.model.paginated_job_read_list import PaginatedJobReadList as CVATPaginatedJobReadList
 
-from cvat.shared.types import PaginatedRequest
+from cvat.shared.types import CVATHTTPResponse, PaginatedRequest
 
-JobResponse = tuple[Optional[JobRead], urllib3.HTTPResponse]
-JobListResponse = tuple[Optional[PaginatedJobReadList], urllib3.HTTPResponse]
+PaginatedJobReadList = CVATPaginatedJobReadList
+JobRead = CVATJobRead
+
+JobReadResponse = CVATHTTPResponse[Optional[JobRead]]
+JobReadListResponse = CVATHTTPResponse[Optional[PaginatedJobReadList]]
+
+JobReadList = List[JobRead]
 
 
 @dataclass(frozen=True)
-class JobsRequest(PaginatedRequest):
+class JobReadRequest(PaginatedRequest):
     x_organization: Optional[str] = None
     assignee: Optional[str] = None
     dimension: Optional[str] = None

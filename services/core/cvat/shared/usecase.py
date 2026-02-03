@@ -1,3 +1,14 @@
-class CVATUsecase:
+from abc import ABC, abstractmethod
 
-    pass
+
+class CVATUsecase(ABC):
+
+    def find_all(self, *args, **kwargs): ...
+
+    def find_one(self, *args, **kwargs): ...
+
+    def create(self, *args, **kwargs): ...
+
+    def update(self, *args, **kwargs): ...
+
+    def delete(self, *args, **kwargs): ...

@@ -1,16 +1,22 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import List, Optional
 
-import urllib3
-from cvat_sdk.api_client.model.organization_read import OrganizationRead
-from cvat_sdk.api_client.model.paginated_organization_read_list import PaginatedOrganizationReadList
+from cvat_sdk.api_client.model.organization_read import OrganizationRead as CVATOrganizationRead
+from cvat_sdk.api_client.model.paginated_organization_read_list import (
+    PaginatedOrganizationReadList as CVATPaginatedOrganizationReadList,
+)
 
-from cvat.shared.types import PaginatedRequest
+from cvat.shared.types import CVATHTTPResponse, PaginatedRequest
 
-OrganizationResponse = tuple[Optional[OrganizationRead], urllib3.HTTPResponse]
-OrganizationListResponse = tuple[Optional[PaginatedOrganizationReadList], urllib3.HTTPResponse]
+PaginatedOrganizationReadList = CVATPaginatedOrganizationReadList
+OrganizationRead = CVATOrganizationRead
+
+OrganizationListResponse = CVATHTTPResponse[Optional[PaginatedOrganizationReadList]]
+OrganizationResponse = CVATHTTPResponse[Optional[OrganizationRead]]
+
+OrganizationReadList = List[OrganizationRead]
 
 
 @dataclass(frozen=True)
-class OrganizationsRequest(PaginatedRequest):
+class OrganizationReadRequest(PaginatedRequest):
     pass

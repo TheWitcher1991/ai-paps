@@ -1,18 +1,22 @@
 from dataclasses import dataclass
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
-import urllib3
-from cvat_sdk.api_client.model.meta_user import MetaUser
-from cvat_sdk.api_client.model.paginated_meta_user_list import PaginatedMetaUserList
+from cvat_sdk.api_client.model.meta_user import MetaUser as CVATMetaUser
+from cvat_sdk.api_client.model.paginated_meta_user_list import PaginatedMetaUserList as CVATPaginatedMetaUserList
 
-from cvat.shared.types import PaginatedRequest
+from cvat.shared.types import CVATHTTPResponse, PaginatedRequest
 
-UserListResponse = tuple[Optional[PaginatedMetaUserList], urllib3.HTTPResponse]
-UserResponse = tuple[Optional[MetaUser], urllib3.HTTPResponse]
+PaginatedMetaUserList = CVATPaginatedMetaUserList
+MetaUser = CVATMetaUser
+
+MetaUserListResponse = CVATHTTPResponse[Optional[PaginatedMetaUserList]]
+MetaUserResponse = CVATHTTPResponse[Optional[MetaUser]]
+
+MetaUserList = List[MetaUser]
 
 
 @dataclass(frozen=True)
-class UsersRequest(PaginatedRequest):
+class MetaUserRequest(PaginatedRequest):
     x_organization: Optional[str] = None
     filter: Optional[str] = None
     first_name: Optional[str] = None

@@ -1,14 +1,18 @@
 from dataclasses import dataclass
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
-import urllib3
-from cvat_sdk.api_client.model.label import Label
-from cvat_sdk.api_client.model.paginated_label_list import PaginatedLabelList
+from cvat_sdk.api_client.model.label import Label as CVATLabel
+from cvat_sdk.api_client.model.paginated_label_list import PaginatedLabelList as CVATPaginatedLabelList
 
-from cvat.shared.types import PaginatedRequest
+from cvat.shared.types import CVATHTTPResponse, PaginatedRequest
 
-LabelResponse = tuple[Optional[Label], urllib3.HTTPResponse]
-LabelListResponse = tuple[Optional[PaginatedLabelList], urllib3.HTTPResponse]
+PaginatedLabelList = CVATPaginatedLabelList
+Label = CVATLabel
+
+LabelResponse = CVATHTTPResponse[Optional[Label]]
+LabelListResponse = CVATHTTPResponse[Optional[PaginatedLabelList]]
+
+LabelList = List[Label]
 
 
 @dataclass(frozen=True)

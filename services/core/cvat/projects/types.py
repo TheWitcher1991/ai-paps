@@ -1,18 +1,24 @@
 from dataclasses import dataclass
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
-import urllib3
-from cvat_sdk.api_client.model.paginated_project_read_list import PaginatedProjectReadList
-from cvat_sdk.api_client.model.project_read import ProjectRead
+from cvat_sdk.api_client.model.paginated_project_read_list import (
+    PaginatedProjectReadList as CVATPaginatedProjectReadList,
+)
+from cvat_sdk.api_client.model.project_read import ProjectRead as CVATProjectRead
 
-from cvat.shared.types import PaginatedRequest
+from cvat.shared.types import CVATHTTPResponse, PaginatedRequest
 
-ProjectResponse = tuple[Optional[ProjectRead], urllib3.HTTPResponse]
-ProjectListResponse = tuple[Optional[PaginatedProjectReadList], urllib3.HTTPResponse]
+PaginatedProjectReadList = CVATPaginatedProjectReadList
+ProjectRead = CVATProjectRead
+
+ProjectReadResponse = CVATHTTPResponse[Optional[ProjectRead]]
+ProjectReadListResponse = CVATHTTPResponse[Optional[PaginatedProjectReadList]]
+
+ProjectReadList = List[ProjectRead]
 
 
 @dataclass(frozen=True)
-class ProjectsRequest(PaginatedRequest):
+class ProjectReadRequest(PaginatedRequest):
     x_organization: Optional[str] = None
     assignee: Optional[str] = None
     filter: Optional[str] = None

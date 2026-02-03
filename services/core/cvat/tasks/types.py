@@ -1,18 +1,22 @@
 from dataclasses import dataclass
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
-import urllib3
-from cvat_sdk.api_client.model.paginated_task_read_list import PaginatedTaskReadList
-from cvat_sdk.api_client.model.task_read import TaskRead
+from cvat_sdk.api_client.model.paginated_task_read_list import PaginatedTaskReadList as CVATPaginatedTaskReadList
+from cvat_sdk.api_client.model.task_read import TaskRead as CVATTaskRead
 
-from cvat.shared.types import PaginatedRequest
+from cvat.shared.types import CVATHTTPResponse, PaginatedRequest
 
-TaskResponse = tuple[Optional[TaskRead], urllib3.HTTPResponse]
-TaskListResponse = tuple[Optional[PaginatedTaskReadList], urllib3.HTTPResponse]
+PaginatedTaskReadList = CVATPaginatedTaskReadList
+TaskRead = CVATTaskRead
+
+TaskReadResponse = CVATHTTPResponse[Optional[TaskRead]]
+TaskReadListResponse = CVATHTTPResponse[Optional[PaginatedTaskReadList]]
+
+TaskReadList = List[TaskRead]
 
 
 @dataclass(frozen=True)
-class TasksRequest(PaginatedRequest):
+class TaskReadRequest(PaginatedRequest):
     x_organization: Optional[str] = None
     assignee: Optional[str] = None
     dimension: Optional[str] = None

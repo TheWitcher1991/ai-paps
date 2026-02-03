@@ -1,15 +1,31 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from enum import StrEnum
-from typing import Optional
+from typing import Generic, Mapping, Optional, Tuple, TypeVar
 
 import urllib3
-from cvat_sdk.api_client.model.rq_id import RqId
 
-RqResponse = tuple[Optional[RqId], urllib3.HTTPResponse]
+R = TypeVar("R")
+
+type CVATHTTPResponse[R] = Tuple[R, urllib3.HTTPResponse]
 
 
 @dataclass(frozen=True)
-class PaginatedRequest:
+class CVATResponse(Generic[R]):
+    """Wrapper для ответа CVAT API"""
+
+    data: R
+    status: int
+    headers: Mapping[str, str]
+
+
+@dataclass(frozen=True)
+class CVATRequest:
+    def to_query(self) -> dict:
+        return {k: v for k, v in asdict(self).items() if v is not None}
+
+
+@dataclass(frozen=True)
+class PaginatedRequest(CVATRequest):
     page: Optional[str] = None
     page_size: Optional[str] = None
     search: Optional[str] = None
