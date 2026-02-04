@@ -1,7 +1,6 @@
 import {
 	BookOpen,
 	Cubes3Overlap,
-	DatabaseMagnifier,
 	House,
 	LocationArrowFill,
 	Molecule,
