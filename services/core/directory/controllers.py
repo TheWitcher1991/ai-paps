@@ -1,5 +1,5 @@
-from packages.framework.controllers import APIController
+from packages.framework.controllers import APISetController
 
 
-class DirectorySetController(APIController):
+class DirectorySetController(APISetController):
     prefix = "directory"

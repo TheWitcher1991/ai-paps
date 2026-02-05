@@ -1,5 +1,5 @@
-from packages.framework.controllers import APIController
+from packages.framework.controllers import APISetController
 
 
-class RecognitionSetController(APIController):
+class RecognitionSetController(APISetController):
     prefix = "recognitions"

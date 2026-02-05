@@ -1,5 +1,5 @@
-from packages.framework.controllers import APIController
+from packages.framework.controllers import APISetController
 
 
-class DatasetSetController(APIController):
+class DatasetSetController(APISetController):
     prefix = "datasets"
