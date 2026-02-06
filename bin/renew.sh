@@ -1,0 +1,1 @@
+docker compose -f docker-compose.pre.yml run --rm certbot renew --force-renewal

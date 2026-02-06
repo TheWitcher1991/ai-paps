@@ -1,0 +1,1 @@
+docker compose -f docker-compose.pre.yml run --rm  certbot certonly --webroot -w /var/www/certbot --keep-until-expiring --email ashot.svazyan@yandex.ru -d [DOMAIN] --agree-tos
