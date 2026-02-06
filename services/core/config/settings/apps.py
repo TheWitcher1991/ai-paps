@@ -18,5 +18,6 @@ INSTALLED_APPS = [
     "projects",
     "recognitions",
     "users",
+    "cvat",
     "drf_spectacular",
 ]

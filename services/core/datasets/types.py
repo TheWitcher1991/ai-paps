@@ -10,7 +10,10 @@ class DatasetSource(models.TextChoices):
 
 
 class DatasetStatus(models.TextChoices):
-    UPLOADED = "uploaded", t("Загружен"),
+    UPLOADED = (
+        "uploaded",
+        t("Загружен"),
+    )
     ANNOTATION = "annotation", t("Размечается")
     COMPLETED = "completed", t("Завершен")
 

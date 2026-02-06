@@ -16,7 +16,7 @@ LabelList = List[Label]
 
 
 @dataclass(frozen=True)
-class LabelsRequest(PaginatedRequest):
+class LabelRequest(PaginatedRequest):
     x_organization: Optional[str] = None
     color: Optional[str] = None
     filter: Optional[str] = None

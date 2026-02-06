@@ -28,6 +28,7 @@ urlpatterns = [
     path("v1/", include("projects.routers", namespace="projects")),
     path("v1/", include("recognitions.routers", namespace="recognitions")),
     path("v1/", include("users.routers", namespace="users")),
+    path("v1/", include("cvat.routers", namespace="cvat")),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

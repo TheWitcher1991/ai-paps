@@ -3,8 +3,7 @@ from typing import Optional
 from cvat_sdk.api_client import ApiException
 
 from cvat.memberships.repository import CVATMembershipRepository
-from cvat.memberships.types import MembershipRead, PaginatedMembershipReadList
-from cvat.projects.types import ProjectReadRequest
+from cvat.memberships.types import MembershipRead, MembershipReadRequest, PaginatedMembershipReadList
 from cvat.shared.exceptions import CVATServiceError
 from cvat.shared.usecase import CVATUsecase
 
@@ -14,7 +13,7 @@ class CVATMembershipsUsecase(CVATUsecase):
     def __init__(self):
         self.repo = CVATMembershipRepository()
 
-    def find_all(self, request: Optional[ProjectReadRequest] = None) -> PaginatedMembershipReadList:
+    def find_all(self, request: Optional[MembershipReadRequest] = None) -> PaginatedMembershipReadList:
         try:
             return self.repo.find_all(request)
         except ApiException as e:
