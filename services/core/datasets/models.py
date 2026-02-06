@@ -1,6 +1,7 @@
 from django.db import models
 
 from datasets.types import DatasetSource, DatasetStatus
+from packages.framework.fields import S3PrivateFileField
 from packages.kernel.adapters import ModelAdapter
 from packages.kernel.utils import t
 
@@ -21,6 +22,9 @@ class Dataset(ModelAdapter):
 
 class DatasetFile(ModelAdapter):
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="files")
+    file = S3PrivateFileField(upload_to="datasets/")
+
+    source_id = models.IntegerField(t("Source ID"))
 
     class Meta:
         ordering = ("-created_at",)
