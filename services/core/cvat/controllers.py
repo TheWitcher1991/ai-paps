@@ -8,6 +8,8 @@ from cvat.organizations.queries import OrganizationsQuery
 from cvat.organizations.serializers import OrganizationReadSerializer
 from cvat.projects.queries import ProjectsQuery
 from cvat.projects.serializers import ProjectReadSerializer
+from cvat.rq.queries import RequestsQuery
+from cvat.rq.serializers import RequestSerializer
 from cvat.shared.serializers import CVATPaginatedListSerializer
 from cvat.tasks.queries import TasksQuery
 from cvat.tasks.serializers import TaskReadSerializer
@@ -94,6 +96,22 @@ class ProjectSetController(APISetController):
     def get(self, pk: int, request: ExtendedRequest, *args, **kwargs):
         instance = self.queries.get_by_id(pk)
         serializer = ProjectReadSerializer(instance)
+        return self.get_response(serializer.data)
+
+
+class RequestSetController(APISetController):
+    prefix = "requests"
+
+    queries = RequestsQuery()
+
+    def list(self, request: ExtendedRequest, *args, **kwargs):
+        queryset = self.queries.filter(request)
+        serializer = CVATPaginatedListSerializer(queryset)
+        return self.get_response(serializer.data)
+
+    def get(self, pk: int, request: ExtendedRequest, *args, **kwargs):
+        instance = self.queries.get_by_id(pk)
+        serializer = RequestSerializer(instance)
         return self.get_response(serializer.data)
 
 
