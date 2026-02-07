@@ -1,6 +1,6 @@
 from typing import Optional
 
-from cvat.rq.types import RqId
+from cvat.rq.types import DataMetaRead, LabeledData, LabeledDataRequest, RqId
 from cvat.shared.repository import CVATRepository
 from cvat.shared.types import CVATDatasetFormat
 from cvat.tasks.types import PaginatedTaskReadList, TaskRead, TaskReadRequest
@@ -17,6 +17,12 @@ class CVATTaskRepository(CVATRepository):
 
     def find_one(self, task_id: int) -> Optional[TaskRead]:
         return self.execute(self.api.retrieve, task_id).data
+
+    def find_data_meta(self, task_id: int) -> Optional[DataMetaRead]:
+        return self.execute(self.api.retrieve_data_meta, task_id).data
+
+    def find_annotations(self, task_id: int, request: Optional[LabeledDataRequest] = None) -> Optional[LabeledData]:
+        return self.execute(self.api.retrieve_annotations, task_id, **self.params(request)).data
 
     def export_dataset(
         self,

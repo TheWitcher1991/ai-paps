@@ -2,7 +2,7 @@ from typing import Optional
 
 from cvat_sdk.api_client import ApiException
 
-from cvat.rq.types import RqId
+from cvat.rq.types import DataMetaRead, LabeledData, LabeledDataRequest, RqId
 from cvat.shared.exceptions import CVATServiceError
 from cvat.shared.types import CVATDatasetFormat
 from cvat.shared.usecase import CVATUsecase
@@ -24,6 +24,18 @@ class CVATTasksUsecase(CVATUsecase):
     def find_one(self, task_id: int) -> Optional[TaskRead]:
         try:
             return self.repo.find_one(task_id)
+        except ApiException as e:
+            raise CVATServiceError(e.reason, e.status)
+
+    def find_data_meta(self, task_id: int) -> Optional[DataMetaRead]:
+        try:
+            return self.repo.find_data_meta(task_id)
+        except ApiException as e:
+            raise CVATServiceError(e.reason, e.status)
+
+    def find_annotations(self, task_id: int, request: Optional[LabeledDataRequest] = None) -> Optional[LabeledData]:
+        try:
+            return self.repo.find_annotations(task_id, request)
         except ApiException as e:
             raise CVATServiceError(e.reason, e.status)
 

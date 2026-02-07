@@ -4,7 +4,7 @@ from cvat_sdk.api_client import ApiException
 
 from cvat.jobs.repository import CVATJobRepository
 from cvat.jobs.types import JobRead, JobReadRequest, PaginatedJobReadList
-from cvat.rq.types import RqId
+from cvat.rq.types import DataMetaRead, LabeledData, LabeledDataRequest, RqId
 from cvat.shared.exceptions import CVATServiceError
 from cvat.shared.types import CVATDatasetFormat
 from cvat.shared.usecase import CVATUsecase
@@ -24,6 +24,18 @@ class CVATJobsUsecase(CVATUsecase):
     def find_one(self, job_id: int) -> Optional[JobRead]:
         try:
             return self.repo.find_one(job_id)
+        except ApiException as e:
+            raise CVATServiceError(e.reason, e.status)
+
+    def find_data_meta(self, job_id: int) -> Optional[DataMetaRead]:
+        try:
+            return self.repo.find_data_meta(job_id)
+        except ApiException as e:
+            raise CVATServiceError(e.reason, e.status)
+
+    def find_annotations(self, job_id: int, request: Optional[LabeledDataRequest] = None) -> Optional[LabeledData]:
+        try:
+            return self.repo.find_annotations(job_id, request)
         except ApiException as e:
             raise CVATServiceError(e.reason, e.status)
 

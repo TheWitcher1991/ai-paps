@@ -1,7 +1,7 @@
 from typing import Optional
 
 from cvat.jobs.types import JobRead, JobReadRequest, PaginatedJobReadList
-from cvat.rq.types import RqId
+from cvat.rq.types import DataMetaRead, LabeledData, LabeledDataRequest, RqId
 from cvat.shared.repository import CVATRepository
 from cvat.shared.types import CVATDatasetFormat
 
@@ -16,7 +16,13 @@ class CVATJobRepository(CVATRepository):
         return self.execute(self.api.list, **self.params(request)).data
 
     def find_one(self, job_id: int) -> Optional[JobRead]:
-        return self.execute(self.api.retrieve, job_id)
+        return self.execute(self.api.retrieve, job_id).data
+
+    def find_data_meta(self, job_id: int) -> Optional[DataMetaRead]:
+        return self.execute(self.api.retrieve_data_meta, job_id).data
+
+    def find_annotations(self, job_id: int, request: Optional[LabeledDataRequest] = None) -> Optional[LabeledData]:
+        return self.execute(self.api.retrieve_annotations, job_id, **self.params(request)).data
 
     def export_dataset(
         self,
@@ -29,4 +35,4 @@ class CVATJobRepository(CVATRepository):
             format,
             job_id,
             **kwargs,
-        )
+        ).data

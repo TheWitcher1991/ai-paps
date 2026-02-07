@@ -2,14 +2,16 @@ from dataclasses import dataclass
 from enum import StrEnum
 from typing import List, Literal, Optional
 
+from cvat_sdk.api_client.model.data_meta_read import DataMetaRead as CVATDataMetaRead
+from cvat_sdk.api_client.model.labeled_data import LabeledData as CVATLabeledData
 from cvat_sdk.api_client.model.paginated_request_list import PaginatedRequestList as CVATPaginatedRequestList
-from cvat_sdk.api_client.model.request import Request as CVATRequest
+from cvat_sdk.api_client.model.request import Request as CVATRq
 from cvat_sdk.api_client.model.rq_id import RqId as CVATRqId
 
-from cvat.shared.types import CVATHTTPResponse, PaginatedRequest
+from cvat.shared.types import CVATHTTPResponse, CVATRequest, PaginatedRequest
 
 PaginatedRequestList = CVATPaginatedRequestList
-Request = CVATRequest
+Request = CVATRq
 
 RequestResponse = CVATHTTPResponse[Optional[Request]]
 ProjectRequestResponse = CVATHTTPResponse[Optional[PaginatedRequestList]]
@@ -20,12 +22,20 @@ RqId = CVATRqId
 
 RqIdResponse = CVATHTTPResponse[Optional[RqId]]
 
+LabeledData = CVATLabeledData
+DataMetaRead = CVATDataMetaRead
+
 
 class RqStatus(StrEnum):
     QUEUED = "queued"
     STARTED = ("started",)
     FAILED = "failed"
     FINISHED = ("finished",)
+
+
+@dataclass(frozen=True)
+class LabeledDataRequest(CVATRequest):
+    pass
 
 
 @dataclass(frozen=True)
