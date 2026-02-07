@@ -2,15 +2,15 @@ from typing import Optional
 
 from cvat_sdk.api_client import ApiException
 
+from cvat.projects.abstract import ProjectAbstract
 from cvat.projects.repository import CVATProjectRepository
 from cvat.projects.types import PaginatedProjectReadList, ProjectRead, ProjectReadRequest
 from cvat.rq.types import RqId
 from cvat.shared.exceptions import CVATServiceError
 from cvat.shared.types import CVATDatasetFormat
-from cvat.shared.usecase import CVATUsecase
 
 
-class CVATProjectsUsecase(CVATUsecase):
+class CVATProjectAdapter(ProjectAbstract):
 
     def __init__(self):
         self.repo = CVATProjectRepository()
