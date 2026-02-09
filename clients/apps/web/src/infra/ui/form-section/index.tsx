@@ -1,7 +1,7 @@
 import { Text } from '@gravity-ui/uikit'
 import { FC, PropsWithChildren } from 'react'
 
-import { Spacing } from '~packages/ui'
+import { Spacing } from '~infra/ui'
 
 interface FormSectionProps extends PropsWithChildren {
 	label: string

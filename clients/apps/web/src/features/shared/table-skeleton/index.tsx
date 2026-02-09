@@ -1,6 +1,6 @@
 import { Flex } from '@gravity-ui/uikit'
 
-import { Skeleton } from '~packages/ui'
+import { Skeleton } from '~infra/ui'
 
 interface TableSkeletonProps {
 	count?: number

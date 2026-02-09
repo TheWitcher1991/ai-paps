@@ -11,7 +11,7 @@ import { Flex, Icon, PlaceholderContainer } from '@gravity-ui/uikit'
 
 import { setBreadcrumbs } from '~widgets/nav'
 
-import { DashkitWidget, Group, PageTitle, ValueCard } from '~packages/ui'
+import { DashkitWidget, Group, PageTitle, ValueCard } from '~infra/ui'
 
 import { useMount } from '@wcsc/hooks'
 

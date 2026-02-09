@@ -10,8 +10,12 @@ class ProjectQuery:
         self.projects = CVATProjectAdapter()
 
     def filter(self, request: ExtendedRequest):
+        page = int(request.query_params.get("page", 1))
+        page_size = int(request.query_params.get("page_size", 25))
+
         request = ProjectReadRequest(
-            page=request.query_params.get("page", 1), page_size=request.query_params.get("page_size", 25)
+            page=page,
+            page_size=page_size,
         )
         return cvat_paginated_list_to_dict(self.projects.find_all(request))
 

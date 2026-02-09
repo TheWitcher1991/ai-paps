@@ -6,7 +6,7 @@ import { PropsWithChildren, useState } from 'react'
 import useFooter from '~widgets/aside/hooks/use-footer'
 import useMenuItems from '~widgets/aside/hooks/use-menu-items'
 
-import { projectConfig } from '~packages/system'
+import { projectConfig } from '~infra/system'
 
 import styles from './aside.module.scss'
 

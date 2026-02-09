@@ -66,6 +66,6 @@ export const vShape = {
 
 export const BaseModel = object({
 	id: vShape.id,
-	created_at: vShape.datetime,
-	updated_at: vShape.datetime,
+	created_date: vShape.datetime,
+	updated_date: vShape.datetime,
 })

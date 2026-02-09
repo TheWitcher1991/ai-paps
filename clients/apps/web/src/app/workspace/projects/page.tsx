@@ -1,13 +1,20 @@
 'use client'
 
 import { setBreadcrumbs } from '~widgets/nav'
+import Projects, {
+	ProjectsFetcher,
+	ProjectsFilter,
+	ProjectsPagination,
+} from '~widgets/projects'
 
-import { Group, PageTitle } from '~packages/ui'
+import { ProjectCreateButton } from '~models/project'
+
+import { Group, PageTitle } from '~infra/ui'
 
 import { useMount } from '@wcsc/hooks'
 import { href } from '@wcsc/href'
 
-export default function Projects() {
+export default function ProjectsPage() {
 	useMount(() =>
 		setBreadcrumbs([{ text: 'Проекты', href: href.projects.index }]),
 	)
@@ -17,9 +24,14 @@ export default function Projects() {
 			<PageTitle
 				title={'Проекты'}
 				subtitle={
-					'Панель мониторинга и управления ключевыми метриками системы'
+					'Проекты - это основная сущность системы, которая позволяет организовать работу команд'
 				}
+				action={<ProjectCreateButton />}
 			/>
+			<ProjectsFilter />
+			<Projects />
+			<ProjectsFetcher />
+			<ProjectsPagination />
 		</Group>
 	)
 }

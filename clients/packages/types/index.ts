@@ -93,8 +93,8 @@ export interface PaginationPageSize {
 export interface PaginateQuery<
 	ORDERING extends string = string,
 > extends PaginationPageSize {
-	query: string
-	ordering: ORDERING
+	search: string
+	sort: ORDERING
 }
 
 export interface PagesListResponse<T> {

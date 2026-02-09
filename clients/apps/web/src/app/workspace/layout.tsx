@@ -5,7 +5,7 @@ import { PropsWithChildren } from 'react'
 
 import Aside from '~widgets/aside'
 
-import { Container } from '~packages/ui'
+import { Container } from '~infra/ui'
 
 const Nav = dynamic(() => import('~widgets/nav'))
 

@@ -11,7 +11,7 @@ import { ThemeButton } from '~features/shared'
 
 import { ImportButton } from '~features/import'
 
-import { Breadcrumbs } from '~packages/ui'
+import { Breadcrumbs } from '~infra/ui'
 
 import { useMemoizedFn } from '@wcsc/hooks'
 import { href } from '@wcsc/href'

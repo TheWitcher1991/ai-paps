@@ -3,7 +3,7 @@
 import { ArrowRightToSquare } from '@gravity-ui/icons'
 import { Button, Icon, PasswordInput } from '@gravity-ui/uikit'
 
-import { FormCard, FormSection, Spacing } from '~packages/ui'
+import { FormCard, FormSection, Spacing } from '~infra/ui'
 
 export const LoginForm = () => {
 	return (

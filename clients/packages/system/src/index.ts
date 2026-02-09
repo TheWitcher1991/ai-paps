@@ -4,7 +4,7 @@ export const IS_DEV = process.env.NODE_ENV === 'development'
 
 export const IS_PROD = process.env.NODE_ENV === 'production'
 
-export const API_URL = `${process.env.API_URL || 'http://localhost:8000/api/'}`
+export const API_URL = `${process.env.API_URL || 'http://localhost:8000/v1/'}`
 
 export const BASE_ROOT_URL = '/'
 
@@ -27,3 +27,5 @@ export const AUTH_HEADER_KEY = 'Bearer'
 export const isBrowser = typeof window !== 'undefined'
 
 export const isNavigator = typeof navigator !== 'undefined'
+
+export const PAGE_SIZE_OPTIONS = [25, 50, 75]

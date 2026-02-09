@@ -26,8 +26,8 @@ class CVATRequest:
 
 @dataclass(frozen=True)
 class PaginatedRequest(CVATRequest):
-    page: Optional[str] = None
-    page_size: Optional[str] = None
+    page: Optional[int] = None
+    page_size: Optional[int] = None
     search: Optional[str] = None
     sort: Optional[str] = None
 

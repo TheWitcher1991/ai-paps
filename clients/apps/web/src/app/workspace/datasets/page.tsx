@@ -25,7 +25,7 @@ import React from 'react'
 
 import { setBreadcrumbs } from '~widgets/nav'
 
-import { Grid, Group, PageTitle, SearchIcon, ValueCard } from '~packages/ui'
+import { Grid, Group, PageTitle, SearchIcon, ValueCard } from '~infra/ui'
 
 import { useMount } from '@wcsc/hooks'
 import { href } from '@wcsc/href'

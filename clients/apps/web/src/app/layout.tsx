@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import Head from 'next/head'
 import { ReactNode } from 'react'
 
-import WithProviders from '~packages/providers'
-import { projectConfig } from '~packages/system'
+import WithProviders from '~infra/providers'
+import { projectConfig } from '~infra/system'
 
 import './global.scss'
 

@@ -2,7 +2,7 @@ import { Progress } from '@gravity-ui/uikit'
 
 import { Nullable } from '@stroy/types'
 
-import { Spacing } from '~packages/ui'
+import { Spacing } from '~infra/ui'
 
 interface QueryProgressProps {
 	loading?: boolean

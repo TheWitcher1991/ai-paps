@@ -21,6 +21,13 @@ declare global {
 		key: string | null
 	}
 
+	type PropsWithAction<P = unknown> = P & {
+		view?: ButtonView
+		size?: ButtonSize
+		width?: ButtonWidth
+		onlyIcon?: boolean
+	}
+
 	namespace JSX {
 		interface Element extends React.ReactElement<any, any> {}
 	}

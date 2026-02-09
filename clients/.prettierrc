@@ -15,6 +15,7 @@
     "^~providers/(.*)$",
     "^~models/(.*)$",
     "^~packages/(.*)$",
+    "^~infra/(.*)$",
     "^@wcsc/(.*)$",
     "^~shared/(.*)$",
     "^~atoms/(.*)$",

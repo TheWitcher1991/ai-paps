@@ -3,7 +3,7 @@
 import { Icon } from '@gravity-ui/uikit'
 import { PropsWithChildren } from 'react'
 
-import { projectConfig } from '~packages/system'
+import { projectConfig } from '~infra/system'
 
 import styles from './layout.module.scss'
 
