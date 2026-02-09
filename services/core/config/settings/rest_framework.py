@@ -24,8 +24,8 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "MyFarm Swagger API",
-    "DESCRIPTION": "MyFarm Swagger API description",
+    "TITLE": "PAPS Swagger API",
+    "DESCRIPTION": "PAPS Swagger API description",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from cvat.projects.types import ProjectReadRequest, ProjectRead, PaginatedProjectReadList
+from cvat.projects.types import PaginatedProjectReadList, ProjectRead, ProjectReadRequest
 from cvat.rq.types import RqId
 from cvat.shared.types import CVATDatasetFormat
 

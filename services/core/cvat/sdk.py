@@ -5,6 +5,7 @@ from cvat.organizations.usecase import CVATOrganizationsUsecase
 from cvat.projects.adapters import CVATProjectAdapter
 from cvat.rq.usecase import CVATRequestsUsecase
 from cvat.shared.config import CVATConfig
+from cvat.storages.usecase import CVATStoragesUsecase
 from cvat.tasks.usecase import CVATTasksUsecase
 from cvat.users.usecase import CVATUsersUsecase
 
@@ -19,6 +20,7 @@ class CVATFacade:
         self.organizations = CVATOrganizationsUsecase()
         self.projects = CVATProjectAdapter()
         self.requests = CVATRequestsUsecase()
+        self.storages = CVATStoragesUsecase()
         self.tasks = CVATTasksUsecase()
         self.users = CVATUsersUsecase()
 

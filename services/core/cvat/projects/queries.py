@@ -1,5 +1,6 @@
-from cvat.projects.types import ProjectReadRequest
 from cvat.projects.adapters import CVATProjectAdapter
+from cvat.projects.types import ProjectReadRequest
+from cvat.shared.utils import cvat_paginated_list_to_dict
 from packages.kernel.types import ExtendedRequest
 
 
@@ -12,7 +13,7 @@ class ProjectQuery:
         request = ProjectReadRequest(
             page=request.query_params.get("page", 1), page_size=request.query_params.get("page_size", 25)
         )
-        return self.projects.find_all(request)
+        return cvat_paginated_list_to_dict(self.projects.find_all(request))
 
     def get_by_id(self, pk: int):
         return self.projects.find_one(pk)

@@ -1,5 +1,5 @@
 from cvat.annotations.types import AnnotationData
-from cvat.rq.types import LabeledData, DataMetaRead
+from cvat.rq.types import DataMetaRead, LabeledData
 
 
 class AnnotationCalculator:

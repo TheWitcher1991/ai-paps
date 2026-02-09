@@ -1,19 +1,21 @@
-from cvat.jobs.queries import JobsQuery
+from cvat.jobs.queries import JobQuery
 from cvat.jobs.serializers import JobReadSerializer
-from cvat.labels.queries import LabelsQuery
+from cvat.labels.queries import LabelQuery
 from cvat.labels.serializers import LabelSerializer
-from cvat.memberships.queries import MembershipsQuery
+from cvat.memberships.queries import MembershipQuery
 from cvat.memberships.serializers import MembershipReadSerializer
-from cvat.organizations.queries import OrganizationsQuery
+from cvat.organizations.queries import OrganizationQuery
 from cvat.organizations.serializers import OrganizationReadSerializer
-from cvat.projects.queries import ProjectsQuery
+from cvat.projects.queries import ProjectQuery
 from cvat.projects.serializers import ProjectReadSerializer
-from cvat.rq.queries import RequestsQuery
+from cvat.rq.queries import RequestQuery
 from cvat.rq.serializers import RequestSerializer
 from cvat.shared.serializers import CVATPaginatedListSerializer
-from cvat.tasks.queries import TasksQuery
+from cvat.storages.queries import StorageQuery
+from cvat.storages.serializers import CloudStorageReadSerializer
+from cvat.tasks.queries import TaskQuery
 from cvat.tasks.serializers import TaskReadSerializer
-from cvat.users.queries import UsersQuery
+from cvat.users.queries import UserQuery
 from cvat.users.serializers import MetaUserSerializer
 from packages.framework.controllers import APISetController
 from packages.kernel.types import ExtendedRequest
@@ -22,14 +24,14 @@ from packages.kernel.types import ExtendedRequest
 class JobSetController(APISetController):
     prefix = "jobs"
 
-    queries = JobsQuery()
+    queries = JobQuery()
 
     def list(self, request: ExtendedRequest, *args, **kwargs):
         queryset = self.queries.filter(request)
         serializer = CVATPaginatedListSerializer(queryset)
         return self.get_response(serializer.data)
 
-    def get(self, pk: int, request: ExtendedRequest, *args, **kwargs):
+    def retrieve(self, pk: int, request: ExtendedRequest, *args, **kwargs):
         instance = self.queries.get_by_id(pk)
         serializer = JobReadSerializer(instance)
         return self.get_response(serializer.data)
@@ -38,14 +40,14 @@ class JobSetController(APISetController):
 class LabelSetController(APISetController):
     prefix = "labels"
 
-    queries = LabelsQuery()
+    queries = LabelQuery()
 
     def list(self, request: ExtendedRequest, *args, **kwargs):
         queryset = self.queries.filter(request)
         serializer = CVATPaginatedListSerializer(queryset)
         return self.get_response(serializer.data)
 
-    def get(self, pk: int, request: ExtendedRequest, *args, **kwargs):
+    def retrieve(self, pk: int, request: ExtendedRequest, *args, **kwargs):
         instance = self.queries.get_by_id(pk)
         serializer = LabelSerializer(instance)
         return self.get_response(serializer.data)
@@ -54,14 +56,14 @@ class LabelSetController(APISetController):
 class MembershipSetController(APISetController):
     prefix = "memberships"
 
-    queries = MembershipsQuery()
+    queries = MembershipQuery()
 
     def list(self, request: ExtendedRequest, *args, **kwargs):
         queryset = self.queries.filter(request)
         serializer = CVATPaginatedListSerializer(queryset)
         return self.get_response(serializer.data)
 
-    def get(self, pk: int, request: ExtendedRequest, *args, **kwargs):
+    def retrieve(self, pk: int, request: ExtendedRequest, *args, **kwargs):
         instance = self.queries.get_by_id(pk)
         serializer = MembershipReadSerializer(instance)
         return self.get_response(serializer.data)
@@ -70,14 +72,14 @@ class MembershipSetController(APISetController):
 class OrganizationSetController(APISetController):
     prefix = "organizations"
 
-    queries = OrganizationsQuery()
+    queries = OrganizationQuery()
 
     def list(self, request: ExtendedRequest, *args, **kwargs):
         queryset = self.queries.filter(request)
         serializer = CVATPaginatedListSerializer(queryset)
         return self.get_response(serializer.data)
 
-    def get(self, pk: int, request: ExtendedRequest, *args, **kwargs):
+    def retrieve(self, pk: int, request: ExtendedRequest, *args, **kwargs):
         instance = self.queries.get_by_id(pk)
         serializer = OrganizationReadSerializer(instance)
         return self.get_response(serializer.data)
@@ -86,14 +88,14 @@ class OrganizationSetController(APISetController):
 class ProjectSetController(APISetController):
     prefix = "projects"
 
-    queries = ProjectsQuery()
+    queries = ProjectQuery()
 
     def list(self, request: ExtendedRequest, *args, **kwargs):
         queryset = self.queries.filter(request)
         serializer = CVATPaginatedListSerializer(queryset)
         return self.get_response(serializer.data)
 
-    def get(self, pk: int, request: ExtendedRequest, *args, **kwargs):
+    def retrieve(self, pk: int, request: ExtendedRequest, *args, **kwargs):
         instance = self.queries.get_by_id(pk)
         serializer = ProjectReadSerializer(instance)
         return self.get_response(serializer.data)
@@ -102,30 +104,46 @@ class ProjectSetController(APISetController):
 class RequestSetController(APISetController):
     prefix = "requests"
 
-    queries = RequestsQuery()
+    queries = RequestQuery()
 
     def list(self, request: ExtendedRequest, *args, **kwargs):
         queryset = self.queries.filter(request)
         serializer = CVATPaginatedListSerializer(queryset)
         return self.get_response(serializer.data)
 
-    def get(self, pk: int, request: ExtendedRequest, *args, **kwargs):
+    def retrieve(self, pk: int, request: ExtendedRequest, *args, **kwargs):
         instance = self.queries.get_by_id(pk)
         serializer = RequestSerializer(instance)
+        return self.get_response(serializer.data)
+
+
+class StorageSetController(APISetController):
+    prefix = "storages"
+
+    queries = StorageQuery()
+
+    def list(self, request: ExtendedRequest, *args, **kwargs):
+        queryset = self.queries.filter(request)
+        serializer = CVATPaginatedListSerializer(queryset)
+        return self.get_response(serializer.data)
+
+    def retrieve(self, pk: int, request: ExtendedRequest, *args, **kwargs):
+        instance = self.queries.get_by_id(pk)
+        serializer = CloudStorageReadSerializer(instance)
         return self.get_response(serializer.data)
 
 
 class TaskSetController(APISetController):
     prefix = "tasks"
 
-    queries = TasksQuery()
+    queries = TaskQuery()
 
     def list(self, request: ExtendedRequest, *args, **kwargs):
         queryset = self.queries.filter(request)
         serializer = CVATPaginatedListSerializer(queryset)
         return self.get_response(serializer.data)
 
-    def get(self, pk: int, request: ExtendedRequest, *args, **kwargs):
+    def retrieve(self, pk: int, request: ExtendedRequest, *args, **kwargs):
         instance = self.queries.get_by_id(pk)
         serializer = TaskReadSerializer(instance)
         return self.get_response(serializer.data)
@@ -134,14 +152,14 @@ class TaskSetController(APISetController):
 class UserSetController(APISetController):
     prefix = "users"
 
-    queries = UsersQuery()
+    queries = UserQuery()
 
     def list(self, request: ExtendedRequest, *args, **kwargs):
         queryset = self.queries.filter(request)
         serializer = CVATPaginatedListSerializer(queryset)
         return self.get_response(serializer.data)
 
-    def get(self, pk: int, request: ExtendedRequest, *args, **kwargs):
+    def retrieve(self, pk: int, request: ExtendedRequest, *args, **kwargs):
         instance = self.queries.get_by_id(pk)
         serializer = MetaUserSerializer(instance)
         return self.get_response(serializer.data)

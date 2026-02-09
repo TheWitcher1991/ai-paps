@@ -5,6 +5,7 @@ from cvat.controllers import (
     OrganizationSetController,
     ProjectSetController,
     RequestSetController,
+    StorageSetController,
     TaskSetController,
     UserSetController,
 )
@@ -19,6 +20,7 @@ router = auto_router(
     OrganizationSetController,
     ProjectSetController,
     RequestSetController,
+    StorageSetController,
     TaskSetController,
     UserSetController,
 )
