@@ -93,7 +93,7 @@ class DatasetEngine:
         pass
 
     def save(self):
-        pass
+        content = json.dumps(self.registry.coco)
 
     def _wait_and_load_coco(self, rq_id: RqId, timeout: int = 300, interval: int = 5) -> dict:
         start = time.time()

@@ -11,7 +11,7 @@ T = TypeVar("T", bound=models.Model)
 K = TypeVar("K", bound=int)
 
 
-class UseCaseAdapter(Generic[T, K]):
+class RepositoryAdapter(Generic[T, K]):
     """
     Базовый адаптер для работы с моделями Django.
     """
@@ -83,7 +83,7 @@ class UseCaseAdapter(Generic[T, K]):
         return self.get_queryset().filter(id=pk).delete()
 
 
-class RepositoryAdapter(UseCaseAdapter[T, K]):
+class UseCaseAdapter:
     pass
 
 
