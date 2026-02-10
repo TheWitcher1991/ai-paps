@@ -1,9 +1,9 @@
 import {
 	BookOpen,
-	Cubes3Overlap,
 	House,
 	LocationArrowFill,
 	Molecule,
+	NutHex,
 	Persons,
 	Picture,
 	SquareDashedCircle,
@@ -35,12 +35,12 @@ export default function useMenuItems(): MenuItem[] {
 			onItemClick: () => router.push(href.directory.index),
 		},
 		{
-			id: 'projects',
-			title: 'Проекты',
-			icon: Cubes3Overlap,
+			id: 'cvat',
+			title: 'Интеграция CVAT',
+			icon: NutHex,
 			iconSize: 20,
-			current: pathname.startsWith(href.projects.index),
-			onItemClick: () => router.push(href.projects.index),
+			current: pathname.startsWith(href.cvat.index),
+			onItemClick: () => router.push(href.cvat.projects.index),
 		},
 		{
 			id: 'datasets',

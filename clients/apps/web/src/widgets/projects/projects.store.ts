@@ -19,5 +19,6 @@ export const {
 	filter: {
 		page_size: 25,
 		page: 1,
+		view: 'table',
 	},
 })

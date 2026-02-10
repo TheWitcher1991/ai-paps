@@ -1,0 +1,11 @@
+.segmented {
+    display: flex;
+    align-items: center;
+    border-radius: 99px;
+    width: fit-content;
+    border: 1px solid var(--g-color-line-generic);
+}
+
+.segmentedWidth {
+    width: 100%;
+}

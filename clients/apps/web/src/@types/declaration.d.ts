@@ -21,6 +21,8 @@ declare global {
 		key: string | null
 	}
 
+	type ListViewType = 'list' | 'table'
+
 	type PropsWithAction<P = unknown> = P & {
 		view?: ButtonView
 		size?: ButtonSize

@@ -1,6 +1,6 @@
 import {
+	ProjectDatasetButton,
 	ProjectDeleteButton,
-	ProjectUpdateButton,
 	ProjectViewButton,
 } from '~models/project'
 
@@ -12,7 +12,7 @@ export const ProjectActions = ({ project }: WithProject) => {
 	return (
 		<Actions>
 			<ProjectViewButton project={project} onlyIcon={true} />
-			<ProjectUpdateButton project={project} onlyIcon={true} />
+			<ProjectDatasetButton project={project} onlyIcon={true} />
 			<ProjectDeleteButton project={project} onlyIcon={true} />
 		</Actions>
 	)

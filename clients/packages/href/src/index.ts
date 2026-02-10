@@ -37,6 +37,14 @@ export const href = {
 		return `${this.root}dashboard`
 	},
 
+	cvat: {
+		index: '/workspace/cvat',
+		projects: hrefFactory('workspace/cvat/projects'),
+		tasks: hrefFactory('workspace/cvat/tasks'),
+		jobs: hrefFactory('workspace/cvat/jobs'),
+		requests: hrefFactory('workspace/cvat/requests'),
+	},
+
 	directory: hrefFactory('workspace/directory'),
 
 	projects: hrefFactory('workspace/projects'),

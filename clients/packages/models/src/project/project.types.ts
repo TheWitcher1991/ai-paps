@@ -16,4 +16,6 @@ export type WithProject = InjectProps<'tag', IProject>
 
 export type WithProjectID = InjectProps<'tag', ProjectID>
 
-export type UseProjects = PaginateQuery
+export type UseProjects = PaginateQuery & {
+	view?: string
+}

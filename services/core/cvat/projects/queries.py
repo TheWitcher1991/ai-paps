@@ -17,6 +17,7 @@ class ProjectQuery:
             page=page,
             page_size=page_size,
         )
+
         return cvat_paginated_list_to_dict(self.projects.find_all(request))
 
     def get_by_id(self, pk: int):
