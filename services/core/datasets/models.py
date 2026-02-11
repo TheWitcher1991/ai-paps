@@ -20,7 +20,7 @@ class Dataset(ModelAdapter):
         verbose_name_plural = t("Датасеты")
 
 
-class DatasetFile(ModelAdapter):
+class DatasetAsset(ModelAdapter):
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="files")
     file = S3PrivateFileField(upload_to="datasets/")
     status = models.CharField(

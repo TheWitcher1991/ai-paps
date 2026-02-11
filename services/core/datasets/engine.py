@@ -9,7 +9,6 @@ import requests
 from cvat.rq.types import RqId, RqStatus
 from cvat.sdk import cvat
 from cvat.shared.types import CVATDatasetFormat
-from datasets.models import Dataset
 from datasets.types import DatasetSource
 
 
@@ -76,8 +75,7 @@ class DatasetRegistry:
 
 class DatasetEngine:
 
-    def __init__(self, dataset: Dataset):
-        self.dataset = dataset
+    def __init__(self):
         self.registry = COCODatasetRegistry()
 
     def export(self, source: DatasetSource, source_id: int):
