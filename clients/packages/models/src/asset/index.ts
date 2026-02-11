@@ -1,5 +1,5 @@
 export * from './asset.model'
 export * from './asset.types'
-export * from './asset'
+export * from './asset.model'
 export * from './asset.config'
 export * from './asset.api'

@@ -6,6 +6,12 @@ export const vJobId = vBrand(vShape.id, 'JobID')
 
 export const BaseJobModel = object({})
 
-export const JobModel = merge(BaseModel, BaseJobModel)
+export const JobModel = merge(
+	BaseModel,
+	BaseJobModel,
+	object({
+		id: vJobId,
+	}),
+)
 
 export const WriteableJobModel = merge(BaseJobModel)

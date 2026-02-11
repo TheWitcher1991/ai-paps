@@ -43,7 +43,7 @@ class JobSetController(APISetController):
         return self.get_response(serializer.data)
 
     @action(detail=True, methods=["POST"], url_path="export")
-    def export(self, pk: int, request: ExtendedRequest, *args, **kwargs):
+    def export(self, request: ExtendedRequest, pk: int = None, *args, **kwargs):
         result = self.commands.export(pk)
         return self.get_response(result)
 
@@ -118,8 +118,8 @@ class ProjectSetController(APISetController):
         return self.get_response(serializer.data)
 
     @action(detail=True, methods=["POST"], url_path="export")
-    def export(self, pk: int, request: ExtendedRequest, *args, **kwargs):
-        result = self.commands.export(pk)
+    def export(self, id: int, request: ExtendedRequest, *args, **kwargs):
+        result = self.commands.export(id)
         return self.get_response(result)
 
     @action(detail=True, methods=["POST"], url_path="request")

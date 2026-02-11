@@ -4,7 +4,7 @@ import {
 	Cubes3Overlap,
 	HandStop,
 	Person,
-	SquareDashedCircle,
+	CirclesConcentric,
 } from '@gravity-ui/icons'
 import { TableColumnConfig } from '@gravity-ui/uikit'
 
@@ -34,7 +34,7 @@ export const projectTableColumns: TableColumnConfig<any>[] = [
 	},
 	{
 		id: 'tasks',
-		name: () => <TableName icon={SquareDashedCircle}>Задач</TableName>,
+		name: () => <TableName icon={CirclesConcentric}>Задач</TableName>,
 		width: '15%',
 		align: 'left',
 		meta: { sort: true },

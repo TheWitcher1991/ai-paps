@@ -1,7 +1,7 @@
 import {
 	Arrows3RotateRight,
 	Calendar,
-	Cubes3Overlap,
+	CurlyBracketsFunction,
 	HandStop,
 	Person,
 	SquareDashedCircle,
@@ -13,7 +13,7 @@ import { TableName } from '~infra/ui'
 export const jobTableColumns: TableColumnConfig<any>[] = [
 	{
 		id: 'name',
-		name: () => <TableName icon={Cubes3Overlap}>Проект</TableName>,
+		name: () => <TableName icon={SquareDashedCircle}>Джоба</TableName>,
 		width: '20%',
 		align: 'left',
 		meta: { sort: true },
@@ -33,8 +33,8 @@ export const jobTableColumns: TableColumnConfig<any>[] = [
 		meta: { sort: true },
 	},
 	{
-		id: 'tasks',
-		name: () => <TableName icon={SquareDashedCircle}>Задач</TableName>,
+		id: 'type',
+		name: () => <TableName icon={CurlyBracketsFunction}>Тип</TableName>,
 		width: '15%',
 		align: 'left',
 		meta: { sort: true },

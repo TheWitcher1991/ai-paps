@@ -16,10 +16,6 @@ export type WithAsset = InjectProps<'asset', IAsset>
 
 export type WithAssetID = InjectProps<'asset', AssetID>
 
-export type UseDAssets = PaginateQuery & {
-	view?: string
-}
-
 export type UseAssets = PaginateQuery & {
 	view?: string
 }

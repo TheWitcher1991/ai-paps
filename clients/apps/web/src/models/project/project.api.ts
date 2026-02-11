@@ -1,8 +1,16 @@
 import { http } from '~infra/http'
 
-import { createReadonlyProjectApi } from '@wcsc/models'
+import { createProjectActionApi, createReadonlyProjectApi } from '@wcsc/models'
 
 const { useProject, useInfinitProjects, useProjects } =
 	createReadonlyProjectApi(http)
 
-export { useProject, useProjects, useInfinitProjects }
+const { useProjectExport, useProjectRequest } = createProjectActionApi(http)
+
+export {
+	useProject,
+	useProjects,
+	useInfinitProjects,
+	useProjectExport,
+	useProjectRequest,
+}

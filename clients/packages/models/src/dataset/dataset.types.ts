@@ -19,7 +19,3 @@ export type WithDatasetID = InjectProps<'dataset', DatasetID>
 export type UseDatasets = PaginateQuery & {
 	view?: string
 }
-
-export type UseDatasets = PaginateQuery & {
-	view?: string
-}

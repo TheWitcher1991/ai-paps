@@ -11,6 +11,7 @@ import { type Dictionary, Paginated } from '@wcsc/types'
 import { HttpClientInstance } from './http'
 import { optimisticInvalidateQueries } from './react-query'
 import { CrudRepository, ReadonlyRepository } from './repositories'
+import { ActionRepository } from './repositories/action'
 
 export function createReadonlyApi<
 	LIST_GET,
@@ -51,7 +52,7 @@ export function createReadonlyApi<
 			},
 			initialPageParam: 1,
 			getNextPageParam: (lastPage, _allPages, lastPageParam) => {
-				const totalPages = lastPage?.data?.meta?.totalPages ?? 1
+				const totalPages = lastPage?.data?.count ?? 1
 				if (!totalPages || lastPageParam >= totalPages) return undefined
 				return lastPageParam + 1
 			},
@@ -83,7 +84,7 @@ export function createApi<
 	http: HttpClientInstance,
 	config: { list: string; detail: string; infinity: string },
 ) {
-	const repo = new CrudRepository<LIST_GET, GET, CREATE, UPDATE, OPTIONS>(
+	const repo = new CrudRepository<LIST_GET, GET, CREATE, UPDATE, OPTIONS, ID>(
 		http,
 		config.list,
 	)
@@ -113,7 +114,7 @@ export function createApi<
 			},
 			initialPageParam: 1,
 			getNextPageParam: (lastPage, _allPages, lastPageParam) => {
-				const totalPages = lastPage?.data?.meta?.totalPages ?? 1
+				const totalPages = lastPage?.data?.count ?? 1
 				if (!totalPages || lastPageParam >= totalPages) return undefined
 				return lastPageParam + 1
 			},
@@ -160,6 +161,36 @@ export function createApi<
 		useCreateEntity,
 		useUpdateEntity,
 		useDeleteEntity,
+		repo,
+	}
+}
+
+export function createActionApi<ID extends string | number = number>(
+	http: HttpClientInstance,
+	config: { list: string; detail: string; infinity: string },
+	queries: QueryKey[] = [],
+) {
+	const repo = new ActionRepository<ID>(http, config.list)
+
+	const useExport = (id: ID) =>
+		useMutation({
+			mutationFn: () => repo.export(id),
+			onSuccess: async () => {
+				await optimisticInvalidateQueries([[config.list, ...queries]])
+			},
+		})
+
+	const useRequest = (id: ID) =>
+		useMutation({
+			mutationFn: () => repo.request(id),
+			onSuccess: async () => {
+				await optimisticInvalidateQueries([[config.list, ...queries]])
+			},
+		})
+
+	return {
+		useExport,
+		useRequest,
 		repo,
 	}
 }

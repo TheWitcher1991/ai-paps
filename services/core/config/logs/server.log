@@ -1718,3 +1718,223 @@ Traceback (most recent call last):
   File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\cvat_sdk\api_client\model_utils.py", line 1472, in attempt_convert_item
     raise get_type_error(input_value, path_to_item, valid_classes,
 cvat_sdk.api_client.exceptions.ApiTypeError: Invalid type for variable 'page'. Required value type is int and passed type was str at ['page']
+Internal Server Error: /v1/jobs/1267/export/
+Traceback (most recent call last):
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 555, in thread_handler
+    raise exc_info[1]
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 555, in thread_handler
+    raise exc_info[1]
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 504, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ashot\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 559, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: JobSetController.export() got multiple values for argument 'pk'
+Internal Server Error: /v1/jobs/1267/export/
+Traceback (most recent call last):
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 555, in thread_handler
+    raise exc_info[1]
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 555, in thread_handler
+    raise exc_info[1]
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 504, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ashot\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 559, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: JobSetController.export() got multiple values for argument 'pk'
+Internal Server Error: /v1/jobs/1267/export/
+Traceback (most recent call last):
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 555, in thread_handler
+    raise exc_info[1]
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 555, in thread_handler
+    raise exc_info[1]
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 504, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ashot\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 559, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\cvat\controllers.py", line 47, in export
+    result = self.commands.export(pk)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\cvat\jobs\commands.py", line 14, in export
+    return self.dataset_engine.export(DatasetSource.JOBS, job_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\datasets\engine.py", line 82, in export
+    rq_id = DatasetRegistry.export(source, source_id)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\datasets\engine.py", line 71, in export
+    return cvat.jobs.export_dataset(job_id=source_id, format=CVATDatasetFormat.COCO)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\cvat\jobs\usecase.py", line 49, in export_dataset
+    return self.repo.export_dataset(job_id, format, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\cvat\jobs\repository.py", line 33, in export_dataset
+    return self.execute(
+           ^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\cvat\shared\repository.py", line 42, in execute
+    data, response = fn(*args, **kwargs)
+                     ^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\cvat_sdk\api_client\api\jobs_api.py", line 1542, in create_dataset_export
+    return self.create_dataset_export_endpoint.call_with_http_info(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\cvat_sdk\api_client\api_client.py", line 1096, in call_with_http_info
+    self.__validate_inputs(kwargs)
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\cvat_sdk\api_client\api_client.py", line 941, in __validate_inputs
+    fixed_val = validate_and_convert_types(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\cvat_sdk\api_client\model_utils.py", line 1594, in validate_and_convert_types
+    converted_instance = attempt_convert_item(
+                         ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\cvat_sdk\api_client\model_utils.py", line 1472, in attempt_convert_item
+    raise get_type_error(input_value, path_to_item, valid_classes,
+cvat_sdk.api_client.exceptions.ApiTypeError: Invalid type for variable 'id'. Required value type is int and passed type was str at ['id']
+Internal Server Error: /v1/jobs/1267/export/
+Traceback (most recent call last):
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 555, in thread_handler
+    raise exc_info[1]
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 555, in thread_handler
+    raise exc_info[1]
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\django\core\handlers\base.py", line 253, in _get_response_async
+    response = await wrapped_callback(
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 504, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ashot\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\asgiref\sync.py", line 559, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\rest_framework\views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\cvat\controllers.py", line 47, in export
+    result = self.commands.export(pk)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\cvat\jobs\commands.py", line 14, in export
+    return self.dataset_engine.export(DatasetSource.JOBS, job_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\datasets\engine.py", line 83, in export
+    rq_id = DatasetRegistry.export(source, source_id)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\datasets\engine.py", line 71, in export
+    fd = cvat.jobs.export_dataset(job_id=source_id, format=CVATDatasetFormat.COCO)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\cvat\jobs\usecase.py", line 49, in export_dataset
+    return self.repo.export_dataset(job_id, format, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\cvat\jobs\repository.py", line 33, in export_dataset
+    return self.execute(
+           ^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\services\core\cvat\shared\repository.py", line 42, in execute
+    data, response = fn(*args, **kwargs)
+                     ^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\cvat_sdk\api_client\api\jobs_api.py", line 1542, in create_dataset_export
+    return self.create_dataset_export_endpoint.call_with_http_info(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\cvat_sdk\api_client\api_client.py", line 1096, in call_with_http_info
+    self.__validate_inputs(kwargs)
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\cvat_sdk\api_client\api_client.py", line 941, in __validate_inputs
+    fixed_val = validate_and_convert_types(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\cvat_sdk\api_client\model_utils.py", line 1594, in validate_and_convert_types
+    converted_instance = attempt_convert_item(
+                         ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Project\Orders\ai-web-wcsc\venv\Lib\site-packages\cvat_sdk\api_client\model_utils.py", line 1472, in attempt_convert_item
+    raise get_type_error(input_value, path_to_item, valid_classes,
+cvat_sdk.api_client.exceptions.ApiTypeError: Invalid type for variable 'id'. Required value type is int and passed type was str at ['id']

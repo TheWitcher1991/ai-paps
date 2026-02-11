@@ -6,6 +6,12 @@ export const vRequestId = vBrand(vShape.id, 'RequestID')
 
 export const BaseRequestModel = object({})
 
-export const RequestModel = merge(BaseModel, BaseRequestModel)
+export const RequestModel = merge(
+	BaseModel,
+	BaseRequestModel,
+	object({
+		id: vRequestId,
+	}),
+)
 
 export const WriteableRequestModel = merge(BaseRequestModel)

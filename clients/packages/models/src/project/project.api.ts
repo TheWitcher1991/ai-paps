@@ -1,4 +1,5 @@
 import {
+	createActionApi,
 	createApi,
 	createReadonlyApi,
 	CrudRepository,
@@ -76,5 +77,19 @@ export const createProjectApi = (http: HttpClientInstance) => {
 		useUpdateProject: api.useUpdateEntity,
 		useDeleteProject: api.useDeleteEntity,
 		projectRepository: api.repo,
+	}
+}
+
+export const createProjectActionApi = (http: HttpClientInstance) => {
+	const api = createActionApi<ProjectID>(http, {
+		list: projectConfig.models,
+		detail: projectConfig.model,
+		infinity: projectConfig.infiniteModels,
+	})
+
+	return {
+		useProjectExport: api.useExport,
+		useProjectRequest: api.useRequest,
+		projectActionRepository: api.repo,
 	}
 }

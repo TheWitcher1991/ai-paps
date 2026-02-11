@@ -1,4 +1,5 @@
 import {
+	createActionApi,
 	createApi,
 	createReadonlyApi,
 	CrudRepository,
@@ -66,5 +67,19 @@ export const createTaskApi = (http: HttpClientInstance) => {
 		useUpdateTask: api.useUpdateEntity,
 		useDeleteTask: api.useDeleteEntity,
 		taskRepository: api.repo,
+	}
+}
+
+export const createTaskActionApi = (http: HttpClientInstance) => {
+	const api = createActionApi<TaskID>(http, {
+		list: taskConfig.models,
+		detail: taskConfig.model,
+		infinity: taskConfig.infiniteModels,
+	})
+
+	return {
+		useTaskExport: api.useExport,
+		useTaskRequest: api.useRequest,
+		taskActionRepository: api.repo,
 	}
 }

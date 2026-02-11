@@ -6,6 +6,12 @@ export const vProjectId = vBrand(vShape.id, 'ProjectID')
 
 export const BaseProjectModel = object({})
 
-export const ProjectModel = merge(BaseModel, BaseProjectModel)
+export const ProjectModel = merge(
+	BaseModel,
+	BaseProjectModel,
+	object({
+		id: vProjectId,
+	}),
+)
 
 export const WriteableProjectModel = merge(BaseProjectModel)

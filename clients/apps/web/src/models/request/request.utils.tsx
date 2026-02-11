@@ -1,10 +1,10 @@
 import {
 	Arrows3RotateRight,
 	Calendar,
-	Cubes3Overlap,
+	ArrowDownToSquare,
 	HandStop,
 	Person,
-	SquareDashedCircle,
+	Archive,
 } from '@gravity-ui/icons'
 import { TableColumnConfig } from '@gravity-ui/uikit'
 
@@ -13,7 +13,7 @@ import { TableName } from '~infra/ui'
 export const requestTableColumns: TableColumnConfig<any>[] = [
 	{
 		id: 'name',
-		name: () => <TableName icon={Cubes3Overlap}>Проект</TableName>,
+		name: () => <TableName icon={ArrowDownToSquare}>Запросы</TableName>,
 		width: '20%',
 		align: 'left',
 		meta: { sort: true },
@@ -33,15 +33,15 @@ export const requestTableColumns: TableColumnConfig<any>[] = [
 		meta: { sort: true },
 	},
 	{
-		id: 'tasks',
-		name: () => <TableName icon={SquareDashedCircle}>Задач</TableName>,
+		id: 'format',
+		name: () => <TableName icon={Archive}>Формат</TableName>,
 		width: '15%',
 		align: 'left',
 		meta: { sort: true },
 	},
 	{
-		id: 'created_date',
-		name: () => <TableName icon={Calendar}>Дата создания</TableName>,
+		id: 'expiry_date',
+		name: () => <TableName icon={Calendar}>Истекает</TableName>,
 		width: '20%',
 		align: 'left',
 		meta: { sort: true },

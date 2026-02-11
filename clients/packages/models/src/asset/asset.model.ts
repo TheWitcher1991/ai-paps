@@ -6,6 +6,12 @@ export const vAssetId = vBrand(vShape.id, 'AssetID')
 
 export const BaseAssetModel = object({})
 
-export const AssetModel = merge(BaseModel, BaseAssetModel)
+export const AssetModel = merge(
+	BaseModel,
+	BaseAssetModel,
+	object({
+		id: vAssetId,
+	}),
+)
 
 export const WriteableAssetModel = merge(BaseAssetModel)

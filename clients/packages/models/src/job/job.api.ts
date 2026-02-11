@@ -1,4 +1,5 @@
 import {
+	createActionApi,
 	createApi,
 	createReadonlyApi,
 	CrudRepository,
@@ -63,5 +64,19 @@ export const createJobApi = (http: HttpClientInstance) => {
 		useUpdateJob: api.useUpdateEntity,
 		useDeleteJob: api.useDeleteEntity,
 		jobRepository: api.repo,
+	}
+}
+
+export const createJobActionApi = (http: HttpClientInstance) => {
+	const api = createActionApi<JobID>(http, {
+		list: jobConfig.models,
+		detail: jobConfig.model,
+		infinity: jobConfig.infiniteModels,
+	})
+
+	return {
+		useJobExport: api.useExport,
+		useJobRequest: api.useRequest,
+		jobActionRepository: api.repo,
 	}
 }
