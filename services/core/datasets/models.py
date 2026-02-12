@@ -1,6 +1,6 @@
 from django.db import models
 
-from datasets.types import DatasetSource, DatasetStatus, AnnotationStatus
+from datasets.types import DatasetSource, DatasetStatus, AnnotationStatus, DatasetFormat
 from packages.framework.fields import S3PrivateFileField
 from packages.kernel.adapters import ModelAdapter
 from packages.kernel.utils import t
@@ -13,6 +13,9 @@ class Dataset(ModelAdapter):
     status = models.CharField(
         t("Статус"), choices=DatasetStatus.choices, default=DatasetStatus.UPLOADED, max_length=32
     )
+    format = models.CharField(
+        t("Формат"), choices=DatasetFormat.choices, max_length=32
+    )
 
     class Meta:
         ordering = ("-created_at",)
@@ -21,14 +24,39 @@ class Dataset(ModelAdapter):
 
 
 class DatasetAsset(ModelAdapter):
-    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="files")
-    file = S3PrivateFileField(upload_to="datasets/")
-    status = models.CharField(
-        t("Статус"), choices=AnnotationStatus.choices, default=AnnotationStatus.NOT_ANNOTATED, max_length=32
-    )
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="assets")
+    file = S3PrivateFileField(upload_to="datasets/images")
+    width = models.IntegerField(t("Ширина"))
+    height = models.IntegerField(t("Высота"))
     source_id = models.IntegerField(t("Source ID"))
 
     class Meta:
         ordering = ("-created_at",)
-        verbose_name = t("Файл датасета")
-        verbose_name_plural = t("Файлы датасета")
+        verbose_name = t("Ассет датасета")
+        verbose_name_plural = t("Ассеты датасета")
+
+
+class DatasetClass(ModelAdapter):
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="categories")
+    name = models.CharField(t("Название"), max_length=255)
+    class_id = models.IntegerField(t("Class ID"))
+
+    class Meta:
+        ordering = ("-created_at",)
+        verbose_name = t("Класс датасета")
+        verbose_name_plural = t("Классы датасета")
+
+
+class DatasetAnnotation(models.Model):
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="annotations")
+    asset = models.ForeignKey(DatasetAsset, on_delete=models.CASCADE, related_name="annotations")
+    cls = models.ForeignKey(DatasetClass, on_delete=models.CASCADE, related_name="annotations")
+
+    segmentation = models.JSONField(t("Сегментация"))
+    bbox = models.JSONField(t("Бокс"))
+    area = models.FloatField(t("Площадь"))
+    iscrowd = models.BooleanField(t("Скульптура"), default=False)
+
+    class Meta:
+        verbose_name = t("Аннотация")
+        verbose_name_plural = t("Аннотации")

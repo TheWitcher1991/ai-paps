@@ -43,12 +43,12 @@ class JobSetController(APISetController):
         return self.get_response(serializer.data)
 
     @action(detail=True, methods=["POST"], url_path="export")
-    def export(self, request: ExtendedRequest, pk: int = None, *args, **kwargs):
-        result = self.commands.export(pk)
+    def export(self, request: ExtendedRequest, pk: str, *args, **kwargs):
+        result = self.commands.export(int(pk))
         return self.get_response(result)
 
     @action(detail=True, methods=["POST"], url_path="request")
-    def request(self, pk: int, request: ExtendedRequest, *args, **kwargs):
+    def request(self, request: ExtendedRequest, pk: int, *args, **kwargs):
         result = self.commands.export_dataset(pk, request)
         return self.get_response(result)
 
@@ -63,7 +63,7 @@ class LabelSetController(APISetController):
         serializer = CVATPaginatedListSerializer(queryset)
         return self.get_response(serializer.data)
 
-    def retrieve(self, pk: int, request: ExtendedRequest, *args, **kwargs):
+    def retrieve(self, request: ExtendedRequest, pk: int, *args, **kwargs):
         instance = self.queries.get_by_id(pk)
         serializer = LabelSerializer(instance)
         return self.get_response(serializer.data)

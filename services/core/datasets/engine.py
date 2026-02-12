@@ -5,7 +5,9 @@ import zipfile
 from pathlib import Path
 
 import requests
+from django.db import transaction
 
+from config.settings import MEDIA_ROOT, CVAT_TOKEN
 from cvat.rq.types import RqId, RqStatus
 from cvat.sdk import cvat
 from cvat.shared.types import CVATDatasetFormat
@@ -90,8 +92,22 @@ class DatasetEngine:
     def validate(self):
         pass
 
+    @transaction.atomic
     def save(self):
-        content = json.dumps(self.registry.coco)
+        coco = self.registry.coco
+
+        images_dir = tmpdir / "images" / "default"
+
+        category_map = {}
+        for cat in coco.get("categories", []):
+            pass
+
+        image_map = {}
+        for img in coco.get("images", []):
+            pass
+
+        for ann in coco.get("annotations", []):
+            pass
 
     def _wait_and_load_coco(self, rq_id: RqId, timeout: int = 300, interval: int = 5) -> dict:
         start = time.time()
@@ -99,10 +115,10 @@ class DatasetEngine:
         while True:
             job_status = self._get_rq_status(rq_id)
 
-            if job_status == RqStatus.FINISHED:
+            if job_status.value == RqStatus.FINISHED:
                 break
 
-            elif job_status == RqStatus.FAILED:
+            elif job_status.value == RqStatus.FINISHED:
                 raise RuntimeError(f"Экспорт CVAT завершился с ошибкой: {job_status}")
 
             if time.time() - start > timeout:
@@ -127,20 +143,22 @@ class DatasetEngine:
         return coco
 
     def _get_rq_status(self, rq_id: RqId) -> RqStatus:
-        rq = cvat.requests.find_one(rq_id)
+        rq = cvat.requests.find_one(rq_id.rq_id)
         return rq.status
 
     def _download_rq_result(self, rq_id: RqId) -> str:
-        rq = cvat.requests.find_one(rq_id)
+        rq = cvat.requests.find_one(rq_id.rq_id)
         if not rq.result_url:
             raise RuntimeError(f"Экспорт ещё не готов: {rq_id}")
 
         url = rq.result_url
 
-        temp_dir = tempfile.gettempdir()
-        zip_path = Path(temp_dir) / f"cvat_export_{rq_id}.zip"
+        export_dir = Path(MEDIA_ROOT) / "datasets"
+        export_dir.mkdir(parents=True, exist_ok=True)
 
-        response = requests.get(url, stream=True)
+        zip_path = export_dir / f"cvat_export_{rq_id.rq_id}.zip"
+
+        response = requests.get(url, headers={"Authorization": "Bearer " + CVAT_TOKEN}, stream=True)
         response.raise_for_status()
 
         with open(zip_path, "wb") as f:

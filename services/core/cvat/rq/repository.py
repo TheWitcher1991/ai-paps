@@ -13,12 +13,12 @@ class CVATRequestRepository(CVATRepository):
     def find_all(self, request: Optional[RqRequest] = None) -> PaginatedRequestList:
         return self.execute(self.api.list, **self.params(request)).data
 
-    def find_one(self, request_id: int) -> Optional[Request]:
+    def find_one(self, request_id: str) -> Optional[Request]:
         return self.execute(self.api.retrieve, request_id).data
 
     def cancel(
         self,
-        request_id: int,
+        request_id: str,
         **kwargs,
     ) -> None:
         return self.execute(

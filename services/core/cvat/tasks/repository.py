@@ -30,7 +30,7 @@ class CVATTaskRepository(CVATRepository):
         format: CVATDatasetFormat,
         **kwargs,
     ) -> RqId:
-        return self.execute(self.api.create_dataset_export, format, task_id, **kwargs).data
+        return self.execute(self.api.create_dataset_export, format, task_id, save_images=True, **kwargs).data
 
     def export_backup(self, task_id: int, **kwargs) -> RqId:
         return self.execute(self.api.create_backup_export, task_id, **kwargs).data

@@ -19,13 +19,13 @@ class CVATRequestsUsecase(CVATUsecase):
         except ApiException as e:
             raise CVATServiceError(e.reason, e.status)
 
-    def find_one(self, request_id: int) -> Optional[Request]:
+    def find_one(self, request_id: str) -> Optional[Request]:
         try:
             return self.repo.find_one(request_id)
         except ApiException as e:
             raise CVATServiceError(e.reason, e.status)
 
-    def cancel(self, request_id: int) -> None:
+    def cancel(self, request_id: str) -> None:
         try:
             return self.repo.cancel(request_id)
         except ApiException as e:

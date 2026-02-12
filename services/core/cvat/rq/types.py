@@ -28,9 +28,9 @@ DataMetaRead = CVATDataMetaRead
 
 class RqStatus(StrEnum):
     QUEUED = "queued"
-    STARTED = ("started",)
+    STARTED = "started"
     FAILED = "failed"
-    FINISHED = ("finished",)
+    FINISHED = "finished"
 
 
 @dataclass(frozen=True)

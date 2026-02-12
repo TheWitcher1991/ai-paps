@@ -28,6 +28,7 @@ class CVATProjectRepository(CVATRepository):
             self.api.create_dataset_export,
             id=project_id,
             format=format,
+            save_images=True,
             **kwargs,
         ).data
 

@@ -34,5 +34,6 @@ class CVATJobRepository(CVATRepository):
             self.api.create_dataset_export,
             format,
             job_id,
+            save_images=True,
             **kwargs,
         ).data
