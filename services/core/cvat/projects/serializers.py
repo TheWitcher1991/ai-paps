@@ -23,4 +23,3 @@ class ProjectReadSerializer(Serializer):
     target_storage = serializers.DictField()
     source_storage = serializers.DictField()
     assignee_updated_date = serializers.DateTimeField()
-

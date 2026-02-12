@@ -1,5 +1,5 @@
-from datasets.models import Dataset, DatasetAsset, DatasetClass, DatasetAnnotation
-from datasets.types import DatasetId, DatasetAnnotationId, DatasetAssetId, DatasetClassId
+from datasets.models import Dataset, DatasetAnnotation, DatasetAsset, DatasetClass
+from datasets.types import DatasetAnnotationId, DatasetAssetId, DatasetClassId, DatasetId
 from packages.framework.usecases import RepositoryAdapter
 
 
@@ -21,3 +21,9 @@ class DatasetClassRepository(RepositoryAdapter[DatasetClass, DatasetClassId]):
 class DatasetAnnotationRepository(RepositoryAdapter[DatasetAnnotation, DatasetAnnotationId]):
     def __init__(self):
         super().__init__(DatasetAnnotation)
+
+
+dataset_repository = DatasetRepository()
+dataset_asset_repository = DatasetAssetRepository()
+dataset_class_repository = DatasetClassRepository()
+dataset_annotation_repository = DatasetAnnotationRepository()

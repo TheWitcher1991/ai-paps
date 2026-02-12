@@ -4,7 +4,6 @@ from django.db import models
 
 from packages.kernel.utils import t
 
-
 DatasetId = NewType("DatasetId", int)
 DatasetAssetId = NewType("DatasetAssetId", int)
 DatasetClassId = NewType("DatasetClassId", int)

@@ -1,4 +1,4 @@
-from datasets.controllers import DatasetSetController, DatasetAssetSetController
+from datasets.controllers import DatasetAssetSetController, DatasetSetController
 from packages.framework.routers import auto_router
 
 app_name = "datasets"

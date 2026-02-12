@@ -3,15 +3,23 @@ import tempfile
 import time
 import zipfile
 from pathlib import Path
+from typing import Optional
 
 import requests
+from django.core.files import File
 from django.db import transaction
 
-from config.settings import MEDIA_ROOT, CVAT_TOKEN
+from config.settings import CVAT_TOKEN, MEDIA_ROOT
 from cvat.rq.types import RqId, RqStatus
 from cvat.sdk import cvat
 from cvat.shared.types import CVATDatasetFormat
-from datasets.types import DatasetSource
+from datasets.repositories import (
+    dataset_annotation_repository,
+    dataset_asset_repository,
+    dataset_class_repository,
+    dataset_repository,
+)
+from datasets.types import DatasetFormat, DatasetSource
 
 
 class COCODatasetRegistry:
@@ -79,8 +87,13 @@ class DatasetEngine:
 
     def __init__(self):
         self.registry = COCODatasetRegistry()
+        self.source: Optional[DatasetSource] = None
+        self.source_id: Optional[int] = None
 
     def export(self, source: DatasetSource, source_id: int):
+        self.source = source
+        self.source_id = source_id
+
         rq_id = DatasetRegistry.export(source, source_id)
 
         coco = self._wait_and_load_coco(rq_id)
@@ -96,18 +109,54 @@ class DatasetEngine:
     def save(self):
         coco = self.registry.coco
 
-        images_dir = tmpdir / "images" / "default"
+        images_dir = ""
+
+        dataset = dataset_repository.create(
+            name="CVAT Dataset",
+            source=self.source,
+            source_id=self.source_id,
+            format=DatasetFormat.COCO,
+        )
 
         category_map = {}
         for cat in coco.get("categories", []):
-            pass
+            cls = dataset_class_repository.create(
+                dataset=dataset,
+                name=cat["name"],
+                class_id=cat["id"],
+            )
+            category_map[cat["id"]] = cls
 
         image_map = {}
         for img in coco.get("images", []):
-            pass
+            image_path = images_dir / img["file_name"]
+
+            with open(image_path, "rb") as f:
+                django_file = File(f)
+
+                dataset_asset = dataset_asset_repository.create(
+                    dataset=dataset,
+                    width=img["width"],
+                    height=img["height"],
+                    source_id=img["id"],
+                )
+
+                dataset_asset.file.save(img["file_name"], django_file, save=True)
+
+            image_map[img["id"]] = dataset_asset
 
         for ann in coco.get("annotations", []):
-            pass
+            dataset_annotation_repository.objects.create(
+                dataset=dataset,
+                asset=image_map[ann["image_id"]],
+                cls=category_map[ann["category_id"]],
+                segmentation=ann.get("segmentation", []),
+                bbox=ann.get("bbox", []),
+                area=ann.get("area", 0),
+                iscrowd=ann.get("iscrowd", 0) == 1,
+            )
+
+        return dataset
 
     def _wait_and_load_coco(self, rq_id: RqId, timeout: int = 300, interval: int = 5) -> dict:
         start = time.time()

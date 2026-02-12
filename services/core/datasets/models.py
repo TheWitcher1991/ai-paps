@@ -1,6 +1,6 @@
 from django.db import models
 
-from datasets.types import DatasetSource, DatasetStatus, AnnotationStatus, DatasetFormat
+from datasets.types import DatasetFormat, DatasetSource, DatasetStatus
 from packages.framework.fields import S3PrivateFileField
 from packages.kernel.adapters import ModelAdapter
 from packages.kernel.utils import t
@@ -10,12 +10,8 @@ class Dataset(ModelAdapter):
     name = models.CharField(max_length=255)
     source_id = models.IntegerField(t("Source ID"))
     source = models.CharField(t("Источник"), choices=DatasetSource.choices, max_length=32)
-    status = models.CharField(
-        t("Статус"), choices=DatasetStatus.choices, default=DatasetStatus.UPLOADED, max_length=32
-    )
-    format = models.CharField(
-        t("Формат"), choices=DatasetFormat.choices, max_length=32
-    )
+    status = models.CharField(t("Статус"), choices=DatasetStatus.choices, default=DatasetStatus.UPLOADED, max_length=32)
+    format = models.CharField(t("Формат"), choices=DatasetFormat.choices, max_length=32)
 
     class Meta:
         ordering = ("-created_at",)
@@ -37,7 +33,7 @@ class DatasetAsset(ModelAdapter):
 
 
 class DatasetClass(ModelAdapter):
-    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="categories")
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="classes")
     name = models.CharField(t("Название"), max_length=255)
     class_id = models.IntegerField(t("Class ID"))
 
@@ -51,7 +47,6 @@ class DatasetAnnotation(models.Model):
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="annotations")
     asset = models.ForeignKey(DatasetAsset, on_delete=models.CASCADE, related_name="annotations")
     cls = models.ForeignKey(DatasetClass, on_delete=models.CASCADE, related_name="annotations")
-
     segmentation = models.JSONField(t("Сегментация"))
     bbox = models.JSONField(t("Бокс"))
     area = models.FloatField(t("Площадь"))
