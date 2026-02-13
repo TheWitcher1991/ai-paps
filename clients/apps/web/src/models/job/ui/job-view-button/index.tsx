@@ -13,6 +13,7 @@ export const JobViewButton = ({ job, onlyIcon }: PropsWithAction<WithJob>) => {
 	
 
 	const handle = () => {
+	
 		exports.mutateAsync()
 	}
 
