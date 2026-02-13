@@ -7,3 +7,11 @@ class DatasetSetController(ModelSetBaseSetController):
 
 class DatasetAssetSetController(ModelSetBaseSetController):
     prefix = "assets"
+
+
+class DatasetClassSetController(ModelSetBaseSetController):
+    prefix = "classes"
+
+
+class DatasetAnnotationSetController(ModelSetBaseSetController):
+    prefix = "annotations"
