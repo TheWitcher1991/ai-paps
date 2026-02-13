@@ -34,3 +34,4 @@ class User(UserModelAdapter):
         ordering = ("-date_joined",)
         verbose_name = t("Пользователь")
         verbose_name_plural = t("Пользователи")
+        managed = False

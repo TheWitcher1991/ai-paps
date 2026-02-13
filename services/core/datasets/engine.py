@@ -96,20 +96,20 @@ class DatasetEngine:
 
         rq_id = DatasetRegistry.export(source, source_id)
 
-        coco = self._wait_and_load_coco(rq_id)
+        coco, extract_dir = self._wait_and_load_coco(rq_id)
 
         self.registry.merge(coco)
 
-        self.save()
+        self.save(extract_dir)
 
     def validate(self):
         pass
 
     @transaction.atomic
-    def save(self):
+    def save(self, extract_dir: Path):
         coco = self.registry.coco
 
-        images_dir = ""
+        images_dir = extract_dir / "images" / "default"
 
         dataset = dataset_repository.create(
             name="CVAT Dataset",
@@ -131,17 +131,22 @@ class DatasetEngine:
         for img in coco.get("images", []):
             image_path = images_dir / img["file_name"]
 
+            if not image_path.exists():
+                continue
+
+            dataset_asset = dataset_asset_repository.create(
+                dataset=dataset,
+                width=img["width"],
+                height=img["height"],
+                source_id=img["id"],
+            )
+
             with open(image_path, "rb") as f:
-                django_file = File(f)
-
-                dataset_asset = dataset_asset_repository.create(
-                    dataset=dataset,
-                    width=img["width"],
-                    height=img["height"],
-                    source_id=img["id"],
+                dataset_asset.file.save(
+                    img["file_name"],
+                    File(f),
+                    save=True,
                 )
-
-                dataset_asset.file.save(img["file_name"], django_file, save=True)
 
             image_map[img["id"]] = dataset_asset
 
@@ -158,7 +163,7 @@ class DatasetEngine:
 
         return dataset
 
-    def _wait_and_load_coco(self, rq_id: RqId, timeout: int = 300, interval: int = 5) -> dict:
+    def _wait_and_load_coco(self, rq_id: RqId, timeout: int = 300, interval: int = 5):
         start = time.time()
 
         while True:
@@ -175,21 +180,22 @@ class DatasetEngine:
 
             time.sleep(interval)
 
-        coco_archive_path = Path(self._download_rq_result(rq_id))
+        zip_path = Path(self._download_rq_result(rq_id))
 
-        with tempfile.TemporaryDirectory() as tmpdir:
-            tmpdir = Path(tmpdir)
-            with zipfile.ZipFile(coco_archive_path, "r") as zip_ref:
-                zip_ref.extractall(tmpdir)
+        extract_dir = Path(MEDIA_ROOT) / "datasets" / f"cvat_{rq_id.rq_id}"
+        extract_dir.mkdir(parents=True, exist_ok=True)
 
-            ann_path = tmpdir / "annotations" / "instances_default.json"
-            if not ann_path.exists():
-                raise FileNotFoundError(f"Файл COCO не найден: {ann_path}")
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
+            zip_ref.extractall(extract_dir)
 
-            with open(ann_path, "r", encoding="utf-8") as f:
-                coco = json.load(f)
+        ann_path = extract_dir / "annotations" / "instances_default.json"
+        if not ann_path.exists():
+            raise FileNotFoundError(f"Файл COCO не найден: {ann_path}")
 
-        return coco
+        with open(ann_path, "r", encoding="utf-8") as f:
+            coco = json.load(f)
+
+        return coco, extract_dir
 
     def _get_rq_status(self, rq_id: RqId) -> RqStatus:
         rq = cvat.requests.find_one(rq_id.rq_id)

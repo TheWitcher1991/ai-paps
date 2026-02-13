@@ -52,7 +52,7 @@ class ReadOnlyModelSetController(mixins.RetrieveModelMixin, mixins.ListModelMixi
     pass
 
 
-class ModelSetBaseSetController(
+class ModelSetController(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,

@@ -5,8 +5,13 @@ import jwt
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.utils.translation import gettext_lazy
+from rest_framework.exceptions import ValidationError
 
 from config.settings import HASH_ALGORITHM, SECRET_KEY, SESSION_EXPIRE_DAYS, SESSION_EXPIRE_MINUTES
+
+
+def validation_error(exp):
+    raise ValidationError(str(exp))
 
 
 def get_content_type_for_model(obj: Union[Model, Type[Model]], for_concrete_model=True) -> ContentType:
