@@ -193,7 +193,3 @@ class CacheUseCaseAdapter:
         clean_cache_by_tag(
             f"{self.cache_prefix}{self.cache_prefix_delimiter}{self.cache_retrieve_key}{self.cache_prefix_delimiter}{pk}{self.cache_prefix_delimiter}{user_id}"
         )
-
-
-class CacheModelUseCaseAdapter(UseCaseAdapter[T, K], CacheUseCaseAdapter):
-    pass

@@ -23,9 +23,9 @@ class User(UserModelAdapter):
     last_name = models.CharField(t("Фамилия"), max_length=CHAR_MAX_LENGTH)
     surname = models.CharField(t("Отчество"), max_length=CHAR_MAX_LENGTH, blank=True, null=True)
     date_joined = models.DateTimeField(t("Дата регистрации"), auto_now_add=True)
-    last_synced_at = models.DateTimeField(auto_now=True)
+    last_synced_at = models.DateTimeField(t("Дата последней синхронизации"), null=True, blank=True)
     role = models.CharField(t("Роль"), max_length=20, choices=UserRole.choices, default=UserRole.USER)
-    has_analytics_access = models.BooleanField()
+    has_analytics_access = models.BooleanField(default=False)
     url = models.URLField(blank=True, null=True)
 
     objects = UserManager()
@@ -34,4 +34,3 @@ class User(UserModelAdapter):
         ordering = ("-date_joined",)
         verbose_name = t("Пользователь")
         verbose_name_plural = t("Пользователи")
-        managed = False

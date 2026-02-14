@@ -27,12 +27,10 @@ import { setBreadcrumbs } from '~widgets/nav'
 import { Grid, Group, PageTitle, SearchIcon, ValueCard } from '~infra/ui'
 
 import { useMount } from '@wcsc/hooks'
-import { href } from '@wcsc/href'
+import { generateBreadcrumbs } from '@wcsc/toolkit'
 
 export default function Users() {
-	useMount(() =>
-		setBreadcrumbs([{ text: 'Сотрудники', href: href.users.index }]),
-	)
+	useMount(() => setBreadcrumbs(generateBreadcrumbs('users')))
 
 	return (
 		<Group>

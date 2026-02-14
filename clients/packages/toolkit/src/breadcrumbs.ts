@@ -20,6 +20,18 @@ export const breadcrumbsMapper: Record<
 		edit: 'Редактировать пользователя',
 		view: 'Просмотр пользователя',
 	},
+	datasets: {
+		index: 'Датасеты',
+		create: 'Добавить датасет',
+		edit: 'Редактировать датасет',
+		view: 'Просмотр датасета',
+	},
+	models: {
+		index: 'Модели',
+		create: 'Добавить модель',
+		edit: 'Редактировать модель',
+		view: 'Просмотр модели',
+	},
 }
 
 export interface GenerateBreadcrumbsOptions {
@@ -28,11 +40,11 @@ export interface GenerateBreadcrumbsOptions {
 	id?: number
 }
 
-export const generateBreadcrumbs = ({
-	resource,
-	variant,
-	id,
-}: GenerateBreadcrumbsOptions): BreadcrumbsItem[] => {
+export const generateBreadcrumbs = (
+	resource: ResourceType,
+	variant?: BreadcrumbVariant,
+	id?: number,
+): BreadcrumbsItem[] => {
 	const baseText = breadcrumbsMapper[resource]['index']
 	const baseHref = href[resource].index
 

@@ -1,5 +1,5 @@
 import json
-import tempfile
+import shutil
 import time
 import zipfile
 from pathlib import Path
@@ -20,6 +20,7 @@ from datasets.repositories import (
     dataset_repository,
 )
 from datasets.types import DatasetFormat, DatasetSource
+from packages.kernel.utils import validation_error
 
 
 class COCODatasetRegistry:
@@ -96,11 +97,21 @@ class DatasetEngine:
 
         rq_id = DatasetRegistry.export(source, source_id)
 
-        coco, extract_dir = self._wait_and_load_coco(rq_id)
+        extract_dir = None
+        zip_path = None
 
-        self.registry.merge(coco)
+        try:
+            coco, extract_dir, zip_path = self._wait_and_load_coco(rq_id)
 
-        self.save(extract_dir)
+            self.registry.merge(coco)
+
+            self.save(extract_dir)
+        finally:
+            if zip_path and Path(zip_path).exists():
+                Path(zip_path).unlink(missing_ok=True)
+
+            if extract_dir and Path(extract_dir).exists():
+                shutil.rmtree(extract_dir, ignore_errors=True)
 
     def validate(self):
         pass
@@ -119,47 +130,65 @@ class DatasetEngine:
         )
 
         category_map = {}
-        for cat in coco.get("categories", []):
-            cls = dataset_class_repository.create(
-                dataset=dataset,
-                name=cat["name"],
-                class_id=cat["id"],
-            )
-            category_map[cat["id"]] = cls
+        try:
+            for cat in coco.get("categories", []):
+                cls = dataset_class_repository.create(
+                    dataset=dataset,
+                    name=cat["name"],
+                    class_id=cat["id"],
+                )
+                category_map[cat["id"]] = cls
+        except Exception as e:
+            validation_error(f"Dataset asset error: {e}")
 
         image_map = {}
-        for img in coco.get("images", []):
-            image_path = images_dir / img["file_name"]
+        try:
+            for img in coco.get("images", []):
+                image_path = images_dir / img["file_name"]
 
-            if not image_path.exists():
-                continue
+                if not image_path.exists():
+                    raise ValueError(f"Image not found: {image_path}")
 
-            dataset_asset = dataset_asset_repository.create(
-                dataset=dataset,
-                width=img["width"],
-                height=img["height"],
-                source_id=img["id"],
-            )
-
-            with open(image_path, "rb") as f:
-                dataset_asset.file.save(
-                    img["file_name"],
-                    File(f),
-                    save=True,
+                dataset_asset = dataset_asset_repository.create(
+                    dataset=dataset,
+                    width=img["width"],
+                    height=img["height"],
+                    source_id=img["id"],
                 )
 
-            image_map[img["id"]] = dataset_asset
+                with open(image_path, "rb") as f:
+                    dataset_asset.file.save(
+                        img["file_name"],
+                        File(f),
+                        save=True,
+                    )
 
-        for ann in coco.get("annotations", []):
-            dataset_annotation_repository.objects.create(
-                dataset=dataset,
-                asset=image_map[ann["image_id"]],
-                cls=category_map[ann["category_id"]],
-                segmentation=ann.get("segmentation", []),
-                bbox=ann.get("bbox", []),
-                area=ann.get("area", 0),
-                iscrowd=ann.get("iscrowd", 0) == 1,
-            )
+                image_map[img["id"]] = dataset_asset
+        except Exception as e:
+            validation_error(f"Dataset class error: {e}")
+
+        try:
+            for ann in coco.get("annotations", []):
+                image_id = ann["image_id"]
+                category_id = ann["category_id"]
+
+                if image_id not in image_map:
+                    continue
+
+                if category_id not in category_map:
+                    continue
+
+                dataset_annotation_repository.create(
+                    dataset=dataset,
+                    asset=image_map[ann["image_id"]],
+                    cls=category_map[ann["category_id"]],
+                    segmentation=ann.get("segmentation", []),
+                    bbox=ann.get("bbox", []),
+                    area=ann.get("area", 0),
+                    iscrowd=ann.get("iscrowd", 0) == 1,
+                )
+        except Exception as e:
+            validation_error(f"Dataset annotation error: {e}")
 
         return dataset
 
@@ -168,6 +197,8 @@ class DatasetEngine:
 
         while True:
             job_status = self._get_rq_status(rq_id)
+
+            print(f"job_status: {job_status}")
 
             if job_status.value == RqStatus.FINISHED:
                 break
@@ -195,7 +226,7 @@ class DatasetEngine:
         with open(ann_path, "r", encoding="utf-8") as f:
             coco = json.load(f)
 
-        return coco, extract_dir
+        return coco, extract_dir, zip_path
 
     def _get_rq_status(self, rq_id: RqId) -> RqStatus:
         rq = cvat.requests.find_one(rq_id.rq_id)

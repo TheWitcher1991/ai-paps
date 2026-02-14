@@ -11,6 +11,8 @@ export const ClassModel = merge(
 	BaseClassModel,
 	object({
 		id: vClassId,
+		name: vShape.title,
+		class_id: vShape.id,
 	}),
 )
 

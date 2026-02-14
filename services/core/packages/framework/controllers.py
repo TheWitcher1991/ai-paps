@@ -39,12 +39,12 @@ class AnonymousController(AllowAnyMixin, APIController):
 
 
 class BaseController(APIController):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = ()
     permission_types = ()
 
 
 class BaseSetController(APISetController):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = ()
     permission_types = ()
 
 

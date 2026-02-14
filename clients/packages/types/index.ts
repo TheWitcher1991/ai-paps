@@ -28,12 +28,7 @@ export type OrderDirection = 'ASC' | 'DESC'
 
 export type LogLevel = 'log' | 'warn' | 'error'
 
-export type ResourceType =
-	| 'directory'
-	| 'imports'
-	| 'datasets'
-	| 'models'
-	| 'users'
+export type ResourceType = 'datasets' | 'models' | 'users'
 
 export type MergeObjectEntries<T extends ObjectSchema<any, any>[]> =
 	UnionToIntersection<

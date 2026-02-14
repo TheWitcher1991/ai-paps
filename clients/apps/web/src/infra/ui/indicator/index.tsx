@@ -1,9 +1,9 @@
-import { Cube, FileText, Persons, Shield, Tag } from '@gravity-ui/icons'
+import { CurlyBracketsFunction } from '@gravity-ui/icons'
 import { Flex, Icon, Text } from '@gravity-ui/uikit'
 
 import styles from './index.module.scss'
 
-type IndicatorResource = 'documents' | 'projects' | 'tags' | 'guards' | 'users'
+type IndicatorResource = 'classes'
 
 interface IndicatorProps {
 	resource?: IndicatorResource
@@ -11,15 +11,11 @@ interface IndicatorProps {
 }
 
 const icon = {
-	documents: FileText,
-	projects: Cube,
-	tags: Tag,
-	guards: Shield,
-	users: Persons,
+	classes: CurlyBracketsFunction,
 }
 
 export const Indicator = ({
-	resource = 'documents',
+	resource = 'classes',
 	count = 0,
 }: IndicatorProps) => {
 	return (

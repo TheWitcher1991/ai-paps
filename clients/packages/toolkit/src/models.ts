@@ -1,6 +1,9 @@
 import {
+	enum as _enum,
 	BaseSchema,
 	custom,
+	maxLength,
+	minLength,
 	minValue,
 	number,
 	object,
@@ -44,6 +47,7 @@ export function merge<Schemas extends ObjectSchema<any, any>[]>(
 export const vShape = {
 	id: pipe(number(), minValue(1)),
 	order: pipe(number(), minValue(1)),
+	enum: (enum__: any) => _enum(enum__),
 	optional: (wrapped: any) => optional(wrapped),
 	datetime: pipe(
 		string(),
@@ -51,6 +55,9 @@ export const vShape = {
 	),
 	decimal: pipe(string(), regex(regexPatterns.decimal.value)),
 	url: pipe(string(), url('Неверный URL')),
+	title: pipe(string(), minLength(3), maxLength(255)),
+	name: pipe(string(), minLength(3), maxLength(64)),
+	description: pipe(string(), minLength(3), maxLength(3000)),
 	phone: pipe(
 		string(),
 		regex(

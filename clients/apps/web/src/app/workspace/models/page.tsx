@@ -27,12 +27,10 @@ import { setBreadcrumbs } from '~widgets/nav'
 import { Grid, Group, PageTitle, SearchIcon, ValueCard } from '~infra/ui'
 
 import { useMount } from '@wcsc/hooks'
-import { href } from '@wcsc/href'
+import { generateBreadcrumbs } from '@wcsc/toolkit'
 
 export default function Models() {
-	useMount(() =>
-		setBreadcrumbs([{ text: 'Нейронные сети', href: href.models.index }]),
-	)
+	useMount(() => setBreadcrumbs(generateBreadcrumbs('models')))
 
 	return (
 		<Group>

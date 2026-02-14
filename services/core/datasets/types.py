@@ -10,6 +10,12 @@ DatasetClassId = NewType("DatasetClassId", int)
 DatasetAnnotationId = NewType("DatasetAnnotationId", int)
 
 
+class DatasetSubset(models.TextChoices):
+    TRAIN = "train", t("Обучение")
+    TEST = "test", t("Tестирование")
+    VALIDATION = "validation", t("Валидация")
+
+
 class DatasetSource(models.TextChoices):
     PROJECTS = "projects", t("Проекты")
     TASKS = "tasks", t("Задачи")

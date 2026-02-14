@@ -1,13 +1,7 @@
 'use client'
 
-import React from 'react'
+import React, { use } from 'react'
 
-import { DatasetsIndicators } from '~widgets/dashkit/datasets-indicators'
-import Datasets, {
-	DatasetsFetcher,
-	DatasetsFilter,
-	DatasetsPagination,
-} from '~widgets/datasets'
 import { setBreadcrumbs } from '~widgets/nav'
 
 import { DatasetUnionButton } from '~models/dataset'
@@ -17,23 +11,24 @@ import { Group, PageTitle } from '~infra/ui'
 import { useMount } from '@wcsc/hooks'
 import { generateBreadcrumbs } from '@wcsc/toolkit'
 
-export default function DatasetsPage() {
-	useMount(() => setBreadcrumbs(generateBreadcrumbs('datasets')))
+export default function AssetsPage({
+	params,
+}: {
+	params: Promise<{ id: string }>
+}) {
+	const { id } = use(params)
+
+	useMount(() => setBreadcrumbs(generateBreadcrumbs('datasets', 'view')))
 
 	return (
 		<Group>
 			<PageTitle
-				title={'Датасеты'}
+				title={'Датасет'}
 				subtitle={
 					'Панель мониторинга и управления ключевыми метриками системы'
 				}
 				action={<DatasetUnionButton />}
 			/>
-			<DatasetsIndicators />
-			<DatasetsFilter />
-			<Datasets />
-			<DatasetsFetcher />
-			<DatasetsPagination />
 		</Group>
 	)
 }
