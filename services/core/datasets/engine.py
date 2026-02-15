@@ -37,9 +37,12 @@ class COCODatasetRegistry:
         self.annotation_id_offset = 0
 
     def merge(self, coco: dict):
+        image_offset = self.image_id_offset
+        annotation_offset = self.annotation_id_offset
+
         self._merge_categories(coco)
-        self._merge_images(coco)
-        self._merge_annotations(coco)
+        self._merge_images(coco, image_offset)
+        self._merge_annotations(coco, image_offset, annotation_offset)
 
     def _merge_categories(self, coco):
         for cat in coco.get("categories", []):
@@ -49,19 +52,22 @@ class COCODatasetRegistry:
                 cat["id"] = new_id
                 self.coco["categories"].append(cat)
 
-    def _merge_images(self, coco):
+    def _merge_images(self, coco, image_offset):
         for img in coco.get("images", []):
-            img["id"] += self.image_id_offset
+            img["id"] += image_offset
             self.coco["images"].append(img)
 
         if coco.get("images"):
             self.image_id_offset = max(i["id"] for i in self.coco["images"]) + 1
 
-    def _merge_annotations(self, coco):
+    def _merge_annotations(self, coco, image_offset, annotation_offset):
         for ann in coco.get("annotations", []):
-            ann["id"] += self.annotation_id_offset
-            ann["image_id"] += self.image_id_offset
-            ann["category_id"] = self.category_map.get(ann["category_id"], ann["category_id"])
+            ann["id"] += annotation_offset
+            ann["image_id"] += image_offset
+            ann["category_id"] = self.category_map.get(
+                ann["category_id"],
+                ann["category_id"],
+            )
             self.coco["annotations"].append(ann)
 
         if coco.get("annotations"):
@@ -129,6 +135,8 @@ class DatasetEngine:
             format=DatasetFormat.COCO,
         )
 
+        print(coco)
+
         category_map = {}
         try:
             for cat in coco.get("categories", []):
@@ -137,6 +145,7 @@ class DatasetEngine:
                     name=cat["name"],
                     class_id=cat["id"],
                 )
+                print(f"dataset_class: {cls}")
                 category_map[cat["id"]] = cls
         except Exception as e:
             validation_error(f"Dataset asset error: {e}")
@@ -146,8 +155,7 @@ class DatasetEngine:
             for img in coco.get("images", []):
                 image_path = images_dir / img["file_name"]
 
-                if not image_path.exists():
-                    raise ValueError(f"Image not found: {image_path}")
+                print(img)
 
                 dataset_asset = dataset_asset_repository.create(
                     dataset=dataset,
@@ -163,6 +171,12 @@ class DatasetEngine:
                         save=True,
                     )
 
+                print(f"file: {dataset_asset.file}")
+
+                print(f"dataset_asset: {dataset_asset}")
+
+                print(f"img id: {img['id']}")
+
                 image_map[img["id"]] = dataset_asset
         except Exception as e:
             validation_error(f"Dataset class error: {e}")
@@ -172,11 +186,13 @@ class DatasetEngine:
                 image_id = ann["image_id"]
                 category_id = ann["category_id"]
 
+                print(f"ann: {ann}")
+
                 if image_id not in image_map:
-                    continue
+                    validation_error(f"Image not found: {image_id}")
 
                 if category_id not in category_map:
-                    continue
+                    validation_error(f"Category not found: {category_id}")
 
                 dataset_annotation_repository.create(
                     dataset=dataset,
@@ -187,6 +203,7 @@ class DatasetEngine:
                     area=ann.get("area", 0),
                     iscrowd=ann.get("iscrowd", 0) == 1,
                 )
+                print(f"dataset_annotation: {ann}")
         except Exception as e:
             validation_error(f"Dataset annotation error: {e}")
 

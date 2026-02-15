@@ -9,6 +9,7 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "django_prometheus",
     "django_redis",
+    "django_cleanup",
     "rest_framework",
     "django_filters",
     "packages",

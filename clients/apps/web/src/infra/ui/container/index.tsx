@@ -5,7 +5,7 @@ import styles from './index.module.scss'
 
 export function Container({ children }: PropsWithChildren) {
 	return (
-		<GravityContainer className={styles.container} maxWidth={'l'}>
+		<GravityContainer className={styles.container}>
 			<>{children}</>
 		</GravityContainer>
 	)

@@ -1,4 +1,5 @@
-import { object } from 'valibot'
+import { AnnotationModel } from '../annotation'
+import { array, number, object } from 'valibot'
 
 import { BaseModel, merge, vBrand, vShape } from '@wcsc/toolkit'
 
@@ -11,6 +12,11 @@ export const AssetModel = merge(
 	BaseAssetModel,
 	object({
 		id: vAssetId,
+		annotations: array(AnnotationModel),
+		file: vShape.url,
+		width: number(),
+		height: number(),
+		source_id: vShape.id,
 	}),
 )
 

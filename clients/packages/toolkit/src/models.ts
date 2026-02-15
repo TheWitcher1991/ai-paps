@@ -1,5 +1,6 @@
 import {
 	enum as _enum,
+	any,
 	BaseSchema,
 	custom,
 	maxLength,
@@ -10,6 +11,7 @@ import {
 	ObjectEntries,
 	ObjectSchema,
 	optional,
+	parseJson,
 	pipe,
 	regex,
 	string,
@@ -49,6 +51,7 @@ export const vShape = {
 	order: pipe(number(), minValue(1)),
 	enum: (enum__: any) => _enum(enum__),
 	optional: (wrapped: any) => optional(wrapped),
+	json: pipe(string(), parseJson(), any()),
 	datetime: pipe(
 		string(),
 		custom(val => !Number.isNaN(Date.parse(val)), 'Неверный формат даты'),

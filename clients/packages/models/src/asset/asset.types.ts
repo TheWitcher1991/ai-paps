@@ -1,3 +1,4 @@
+import { DatasetID } from '../dataset'
 import { InferOutput } from 'valibot'
 
 import { Branded, InjectProps, PaginateQuery } from '@wcsc/types'
@@ -17,5 +18,6 @@ export type WithAsset = InjectProps<'asset', IAsset>
 export type WithAssetID = InjectProps<'asset', AssetID>
 
 export type UseAssets = PaginateQuery & {
+	dataset: DatasetID
 	view?: string
 }

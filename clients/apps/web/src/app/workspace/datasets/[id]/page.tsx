@@ -2,6 +2,11 @@
 
 import React, { use } from 'react'
 
+import Assets, {
+	AssetsFetcher,
+	AssetsFilter,
+	AssetsPagination,
+} from '~widgets/assets'
 import { setBreadcrumbs } from '~widgets/nav'
 
 import { DatasetUnionButton } from '~models/dataset'
@@ -9,6 +14,7 @@ import { DatasetUnionButton } from '~models/dataset'
 import { Group, PageTitle } from '~infra/ui'
 
 import { useMount } from '@wcsc/hooks'
+import { toAssetID } from '@wcsc/models'
 import { generateBreadcrumbs } from '@wcsc/toolkit'
 
 export default function AssetsPage({
@@ -29,6 +35,10 @@ export default function AssetsPage({
 				}
 				action={<DatasetUnionButton />}
 			/>
+			<AssetsFilter />
+			<Assets />
+			<AssetsFetcher asset={toAssetID(id)} />
+			<AssetsPagination />
 		</Group>
 	)
 }

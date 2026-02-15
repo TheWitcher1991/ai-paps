@@ -1,4 +1,5 @@
-import { object } from 'valibot'
+import { ClassModel } from '../class'
+import { boolean, object } from 'valibot'
 
 import { BaseModel, merge, vBrand, vShape } from '@wcsc/toolkit'
 
@@ -11,6 +12,11 @@ export const AnnotationModel = merge(
 	BaseAnnotationModel,
 	object({
 		id: vAnnotationId,
+		cls: ClassModel,
+		segmentation: vShape.json,
+		bbox: vShape.json,
+		area: vShape.datetime,
+		iscrowd: boolean(),
 	}),
 )
 

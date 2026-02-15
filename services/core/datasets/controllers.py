@@ -25,7 +25,7 @@ class DatasetSetController(ReadOnlyModelSetController):
 class DatasetAssetSetController(ReadOnlyModelSetController):
     prefix = "assets"
 
-    dataset_asset_use_case.optimize()
+    queryset = dataset_asset_use_case.optimize()
     serializer_class = DatasetAssetSerializer
     filterset_class = DatasetAssetFilter
 
@@ -33,7 +33,7 @@ class DatasetAssetSetController(ReadOnlyModelSetController):
 class DatasetClassSetController(ReadOnlyModelSetController):
     prefix = "classes"
 
-    dataset_class_use_case.optimize()
+    queryset = dataset_class_use_case.optimize()
     serializer_class = DatasetClassSerializer
     filterset_class = DatasetClassFilter
 
@@ -41,6 +41,6 @@ class DatasetClassSetController(ReadOnlyModelSetController):
 class DatasetAnnotationSetController(ReadOnlyModelSetController):
     prefix = "annotations"
 
-    dataset_annotation_use_case.optimize()
+    queryset = dataset_annotation_use_case.optimize()
     serializer_class = DatasetAnnotationSerializer
     filterset_class = DatasetAnnotationFilter

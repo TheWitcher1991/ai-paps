@@ -23,9 +23,9 @@ class UserModelAdapter(AbstractUser):
 
 
 class FilterAdapter(FilterSet):
-    ordering = CharFilter(field_name="ordering", method="filter_ordering")
+    sort = CharFilter(field_name="sort", method="filter_sort")
 
-    def filter_ordering(self, queryset: QuerySet, name, value):
+    def filter_sort(self, queryset: QuerySet, name, value):
         return queryset.order_by(value)
 
 

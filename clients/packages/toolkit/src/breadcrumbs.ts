@@ -32,6 +32,12 @@ export const breadcrumbsMapper: Record<
 		edit: 'Редактировать модель',
 		view: 'Просмотр модели',
 	},
+	assets: {
+		index: 'Ассеты',
+		create: 'Добавить ассет',
+		edit: 'Редактировать ассет',
+		view: 'Просмотр ассета',
+	},
 }
 
 export interface GenerateBreadcrumbsOptions {

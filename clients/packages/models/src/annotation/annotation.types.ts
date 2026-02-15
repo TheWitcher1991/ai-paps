@@ -1,3 +1,6 @@
+import { AssetID } from '../asset'
+import { ClassID } from '../class'
+import { DatasetID } from '../dataset'
 import { InferOutput } from 'valibot'
 
 import { Branded, InjectProps, PaginateQuery } from '@wcsc/types'
@@ -19,5 +22,8 @@ export type WithAnnotation = InjectProps<'annotation', IAnnotation>
 export type WithAnnotationID = InjectProps<'annotation', AnnotationID>
 
 export type UseAnnotations = PaginateQuery & {
+	dataset: DatasetID
+	asset: AssetID
+	cls: ClassID
 	view?: string
 }

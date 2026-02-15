@@ -11,7 +11,7 @@ class DatasetClassSerializer(ModelSerializer):
 
 
 class DatasetAnnotationSerializer(ModelSerializer):
-    cls = DatasetClassSerializer(read_only=True, source="class")
+    cls = DatasetClassSerializer(read_only=True)
 
     class Meta:
         model = DatasetAnnotation

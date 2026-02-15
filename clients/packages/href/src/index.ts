@@ -53,6 +53,8 @@ export const href = {
 
 	datasets: hrefFactory('workspace/datasets'),
 
+	assets: hrefFactory('workspace/datasets/assets'),
+
 	models: hrefFactory('workspace/models'),
 
 	users: hrefFactory('workspace/users'),

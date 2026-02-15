@@ -1,9 +1,9 @@
-import { CurlyBracketsFunction } from '@gravity-ui/icons'
+import { CurlyBracketsFunction, SquareDashedCircle } from '@gravity-ui/icons'
 import { Flex, Icon, Text } from '@gravity-ui/uikit'
 
 import styles from './index.module.scss'
 
-type IndicatorResource = 'classes'
+type IndicatorResource = 'classes' | 'annotations'
 
 interface IndicatorProps {
 	resource?: IndicatorResource
@@ -12,6 +12,7 @@ interface IndicatorProps {
 
 const icon = {
 	classes: CurlyBracketsFunction,
+	annotations: SquareDashedCircle,
 }
 
 export const Indicator = ({

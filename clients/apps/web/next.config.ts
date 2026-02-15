@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
 				protocol: 'https',
 				hostname: 'stgau.ru',
 			},
+			{
+				protocol: 'http',
+				hostname: 'localhost',
+				
+			},
 		],
 	},
 	webpack: config => {
