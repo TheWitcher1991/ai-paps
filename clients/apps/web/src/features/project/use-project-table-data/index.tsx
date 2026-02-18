@@ -10,11 +10,11 @@ export const useProjectTableData = (projects: IProject[]) =>
 	useMemo(
 		() =>
 			projects.map(project => ({
-				name: project['name'],
-				owner: project['owner']['username'],
-				status: project['status'],
-				tasks: <Indicator count={project['tasks']['count']} />,
-				created_date: formatDateInRu(project['created_date']),
+				name: project.name,
+				owner: project.owner.username,
+				status: project.status,
+				tasks: <Indicator count={project.tasks.count} />,
+				created_date: formatDateInRu(project.created_date),
 				actions: <ProjectActions project={project} />,
 			})),
 		[projects],

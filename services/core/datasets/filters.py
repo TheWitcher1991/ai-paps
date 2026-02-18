@@ -27,4 +27,3 @@ class DatasetAnnotationFilter(FilterAdapter):
     class Meta:
         model = DatasetAnnotation
         fields = ("dataset", "asset", "cls")
-

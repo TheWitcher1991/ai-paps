@@ -12,9 +12,9 @@ export type ICreateProject = InferOutput<typeof WriteableProjectModel>
 
 export type IUpdateProject = Partial<InferOutput<typeof WriteableProjectModel>>
 
-export type WithProject = InjectProps<'tag', IProject>
+export type WithProject = InjectProps<'project', IProject>
 
-export type WithProjectID = InjectProps<'tag', ProjectID>
+export type WithProjectID = InjectProps<'project', ProjectID>
 
 export type UseProjects = PaginateQuery & {
 	view?: string

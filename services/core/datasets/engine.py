@@ -135,8 +135,6 @@ class DatasetEngine:
             format=DatasetFormat.COCO,
         )
 
-        print(coco)
-
         category_map = {}
         try:
             for cat in coco.get("categories", []):
@@ -145,7 +143,6 @@ class DatasetEngine:
                     name=cat["name"],
                     class_id=cat["id"],
                 )
-                print(f"dataset_class: {cls}")
                 category_map[cat["id"]] = cls
         except Exception as e:
             validation_error(f"Dataset asset error: {e}")
@@ -154,8 +151,6 @@ class DatasetEngine:
         try:
             for img in coco.get("images", []):
                 image_path = images_dir / img["file_name"]
-
-                print(img)
 
                 dataset_asset = dataset_asset_repository.create(
                     dataset=dataset,
@@ -170,12 +165,6 @@ class DatasetEngine:
                         File(f),
                         save=True,
                     )
-
-                print(f"file: {dataset_asset.file}")
-
-                print(f"dataset_asset: {dataset_asset}")
-
-                print(f"img id: {img['id']}")
 
                 image_map[img["id"]] = dataset_asset
         except Exception as e:
@@ -203,7 +192,6 @@ class DatasetEngine:
                     area=ann.get("area", 0),
                     iscrowd=ann.get("iscrowd", 0) == 1,
                 )
-                print(f"dataset_annotation: {ann}")
         except Exception as e:
             validation_error(f"Dataset annotation error: {e}")
 
@@ -214,8 +202,6 @@ class DatasetEngine:
 
         while True:
             job_status = self._get_rq_status(rq_id)
-
-            print(f"job_status: {job_status}")
 
             if job_status.value == RqStatus.FINISHED:
                 break

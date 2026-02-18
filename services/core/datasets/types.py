@@ -1,3 +1,4 @@
+from enum import StrEnum
 from typing import NewType
 
 from django.db import models
@@ -8,6 +9,14 @@ DatasetId = NewType("DatasetId", int)
 DatasetAssetId = NewType("DatasetAssetId", int)
 DatasetClassId = NewType("DatasetClassId", int)
 DatasetAnnotationId = NewType("DatasetAnnotationId", int)
+
+
+class AnnotationClass(StrEnum):
+    TOMATO_LEAF = "tomato_leaf"
+    TOMATO_FRUIT = "tomato_fruit"
+    TOMATO_PLANT = "tomato_plant"
+    TOMATO_FLOWER = "tomato_flower"
+    TOMATO_POWDERY_MILDEW = "tomato_powdery_mildew"
 
 
 class DatasetSubset(models.TextChoices):

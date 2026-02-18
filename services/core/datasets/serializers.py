@@ -1,7 +1,8 @@
 from django.db import transaction
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 from datasets.models import Dataset, DatasetAnnotation, DatasetAsset, DatasetClass
+from datasets.types import AnnotationClass
 
 
 class DatasetClassSerializer(ModelSerializer):
@@ -12,10 +13,25 @@ class DatasetClassSerializer(ModelSerializer):
 
 class DatasetAnnotationSerializer(ModelSerializer):
     cls = DatasetClassSerializer(read_only=True)
+    area_mm2 = SerializerMethodField(read_only=True)
 
     class Meta:
         model = DatasetAnnotation
         fields = "__all__"
+
+    def get_area_mm2(self, obj: DatasetAnnotation) -> float:
+        if obj.cls.name in [AnnotationClass.TOMATO_LEAF, AnnotationClass.TOMATO_FRUIT]:
+            return 0.0
+
+        Z = 500.0
+        fx = 615.0
+        fy = 615.0
+
+        area_px = obj.area
+
+        area_mm2 = (area_px * Z**2) / (fx * fy)
+
+        return area_mm2
 
 
 class DatasetAssetSerializer(ModelSerializer):

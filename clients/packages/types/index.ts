@@ -97,6 +97,13 @@ export interface PagesListResponse<T> {
 	pageParams: number[]
 }
 
+export type ValidationErrorResponse =
+	| string
+	| string[]
+	| Record<string, string>
+	| Record<string, string[]>
+
+
 export type UnionToIntersection<U> = (
 	U extends any ? (k: U) => void : never
 ) extends (k: infer I) => void

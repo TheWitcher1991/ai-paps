@@ -4,7 +4,8 @@
       "@gravity-ui/tsconfig/tsconfig"
     ],
     "compilerOptions": {
-      "jsx": "react",
+      "moduleResolution": "bundler",
+      "jsx": "react-jsx",
       "paths": {
         "~*": ["./src/*"],
         "~public/*": ["./public/*"]
@@ -20,7 +21,7 @@
       "**/*.tsx",
       "next-env.d.ts",
       "next.config",
-      ".next/types/**/*.ts"
+      ".next/types/**/*.ts",
     ],
     "exclude": [
       "node_modules"
