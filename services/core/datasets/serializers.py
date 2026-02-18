@@ -20,8 +20,8 @@ class DatasetAnnotationSerializer(ModelSerializer):
         fields = "__all__"
 
     def get_area_mm2(self, obj: DatasetAnnotation) -> float:
-        if obj.cls.name in [AnnotationClass.TOMATO_LEAF, AnnotationClass.TOMATO_FRUIT]:
-            return 0.0
+        if obj.cls.name not in [AnnotationClass.TOMATO_LEAF, AnnotationClass.TOMATO_FRUIT]:
+            return None
 
         Z = 500.0
         fx = 615.0
