@@ -19,8 +19,8 @@ export const jobTableColumns: TableColumnConfig<any>[] = [
 		meta: { sort: true },
 	},
 	{
-		id: 'owner',
-		name: () => <TableName icon={Person}>Владелец</TableName>,
+		id: 'dimension',
+		name: () => <TableName icon={Person}>Измерение</TableName>,
 		width: '15%',
 		align: 'left',
 		meta: { sort: true },

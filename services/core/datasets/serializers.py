@@ -2,7 +2,7 @@ from django.db import transaction
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 from datasets.models import Dataset, DatasetAnnotation, DatasetAsset, DatasetClass
-from datasets.types import AnnotationClass
+from datasets.types import ANNOTATION_CLASSES_DISEASES, ANNOTATION_CLASSES_FOR_AREA
 
 
 class DatasetClassSerializer(ModelSerializer):
@@ -14,24 +14,42 @@ class DatasetClassSerializer(ModelSerializer):
 class DatasetAnnotationSerializer(ModelSerializer):
     cls = DatasetClassSerializer(read_only=True)
     area_mm2 = SerializerMethodField(read_only=True)
+    area_cm2 = SerializerMethodField(read_only=True)
+    is_disease = SerializerMethodField(read_only=True)
 
     class Meta:
         model = DatasetAnnotation
         fields = "__all__"
 
-    def get_area_mm2(self, obj: DatasetAnnotation) -> float:
-        if obj.cls.name not in [AnnotationClass.TOMATO_LEAF, AnnotationClass.TOMATO_FRUIT]:
+    def _calculate_area_mm2(self, obj: DatasetAnnotation):
+        if obj.cls.name not in ANNOTATION_CLASSES_FOR_AREA:
             return None
 
-        Z = 500.0
-        fx = 615.0
-        fy = 615.0
+        Z_mm = 500.0
+        sensor_width_mm = 5.0
+        focal_length_mm = 2.0
 
+        image_width_px = obj.asset.width
         area_px = obj.area
 
-        area_mm2 = (area_px * Z**2) / (fx * fy)
+        mm_per_px = (Z_mm * sensor_width_mm) / (focal_length_mm * image_width_px)
+
+        area_mm2 = area_px * (mm_per_px**2)
 
         return area_mm2
+
+    def get_area_mm2(self, obj):
+        area = self._calculate_area_mm2(obj)
+        return round(area, 2) if area else None
+
+    def get_area_cm2(self, obj):
+        area = self._calculate_area_mm2(obj)
+        if area is None:
+            return None
+        return round(area / 100.0, 2)
+
+    def get_is_disease(self, obj: DatasetAnnotation):
+        return bool(obj.cls.name in ANNOTATION_CLASSES_DISEASES)
 
 
 class DatasetAssetSerializer(ModelSerializer):

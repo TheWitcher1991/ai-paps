@@ -8,8 +8,8 @@ from packages.kernel.utils import t
 
 
 class ModelAdapter(models.Model):
-    created_at = models.DateTimeField(t("Дата создания"), auto_now_add=True)
-    updated_at = models.DateTimeField(t("Дата обновления"), auto_now=True)
+    created_date = models.DateTimeField(t("Дата создания"), auto_now_add=True)
+    updated_date = models.DateTimeField(t("Дата обновления"), auto_now=True)
 
     class Meta:
         abstract = True

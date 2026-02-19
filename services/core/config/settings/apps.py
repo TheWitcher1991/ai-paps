@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     "packages",
     "datasets",
     "directory",
-    "models",
+    "training",
     "projects",
     "recognitions",
     "users",

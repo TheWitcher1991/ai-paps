@@ -16,6 +16,9 @@ export const AnnotationModel = merge(
 		segmentation: vShape.json,
 		bbox: vShape.json,
 		area: vShape.datetime,
+		area_mm2: vShape.optional(vShape.positive),
+		area_сm2: vShape.optional(vShape.positive),
+		is_disease: boolean(),
 		iscrowd: boolean(),
 	}),
 )

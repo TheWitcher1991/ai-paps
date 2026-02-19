@@ -1,5 +1,5 @@
-from models.controllers import ModelSetController
 from packages.framework.routers import auto_router
+from training.controllers import ModelSetController
 
 app_name = "models"
 

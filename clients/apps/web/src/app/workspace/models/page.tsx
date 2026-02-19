@@ -1,35 +1,21 @@
 'use client'
 
-import {
-	BarsDescendingAlignLeftArrowDown,
-	Briefcase,
-	Clock,
-	Flask,
-	GearBranches,
-	GripHorizontal,
-	LayoutCellsLarge,
-	Molecule,
-	Sliders,
-} from '@gravity-ui/icons'
-import {
-	Button,
-	DropdownMenu,
-	Flex,
-	Icon,
-	Pagination,
-	SegmentedRadioGroup,
-	Text,
-	TextInput,
-} from '@gravity-ui/uikit'
+import { GearBranches } from '@gravity-ui/icons'
 
+import { ModelsIndicators } from '~widgets/dashkit/models-indicators'
+import Models, {
+	ModelsFetcher,
+	ModelsFilter,
+	ModelsPagination,
+} from '~widgets/models'
 import { setBreadcrumbs } from '~widgets/nav'
 
-import { Grid, Group, PageTitle, SearchIcon, ValueCard } from '~infra/ui'
+import { Group, PageTitle } from '~infra/ui'
 
 import { useMount } from '@wcsc/hooks'
 import { generateBreadcrumbs } from '@wcsc/toolkit'
 
-export default function Models() {
+export default function ModelsPage() {
 	useMount(() => setBreadcrumbs(generateBreadcrumbs('models')))
 
 	return (
@@ -46,67 +32,11 @@ export default function Models() {
 					</Button>
 				}
 			/>
-			<Flex
-				gap={4}
-				justifyContent={'space-between'}
-				alignItems={'center'}
-			>
-				<ValueCard value={1} title={'Моделей'} icon={Molecule} />
-				<ValueCard value={0} title={'Экспериментов'} icon={Flask} />
-				<ValueCard value={0} title={'Затрачено'} icon={Clock} />
-				<ValueCard value={0} title={'Инференсов'} icon={Briefcase} />
-			</Flex>
-			<Flex alignItems={'center'} gap={3}>
-				<TextInput
-					disabled={false}
-					size={'m'}
-					placeholder='Поиск...'
-					startContent={<SearchIcon />}
-				/>
-				<DropdownMenu
-					renderSwitcher={props => (
-						<Button {...props} view={'outlined'} size={'m'}>
-							Фильтр
-							<Icon data={Sliders} size={16} />
-						</Button>
-					)}
-					size={'m'}
-					items={[]}
-				/>
-				<DropdownMenu
-					renderSwitcher={props => (
-						<Button {...props} view={'outlined'} size={'m'}>
-							Сортировка
-							<Icon
-								data={BarsDescendingAlignLeftArrowDown}
-								size={16}
-							/>
-						</Button>
-					)}
-					size={'m'}
-					items={[]}
-				/>
-				<SegmentedRadioGroup name='view' size={'m'}>
-					<SegmentedRadioGroup.Option value='table'>
-						<Icon data={LayoutCellsLarge} size={16} />
-					</SegmentedRadioGroup.Option>
-					<SegmentedRadioGroup.Option value='list'>
-						<Icon data={GripHorizontal} size={16} />
-					</SegmentedRadioGroup.Option>
-				</SegmentedRadioGroup>
-			</Flex>
-			<Grid gap={20} gridTemplateColumns={'repeat(3, 1fr)'}></Grid>
-			<Flex justifyContent={'space-between'} alignItems={'center'}>
-				<Text color={'secondary'}>Всего 1</Text>
-				<Pagination
-					page={1}
-					pageSize={25}
-					total={1}
-					compact={true}
-					showPages={true}
-					onUpdate={(page, pageSize) => {}}
-				/>
-			</Flex>
+			<ModelsIndicators />
+			<ModelsFilter />
+			<Models />
+			<ModelsFetcher />
+			<ModelsPagination />
 		</Group>
 	)
 }

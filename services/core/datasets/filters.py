@@ -5,7 +5,7 @@ from packages.kernel.adapters import FilterAdapter
 class DatasetFilter(FilterAdapter):
     class Meta:
         model = Dataset
-        fields = ("source", "status", "format", "subset")
+        fields = ("source", "status", "format", "subset", "modality")
 
 
 class DatasetAssetFilter(FilterAdapter):

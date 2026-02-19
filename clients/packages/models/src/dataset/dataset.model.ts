@@ -1,10 +1,11 @@
 import { ClassModel } from '../class'
-import { array, object } from 'valibot'
+import { array, description, object } from 'valibot'
 
 import { BaseModel, merge, vBrand, vShape } from '@wcsc/toolkit'
 
 import {
 	DatasetFormat,
+	DatasetModality,
 	DatasetSource,
 	DatasetStatus,
 	DatasetSubset,
@@ -20,11 +21,13 @@ export const DatasetModel = merge(
 	object({
 		id: vDatasetId,
 		name: vShape.title,
+		description: vShape.description,
 		source_id: vShape.id,
 		source: vShape.enum(DatasetSource),
 		status: vShape.enum(DatasetStatus),
 		format: vShape.enum(DatasetFormat),
 		subset: vShape.enum(DatasetSubset),
+		modality: vShape.enum(DatasetModality),
 		classes: array(ClassModel),
 	}),
 )

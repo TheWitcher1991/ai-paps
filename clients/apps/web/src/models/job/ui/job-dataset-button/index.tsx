@@ -22,7 +22,9 @@ export const JobDatasetButton = ({
 			toaster.add({
 				title: 'Датасет для джобы успешно экспортирован',
 				name: 'dataset-exported',
+				theme: 'success',
 			})
+			toggle()
 		})
 
 	return (

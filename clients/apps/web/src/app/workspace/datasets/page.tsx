@@ -1,7 +1,5 @@
 'use client'
 
-import React from 'react'
-
 import { DatasetsIndicators } from '~widgets/dashkit/datasets-indicators'
 import Datasets, {
 	DatasetsFetcher,

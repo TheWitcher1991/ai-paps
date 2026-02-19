@@ -13,7 +13,7 @@ export const useProjectTableData = (projects: IProject[]) =>
 				name: project.name,
 				owner: project.owner.username,
 				status: project.status,
-				tasks: <Indicator count={project.tasks.count} />,
+				tasks: <Indicator count={project.tasks.count} resource='tasks' />,
 				created_date: formatDateInRu(project.created_date),
 				actions: <ProjectActions project={project} />,
 			})),

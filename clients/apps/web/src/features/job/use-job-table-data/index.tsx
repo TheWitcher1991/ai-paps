@@ -8,8 +8,8 @@ export const useJobTableData = (jobs: IJob[]) =>
 	useMemo(
 		() =>
 			jobs.map(job => ({
-				name: job.name,
-				owner: job.owner.username,
+				name: job.id,
+				dimension: job.dimension,
 				status: job.status,
 				type: job.type,
 				created_date: formatDateInRu(job.created_date),

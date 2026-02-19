@@ -1,5 +1,13 @@
 import { EnumType } from '@wcsc/types'
 
+export const DatasetModality = {
+	RGB: 'rgb',
+	MULTISPECTRAL: 'multispectral',
+	HYPERSPECTRAL: 'hyperspectral',
+} as const
+
+export type DatasetModality = EnumType<typeof DatasetModality>
+
 export const DatasetSource = {
 	PROJECTS: 'projects',
 	TASKS: 'tasks',

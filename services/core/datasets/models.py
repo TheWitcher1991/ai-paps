@@ -1,18 +1,22 @@
 from django.db import models
 
-from datasets.types import DatasetFormat, DatasetSource, DatasetStatus, DatasetSubset
+from datasets.types import DatasetFormat, DatasetModality, DatasetSource, DatasetStatus, DatasetSubset
 from packages.framework.fields import S3PrivateFileField
 from packages.kernel.adapters import ModelAdapter
 from packages.kernel.utils import t
 
 
 class Dataset(ModelAdapter):
-    name = models.CharField(max_length=255)
+    name = models.CharField(t("Название"), max_length=255)
+    description = models.TextField(t("Описание"), blank=True, null=True)
     source_id = models.IntegerField(t("Source ID"))
     source = models.CharField(t("Источник"), choices=DatasetSource.choices, max_length=32)
     status = models.CharField(t("Статус"), choices=DatasetStatus.choices, default=DatasetStatus.UPLOADED, max_length=32)
     format = models.CharField(t("Формат"), choices=DatasetFormat.choices, max_length=128)
     subset = models.CharField(t("Для чего"), choices=DatasetSubset.choices, default=DatasetSubset.TRAIN, max_length=32)
+    modality = models.CharField(
+        t("Модальность"), choices=DatasetModality.choices, default=DatasetModality.RGB, max_length=32
+    )
 
     class Meta:
         ordering = ("-created_at",)

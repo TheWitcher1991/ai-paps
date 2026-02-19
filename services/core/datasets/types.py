@@ -19,6 +19,17 @@ class AnnotationClass(StrEnum):
     TOMATO_POWDERY_MILDEW = "tomato_powdery_mildew"
 
 
+ANNOTATION_CLASSES_FOR_AREA = [AnnotationClass.TOMATO_LEAF]
+
+ANNOTATION_CLASSES_DISEASES = [AnnotationClass.TOMATO_POWDERY_MILDEW]
+
+
+class DatasetModality(models.TextChoices):
+    RGB = "rgb", t("rgb")
+    MULTISPECTRAL = "multispectral", t("Мультиспектральный")
+    HYPERSPECTRAL = "hyperspectral", t("Гиперспектральный")
+
+
 class DatasetSubset(models.TextChoices):
     TRAIN = "train", t("Обучение")
     TEST = "test", t("Tестирование")

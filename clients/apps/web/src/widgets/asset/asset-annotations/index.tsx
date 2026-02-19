@@ -25,7 +25,7 @@ export default function AssetAnnotations({
 				<Flex direction={'column'} gap={1}>
 					{annotations.map((ann: any) => (
 						<div
-						className={styles.annotation}
+							className={styles.annotation}
 							key={ann.id}
 							onMouseEnter={() => onHovered(ann.id)}
 							onMouseLeave={() => onHovered(null)}
@@ -42,9 +42,10 @@ export default function AssetAnnotations({
 							<b>
 								#{ann.id} {ann.cls?.name}
 							</b>
-							<div>
-							Polygon: {ann.area}
-							</div>
+							<div>Полигонов: {ann.area}</div>
+							{ann.area_cm2 && (
+								<div>Площадь: {ann.area_cm2} cм²</div>
+							)}
 						</div>
 					))}
 				</Flex>

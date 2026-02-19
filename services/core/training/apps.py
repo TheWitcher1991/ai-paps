@@ -1,10 +1,10 @@
 from django.apps import AppConfig
 
 
-class ModelsConfig(AppConfig):
+class TrainingConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "models"
-    label = "models"
+    name = "training"
+    label = "training"
 
     def ready(self):
-        import models.signals
+        import training.signals

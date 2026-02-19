@@ -25,7 +25,7 @@ urlpatterns = [
     path("", include("django_prometheus.urls")),
     path("v1/", include("datasets.routers", namespace="datasets")),
     path("v1/", include("directory.routers", namespace="directory")),
-    path("v1/", include("models.routers", namespace="models")),
+    path("v1/", include("training.routers", namespace="training")),
     path("v1/", include("projects.routers", namespace="projects")),
     path("v1/", include("recognitions.routers", namespace="recognitions")),
     path("v1/", include("users.routers", namespace="users")),

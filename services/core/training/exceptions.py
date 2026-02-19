@@ -1,5 +1,5 @@
 from packages.kernel.exceptions import ServiceError
 
 
-class ModelsError(ServiceError):
+class TrainingError(ServiceError):
     pass
