@@ -1,4 +1,3 @@
-import { DatasetID } from './model.types'
+import { ModelID } from './model.types'
 
-export const toDatasetID = (id: number | string): DatasetID =>
-	Number(id) as DatasetID
+export const toModelID = (id: number | string): ModelID => Number(id) as ModelID
