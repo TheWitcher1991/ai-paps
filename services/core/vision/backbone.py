@@ -2,7 +2,7 @@ from torch import nn
 
 from vision.arch.efficientnet import efficientnet_backbone
 from vision.arch.resnet import resnet_backbone
-from vision.types import BackboneAdapter, BackboneConfig
+from vision.types import BackboneConfig
 
 
 class BackboneBuilder:

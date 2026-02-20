@@ -5,4 +5,4 @@ from training.models import Model
 class ModelFilter(FilterAdapter):
     class Meta:
         model = Model
-        fields = ("subset", "framework")
+        fields = ("subset", "framework", "architecture", "status")
