@@ -1,5 +1,5 @@
 'use client'
-
+import { Button, Icon } from '@gravity-ui/uikit'
 import { GearBranches } from '@gravity-ui/icons'
 
 import { ModelsIndicators } from '~widgets/dashkit/models-indicators'

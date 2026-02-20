@@ -5,4 +5,3 @@ export const ModelSubsetMapper: Record<ModelSubset, string> = {
 	[ModelSubset.SEGMENTATION]: 'Сегментация',
 	[ModelSubset.DETECTION]: 'Обнаружение',
 }
-}

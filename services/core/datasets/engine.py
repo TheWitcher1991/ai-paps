@@ -141,7 +141,7 @@ class DatasetEngine:
                 cls = dataset_class_repository.create(
                     dataset=dataset,
                     name=cat["name"],
-                    class_id=cat["id"],
+                    source_id=cat["id"],
                 )
                 category_map[cat["id"]] = cls
         except Exception as e:

@@ -1,6 +1,5 @@
-from models.models import Model
-
 from packages.kernel.adapters import FilterAdapter
+from training.models import Model
 
 
 class ModelFilter(FilterAdapter):

@@ -40,17 +40,17 @@ class DatasetAdmin(admin.ModelAdmin):
         "assets_count",
         "classes_count",
         "annotations_count",
-        "created_at",
+        "created_date",
     )
 
-    list_filter = ("source", "status", "format", "subset", "created_at")
+    list_filter = ("source", "status", "format", "subset", "created_date")
     search_fields = ("name", "source_id")
-    readonly_fields = ("created_at", "updated_at")
+    readonly_fields = ("created_date", "updated_date")
 
     inlines = [DatasetClassInline, DatasetAssetInline]
 
-    date_hierarchy = "created_at"
-    ordering = ("-created_at",)
+    date_hierarchy = "created_date"
+    ordering = ("-created_date",)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -85,12 +85,12 @@ class DatasetAssetAdmin(admin.ModelAdmin):
         "width",
         "height",
         "annotations_count",
-        "created_at",
+        "created_date",
     )
 
-    list_filter = ("dataset", "created_at")
+    list_filter = ("dataset", "created_date")
     search_fields = ("dataset__name", "source_id")
-    readonly_fields = ("preview", "created_at", "updated_at")
+    readonly_fields = ("preview", "created_date", "updated_date")
 
     autocomplete_fields = ("dataset",)
 
@@ -122,7 +122,7 @@ class DatasetClassAdmin(admin.ModelAdmin):
         "dataset",
         "class_id",
         "annotations_count",
-        "created_at",
+        "created_date",
     )
 
     search_fields = ("name", "dataset__name")

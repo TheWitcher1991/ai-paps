@@ -17,3 +17,21 @@ class ModelFramework(models.TextChoices):
     TENSORFLOW = "tensorflow", t("Tensorflow")
     PYTORCH = "pytorch", t("Pytorch")
     ULTRALYTICS = "ultralytics", t("Ultralytics")
+
+
+class ModelStatus(models.TextChoices):
+    DRAFT = "draft", "Черновик"
+    TRAINING = "training", "Обучается"
+    READY = "ready", "Готова"
+    DEPLOYED = "deployed", "Развернута"
+    ARCHIVED = "archived", "Архив"
+
+
+class TrainingStatus(models.TextChoices):
+    PENDING = "pending", "Ожидает"
+    QUEUED = "queued", "В очереди"
+    RUNNING = "running", "Обучение"
+    VALIDATING = "validating", "Валидация"
+    FINISHED = "finished", "Завершено"
+    FAILED = "failed", "Ошибка"
+    CANCELLED = "cancelled", "Отменено"

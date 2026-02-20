@@ -19,7 +19,7 @@ class Dataset(ModelAdapter):
     )
 
     class Meta:
-        ordering = ("-created_at",)
+        ordering = ("-created_date",)
         verbose_name = t("Датасет")
         verbose_name_plural = t("Датасеты")
 
@@ -32,7 +32,7 @@ class DatasetAsset(ModelAdapter):
     source_id = models.IntegerField(t("Source ID"))
 
     class Meta:
-        ordering = ("-created_at",)
+        ordering = ("-created_date",)
         verbose_name = t("Ассет датасета")
         verbose_name_plural = t("Ассеты датасета")
 
@@ -40,10 +40,10 @@ class DatasetAsset(ModelAdapter):
 class DatasetClass(ModelAdapter):
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="classes")
     name = models.CharField(t("Название"), max_length=255)
-    class_id = models.IntegerField(t("Class ID"))
+    source_id = models.IntegerField(t("Source ID"))
 
     class Meta:
-        ordering = ("-created_at",)
+        ordering = ("-created_date",)
         verbose_name = t("Класс датасета")
         verbose_name_plural = t("Классы датасета")
 

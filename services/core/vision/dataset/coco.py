@@ -5,11 +5,12 @@ import cv2
 import numpy as np
 import torch
 from pycocotools.coco import COCO
+from torch.utils.data import Dataset
 
 from vision.types import DetectionTarget
 
 
-class CocoSegmentationDataset:
+class CocoSegmentationDataset(Dataset):
     def __init__(self, images_dir, annotation_file, transforms=None, ignore_labels=None):
         with open(annotation_file, "r", encoding="utf-8") as f:
             coco_data = json.load(f)

@@ -12,7 +12,7 @@ export const ClassModel = merge(
 	object({
 		id: vClassId,
 		name: vShape.title,
-		class_id: vShape.id,
+		source_id: vShape.id,
 	}),
 )
 
