@@ -1,13 +1,13 @@
 import json
 from abc import ABC
-from typing import Callable, ParamSpec, TypeVar, Any
+from typing import Any, Callable, ParamSpec, TypeVar
 
 from requests import Response
 
 from cifra.shared.client import CifraClient
 from cifra.shared.config import CifraConfig
-from cifra.shared.exceptions import CifraServiceError, CifraApiException
-from cifra.shared.types import CifraResponse, CifraRequest
+from cifra.shared.exceptions import CifraApiException, CifraServiceError
+from cifra.shared.types import CifraRequest, CifraResponse
 
 R = TypeVar("R")
 P = ParamSpec("P")

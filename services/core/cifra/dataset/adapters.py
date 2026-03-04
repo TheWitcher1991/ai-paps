@@ -1,57 +1,42 @@
-from typing import Optional
+from cifra.dataset.abstract import DatasetAbstract
+from cifra.dataset.repository import CifraDatasetRepository
+from cifra.dataset.types import (
+    DatasetCollectRequest,
+    DatasetCollectResponse,
+    DatasetsResponse,
+    ImageMetaRequest,
+    ImageMetaResponse,
+    MarkupClassesRequest,
+    MarkupClassesResponse,
+)
+from cifra.shared.exceptions import CifraApiException, CifraServiceError
 
-from cvat_sdk.api_client import ApiException
 
-from cvat.projects.abstract import ProjectAbstract
-from cvat.projects.repository import CVATProjectRepository
-from cvat.projects.types import PaginatedProjectReadList, ProjectRead, ProjectReadRequest
-from cvat.rq.types import RqId
-from cvat.shared.exceptions import CVATServiceError
-from cvat.shared.types import CVATDatasetFormat
-
-
-class DatasetAdapter(ProjectAbstract):
+class CifraDatasetAdapter(DatasetAbstract):
 
     def __init__(self):
-        self.repo = CVATProjectRepository()
+        self.repo = CifraDatasetRepository()
 
-    def find_all(self, request: Optional[ProjectReadRequest] = None) -> PaginatedProjectReadList:
+    def list(self) -> DatasetsResponse:
         try:
-            return self.repo.find_all(request)
-        except ApiException as e:
-            raise CVATServiceError(e.reason, e.status)
+            return self.repo.list()
+        except CifraApiException as e:
+            raise CifraServiceError(e.reason, e.status)
 
-    def find_one(self, project_id: int) -> Optional[ProjectRead]:
+    def collect_dataset(self, request: DatasetCollectRequest) -> DatasetCollectResponse:
         try:
-            return self.repo.find_one(project_id)
-        except ApiException as e:
-            raise CVATServiceError(e.reason, e.status)
+            return self.repo.collect_dataset(request)
+        except CifraApiException as e:
+            raise CifraServiceError(e.reason, e.status)
 
-    def export_dataset(
-        self,
-        project_id: int,
-        format: CVATDatasetFormat,
-        **kwargs,
-    ) -> RqId:
+    def load_markup_classes(self, request: MarkupClassesRequest) -> MarkupClassesResponse:
         try:
-            return self.repo.export_dataset(project_id, format, **kwargs)
-        except ApiException as e:
-            raise CVATServiceError(e.reason, e.status)
+            return self.repo.load_markup_classes(request)
+        except CifraApiException as e:
+            raise CifraServiceError(e.reason, e.status)
 
-    def import_dataset(self, project_id: int, format: CVATDatasetFormat, **kwargs) -> RqId:
+    def load_image_meta(self, request: ImageMetaRequest) -> ImageMetaResponse:
         try:
-            return self.repo.import_dataset(project_id, format, **kwargs)
-        except ApiException as e:
-            raise CVATServiceError(e.reason, e.status)
-
-    def export_backup(self, project_id: int, **kwargs) -> RqId:
-        try:
-            return self.repo.export_backup(project_id, **kwargs)
-        except ApiException as e:
-            raise CVATServiceError(e.reason, e.status)
-
-    def import_backup(self, **kwargs) -> RqId:
-        try:
-            return self.repo.import_backup(**kwargs)
-        except ApiException as e:
-            raise CVATServiceError(e.reason, e.status)
+            return self.repo.load_image_meta(request)
+        except CifraApiException as e:
+            raise CifraServiceError(e.reason, e.status)

@@ -4,7 +4,7 @@ from rest_framework.serializers import Serializer
 from cvat.shared.serializers import CVATSummarySerializer
 
 
-class ProjectReadSerializer(Serializer):
+class DatasetSerializer(Serializer):
     tasks = CVATSummarySerializer(many=True)
     labels = CVATSummarySerializer(many=True)
     url = serializers.URLField()

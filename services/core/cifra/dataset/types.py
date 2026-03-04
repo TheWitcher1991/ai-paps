@@ -1,6 +1,6 @@
 import datetime
 from dataclasses import dataclass
-from typing import List, Optional, Literal
+from typing import List, Literal, Optional
 
 
 @dataclass
@@ -50,10 +50,79 @@ class DatasetCollect:
 
 
 @dataclass
-class DatasetImageMeta:
-    markup: dict
-    next_image: dict
-    total_images: int
+class Bounds:
+    minX: float
+    minY: float
+    maxX: float
+    maxY: float
+
+
+@dataclass
+class Point:
+    x: float
+    y: float
+
+
+@dataclass
+class Creator:
+    isGuest: bool
+    id: str
+
+
+@dataclass
+class Geometry:
+    bounds: Bounds
+    points: List[List[float]]
+
+
+@dataclass
+class Selector:
+    type: str  # "POLYGON", "RECTANGLE", etc.
+    geometry: Geometry
+    creator: Creator
+    created: datetime
+
+
+@dataclass
+class Body:
+    value: str
+    annotation: str
+
+
+@dataclass
+class Target:
+    annotation: str
+    selector: Selector
+
+
+@dataclass
+class Figure:
+    id: str
+    bodies: List[Body]
+    target: Target
+
+
+@dataclass
+class Markup:
+    image_quality: Optional[float]
+    image_class: str
+    image_size: List[int]
+    figures: List[Figure]
+    relative: bool
+
+
+@dataclass
+class NextImage:
+    id: int
+    image_name: str
+    image_id: str
+
+
+@dataclass
+class ImageMeta:
+    markup: Markup
+    next_image: NextImage
+    total_images: Optional[int] = None
 
 
 MarkupClass = List[str]
@@ -66,17 +135,17 @@ class DatasetsResponse:
 
 @dataclass
 class DatasetCollectResponse:
-    images: List[Dataset]
-
-
-@dataclass
-class DatasetImageMetaResponse:
-    markup_classes: MarkupClass
+    images: List[DatasetCollect]
 
 
 @dataclass
 class MarkupClassesResponse:
     markup_classes: MarkupClass
+
+
+@dataclass
+class ImageMetaResponse(ImageMeta):
+    pass
 
 
 @dataclass
@@ -87,4 +156,9 @@ class DatasetCollectRequest:
 
 @dataclass
 class MarkupClassesRequest:
-    markup_type: Literal["figures"]
+    markup_type: Literal["figures", "images"]
+
+
+@dataclass
+class ImageMetaRequest:
+    image_id: str
