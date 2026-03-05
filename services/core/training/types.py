@@ -28,12 +28,17 @@ class ModelStatus(models.TextChoices):
 
 
 class ModelArchitecture(models.TextChoices):
-    resnet50 = "resnet50", t("resnet50")
-    resnet101 = "resnet101", t("resnet101")
-    resnet152 = "resnet152", t("resnet152")
     deeplabv3 = "deeplabv3", t("deeplabv3")
     unet = "unet", t("unet")
     yolo = "yolo", t("yolo")
+    fpn = "fpn", t("fpn")
+    mask_rcnn = "mask_rcnn", t("mask_rcnn")
+
+
+class ModelBackbone(models.TextChoices):
+    resnet50 = "resnet50", t("resnet50") 
+    resnet101 = "resnet101", t("resnet101") 
+    resnet152 = "resnet152", t("resnet152") 
 
 
 class TrainingStatus(models.TextChoices):

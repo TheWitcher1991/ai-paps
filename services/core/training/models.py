@@ -12,6 +12,7 @@ from training.types import (
     TrainingOptimizer,
     TrainingScheduler,
     TrainingStatus,
+    ModelBackbone,
 )
 
 
@@ -23,6 +24,7 @@ class Model(ModelAdapter):
     subset = models.CharField(t("Задача"), choices=ModelSubset.choices, max_length=32)
     framework = models.CharField(t("Фреймворк"), choices=ModelFramework.choices, max_length=32)
     architecture = models.CharField(t("Архитектура"), choices=ModelArchitecture.choices, max_length=32)
+    backbone = models.CharField(t("Backbone"), choices=ModelBackbone.choices, max_length=32)
     status = models.CharField(t("Статус"), choices=ModelStatus.choices, default=ModelStatus.READY, max_length=32)
 
     class Meta:
