@@ -16,17 +16,21 @@ DetectionPrediction = Dict[str, torch.Tensor]
 DetectionPredictions = List[DetectionPrediction]
 
 
-class BackboneType(StrEnum):
+class VisionModelBackbone(StrEnum):
     resnet50 = "resnet50"
     resnet101 = "resnet101"
     resnet152 = "resnet152"
-    resnext101 = "resnext101"
-    efficientnet_b5 = "efficientnet_b5"
-    efficientnet_b6 = "efficientnet_b6"
-    efficientnet_b7 = "efficientnet_b7"
+
+
+class VisionModelType(StrEnum):
+    deeplabv3 = "deeplabv3"
+    fpn = "fpn"
+    unet = "unet"
+    yolo = "yolo"
+    mask_rcnn = "mask_rcnn"
 
 
 @dataclass
 class BackboneConfig:
-    name: BackboneType
+    name: VisionModelBackbone
     pretrained: bool = True
