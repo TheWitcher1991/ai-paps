@@ -23,7 +23,7 @@ export default function DatasetsPage() {
 			<PageTitle
 				title={'Датасеты'}
 				subtitle={
-					'Панель мониторинга и управления ключевыми метриками системы'
+					'Наборы данных для обучения и валидации моделей'
 				}
 				action={<DatasetUnionButton />}
 			/>

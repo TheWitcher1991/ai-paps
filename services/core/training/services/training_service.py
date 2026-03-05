@@ -1,3 +1,4 @@
+import io
 import os
 import random
 from datetime import datetime
@@ -180,6 +181,8 @@ class TrainingService:
             run.finished_date = datetime.now()
             run.save()
 
+            self._save_model(model)
+
             self.model.status = "ready"
             self.model.save()
 
@@ -190,3 +193,23 @@ class TrainingService:
             run.status = TrainingStatus.FAILED
             run.save()
             raise
+
+    def _save_model(self, model):
+        logger.info(f"Saving model to file")
+
+        buffer = io.BytesIO()
+        torch.save(
+            {
+                "model_state_dict": model.state_dict(),
+                "architecture": self.model.architecture,
+                "backbone": self.model.backbone,
+                "num_classes": model.n_classes if hasattr(model, "n_classes") else None,
+            },
+            buffer,
+        )
+        buffer.seek(0)
+
+        filename = f"{self.model.alias or self.model.name}_{self.training.id}.pth"
+        self.model.file.save(filename, buffer, save=True)
+
+        logger.info(f"Model saved: {filename}")

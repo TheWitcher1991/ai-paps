@@ -1,0 +1,138 @@
+[
+  {
+    "model": "training.Model",
+    "pk": 1,
+    "fields": {
+      "name": "U-Net Segmentation",
+      "alias": "unet_seg",
+      "description": "U-Net модель для сегментации изображений",
+      "file": null,
+      "subset": "segmentation",
+      "framework": "pytorch",
+      "architecture": "unet",
+      "backbone": "resnet50",
+      "status": "ready",
+      "created_date": "2024-01-01T00:00:00Z",
+      "updated_date": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "training.Model",
+    "pk": 2,
+    "fields": {
+      "name": "DeepLabV3 ResNet50",
+      "alias": "deeplabv3_resnet50",
+      "description": "DeepLabV3 с ResNet50 backbone для сегментации",
+      "file": null,
+      "subset": "segmentation",
+      "framework": "pytorch",
+      "architecture": "deeplabv3",
+      "backbone": "resnet50",
+      "status": "ready",
+      "created_date": "2024-01-01T00:00:00Z",
+      "updated_date": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "training.Model",
+    "pk": 3,
+    "fields": {
+      "name": "DeepLabV3 ResNet101",
+      "alias": "deeplabv3_resnet101",
+      "description": "DeepLabV3 с ResNet101 backbone для сегментации",
+      "file": null,
+      "subset": "segmentation",
+      "framework": "pytorch",
+      "architecture": "deeplabv3",
+      "backbone": "resnet101",
+      "status": "ready",
+      "created_date": "2024-01-01T00:00:00Z",
+      "updated_date": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "training.Model",
+    "pk": 4,
+    "fields": {
+      "name": "FPN ResNet50",
+      "alias": "fpn_resnet50",
+      "description": "Feature Pyramid Network с ResNet50 backbone для сегментации",
+      "file": null,
+      "subset": "segmentation",
+      "framework": "pytorch",
+      "architecture": "fpn",
+      "backbone": "resnet50",
+      "status": "ready",
+      "created_date": "2024-01-01T00:00:00Z",
+      "updated_date": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "training.Model",
+    "pk": 5,
+    "fields": {
+      "name": "FPN ResNet101",
+      "alias": "fpn_resnet101",
+      "description": "Feature Pyramid Network с ResNet101 backbone для сегментации",
+      "file": null,
+      "subset": "segmentation",
+      "framework": "pytorch",
+      "architecture": "fpn",
+      "backbone": "resnet101",
+      "status": "ready",
+      "created_date": "2024-01-01T00:00:00Z",
+      "updated_date": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "training.Model",
+    "pk": 6,
+    "fields": {
+      "name": "Mask R-CNN",
+      "alias": "mask_rcnn",
+      "description": "Mask R-CNN для instance сегментации",
+      "file": null,
+      "subset": "detection",
+      "framework": "pytorch",
+      "architecture": "mask_rcnn",
+      "backbone": "resnet50",
+      "status": "ready",
+      "created_date": "2024-01-01T00:00:00Z",
+      "updated_date": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "training.Model",
+    "pk": 7,
+    "fields": {
+      "name": "YOLO Segmentation",
+      "alias": "yolo_seg",
+      "description": "YOLO для сегментации",
+      "file": null,
+      "subset": "segmentation",
+      "framework": "ultralytics",
+      "architecture": "yolo",
+      "backbone": "resnet50",
+      "status": "ready",
+      "created_date": "2024-01-01T00:00:00Z",
+      "updated_date": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "training.Model",
+    "pk": 8,
+    "fields": {
+      "name": "YOLO Detection",
+      "alias": "yolo_det",
+      "description": "YOLO для обнаружения объектов",
+      "file": null,
+      "subset": "detection",
+      "framework": "ultralytics",
+      "architecture": "yolo",
+      "backbone": "resnet50",
+      "status": "ready",
+      "created_date": "2024-01-01T00:00:00Z",
+      "updated_date": "2024-01-01T00:00:00Z"
+    }
+  }
+]

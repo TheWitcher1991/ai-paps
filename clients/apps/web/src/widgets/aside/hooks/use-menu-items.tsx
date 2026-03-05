@@ -6,7 +6,8 @@ import {
 	NutHex,
 	Persons,
 	Picture,
-	SquareDashedCircle,
+	Database,
+	GraduationCap,
 } from '@gravity-ui/icons'
 import { MenuItem } from '@gravity-ui/navigation'
 import { usePathname, useRouter } from 'next/navigation'
@@ -46,7 +47,7 @@ export default function useMenuItems(): MenuItem[] {
 			id: 'datasets',
 			iconSize: 20,
 			title: 'Датасеты',
-			icon: SquareDashedCircle,
+			icon: Database,
 			current: pathname.startsWith(href.datasets.index),
 			onItemClick: () => router.push(href.datasets.index),
 		},
@@ -57,6 +58,14 @@ export default function useMenuItems(): MenuItem[] {
 			icon: Molecule,
 			current: pathname.startsWith(href.models.index),
 			onItemClick: () => router.push(href.models.index),
+		},
+		{
+			id: 'trainings',
+			iconSize: 20,
+			title: 'Обучение моделей',
+			icon: GraduationCap,
+			current: pathname.startsWith(href.trainings.index),
+			onItemClick: () => router.push(href.trainings.index),
 		},
 		{
 			id: 'recognitions',

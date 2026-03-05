@@ -1,17 +1,13 @@
-import { useDatasetTableData } from '~features/dataset'
-import { ModelTable, TableSkeleton } from '~features/shared'
-
-import { datasetTableColumns } from '~models/dataset'
+import { DatasetList } from '~features/dataset'
+import { TableSkeleton } from '~features/shared'
 
 import { DataLoader } from '~infra/lib'
-import { Placeholder } from '~infra/ui'
+import { Grid } from '~infra/ui'
 
 import { useDatasetsStore } from './datasets.hooks'
 
 export default function Datasets() {
-	const { list, loading, error, count, checked } = useDatasetsStore()
-
-	const data = useDatasetTableData(list)
+	const { list, loading, error, count } = useDatasetsStore()
 
 	return (
 		<DataLoader
@@ -20,12 +16,9 @@ export default function Datasets() {
 			countData={count}
 			loadingFallback={<TableSkeleton />}
 		>
-			<ModelTable
-				data={data}
-				columns={datasetTableColumns}
-				emptyMessage={<Placeholder />}
-				selectedIds={checked}
-			/>
+			<Grid gap={16} gridTemplateColumns={'1fr 1fr 1fr'}>
+				<DatasetList datasets={list} />
+			</Grid>
 		</DataLoader>
 	)
 }

@@ -15,7 +15,7 @@ from datasets.usecases import (
     dataset_use_case,
     merge_datasets_use_case,
 )
-from packages.framework.controllers import APIController, ReadOnlyModelSetController
+from packages.framework.controllers import ReadOnlyModelSetController
 
 
 class DatasetSetController(ReadOnlyModelSetController):
@@ -25,7 +25,7 @@ class DatasetSetController(ReadOnlyModelSetController):
     serializer_class = DatasetSerializer
     filterset_class = DatasetFilter
 
-    @action(detail=False, methods=["post"], url_path="merge")
+    @action(detail=False, methods=["post"], url_path="merge", serializer_class=MergeDatasetsSerializer)
     def merge(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -65,8 +65,3 @@ class DatasetAnnotationSetController(ReadOnlyModelSetController):
     queryset = dataset_annotation_use_case.optimize()
     serializer_class = DatasetAnnotationSerializer
     filterset_class = DatasetAnnotationFilter
-
-
-class DatasetMergeController(APIController):
-    prefix = "datasets-merge"
-    serializer_class = MergeDatasetsSerializer

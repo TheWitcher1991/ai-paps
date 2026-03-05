@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 
 from packages.framework.controllers import BaseSetController, ModelSetController
@@ -11,6 +12,7 @@ from training.serializers import (
     TrainingSerializer,
 )
 from training.usecases import model_use_case, training_run_use_case, training_use_case
+from vision.inference import InferenceService
 
 
 class ModelSetController(ModelSetController):
@@ -99,3 +101,65 @@ class TrainingRunController(BaseSetController):
         run = training_use_case.cancel_training(pk)
         serializer = TrainingRunSerializer(run)
         return Response(serializer.data)
+
+
+class InferenceController(BaseSetController):
+    prefix = "inference"
+    parser_classes = [MultiPartParser]
+
+    @action(detail=True, methods=["post"])
+    def predict(self, request, pk=None):
+        model = model_use_case.get(pk)
+        if not model:
+            return Response({"error": "Model not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        if not model.file:
+            return Response({"error": "Model file not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        image_file = request.FILES.get("image")
+        if not image_file:
+            return Response({"error": "No image provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            inference_service = InferenceService(
+                model_file=model.file,
+                architecture=model.architecture,
+                backbone=model.backbone,
+            )
+
+            mask = inference_service.predict_mask(image_file)
+
+            return Response({
+                "mask": mask.tolist(),
+                "shape": mask.shape,
+            })
+        except Exception as e:
+            logger.error(f"Inference failed: {str(e)}")
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=True, methods=["post"])
+    def predict_with_confidence(self, request, pk=None):
+        model = model_use_case.get(pk)
+        if not model:
+            return Response({"error": "Model not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        if not model.file:
+            return Response({"error": "Model file not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        image_file = request.FILES.get("image")
+        if not image_file:
+            return Response({"error": "No image provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            inference_service = InferenceService(
+                model_file=model.file,
+                architecture=model.architecture,
+                backbone=model.backbone,
+            )
+
+            result = inference_service.predict_with_confidence(image_file)
+
+            return Response(result)
+        except Exception as e:
+            logger.error(f"Inference failed: {str(e)}")
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

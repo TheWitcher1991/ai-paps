@@ -29,7 +29,7 @@ export default function Aside({ children }: PropsWithChildren) {
 			}}
 			compact={compact}
 			onChangeCompact={setCompact}
-			headerDecoration={true}
+			headerDecoration={false}
 			renderContent={() => children}
 			multipleTooltip={true}
 			menuItems={menuItems}
