@@ -1,8 +1,18 @@
 from django.db import transaction
+from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 from datasets.models import Dataset, DatasetAnnotation, DatasetAsset, DatasetClass
 from datasets.types import ANNOTATION_CLASSES_DISEASES, ANNOTATION_CLASSES_FOR_AREA
+
+
+class MergeDatasetsSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=255)
+    description = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    dataset_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        min_length=2,
+    )
 
 
 class DatasetClassSerializer(ModelSerializer):

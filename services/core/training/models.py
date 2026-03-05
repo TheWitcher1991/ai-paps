@@ -5,6 +5,7 @@ from packages.kernel.adapters import ModelAdapter
 from packages.kernel.utils import t
 from training.types import (
     ModelArchitecture,
+    ModelBackbone,
     ModelFramework,
     ModelStatus,
     ModelSubset,
@@ -12,7 +13,6 @@ from training.types import (
     TrainingOptimizer,
     TrainingScheduler,
     TrainingStatus,
-    ModelBackbone,
 )
 
 

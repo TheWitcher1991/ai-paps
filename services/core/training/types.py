@@ -36,9 +36,9 @@ class ModelArchitecture(models.TextChoices):
 
 
 class ModelBackbone(models.TextChoices):
-    resnet50 = "resnet50", t("resnet50") 
-    resnet101 = "resnet101", t("resnet101") 
-    resnet152 = "resnet152", t("resnet152") 
+    resnet50 = "resnet50", t("resnet50")
+    resnet101 = "resnet101", t("resnet101")
+    resnet152 = "resnet152", t("resnet152")
 
 
 class TrainingStatus(models.TextChoices):

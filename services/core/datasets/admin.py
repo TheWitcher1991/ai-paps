@@ -120,7 +120,7 @@ class DatasetClassAdmin(admin.ModelAdmin):
         "id",
         "name",
         "dataset",
-        "class_id",
+        "source_id",
         "annotations_count",
         "created_date",
     )
