@@ -288,7 +288,24 @@ body,
     --g-text-input-background-color: #151618;
     --g-text-input-border-color: #1e2022;
     --g-text-area-background-color: #151618;
+    --g-select-background-color: #151618;
     --g-text-area-border-color: #1e2022;
+
+    --g-color-text-danger: lab(48.4493% 77.4328 61.5452);
+    --g-color-text-warning: lab(80.1641% 16.6016 99.2089);
+
+    .g-spin__inner {
+        border-color: var(--g-color-text-warning);
+    }
+
+    .g-select-control {
+        background: var(--g-text-input-background-color);
+        border-radius: var(--g-border-radius-l);
+    }
+
+    .g-select-control__button:before {
+        border: 1px solid #1e2022;
+    }
 
     .g-table__sort-content {
         svg {

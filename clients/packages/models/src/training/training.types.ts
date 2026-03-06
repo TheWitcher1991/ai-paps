@@ -8,7 +8,12 @@ import {
 	TrainingScheduler,
 	TrainingStatus,
 } from './training.enums'
-import { TrainingModel, WriteableTrainingModel } from './training.model'
+import {
+	TrainingModel,
+	TrainingRunModel,
+	WriteableTrainingModel,
+	WriteableTrainingRunModel,
+} from './training.model'
 
 export type TrainingID = Branded<number, 'TrainingID'>
 
@@ -29,4 +34,22 @@ export type UseTrainings = PaginateQuery & {
 	optimizer: TrainingOptimizer
 	loss_function: TrainingLossFunction
 	lr_scheduler: TrainingScheduler
+}
+
+export type TrainingRunID = Branded<number, 'TrainingRunID'>
+
+export type ITrainingRun = InferOutput<typeof TrainingRunModel>
+
+export type ICreateTrainingRun = InferOutput<typeof WriteableTrainingRunModel>
+
+export type IUpdateTrainingRun = Partial<
+	InferOutput<typeof WriteableTrainingRunModel>
+>
+
+export type WithTrainingRun = InjectProps<'run', ITrainingRun>
+
+export type WithTrainingRunID = InjectProps<'run', TrainingRunID>
+
+export type UseTrainingRuns = PaginateQuery & {
+	status: TrainingStatus
 }

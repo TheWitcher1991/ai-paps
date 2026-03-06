@@ -46,7 +46,7 @@ class TrainingUseCase(UseCaseAdapter):
     def start_training(self, training_id: TrainingId):
         from training.services.training_service import TrainingService
 
-        training = self.repo.get(training_id)
+        training = self.repo.get_by_id(training_id)
         logger.info(f"Starting training: {training_id}")
 
         service = TrainingService(training)

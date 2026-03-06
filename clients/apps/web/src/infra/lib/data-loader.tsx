@@ -30,7 +30,7 @@ const DefaultErrorFallback = memo(() => (
 		title='При загрузке данных произошла ошибка'
 		size='m'
 		align='center'
-		image={<Icon data={Detail} size={120} />}
+		image={<Icon data={InternalError} size={120} />}
 	/>
 ))
 

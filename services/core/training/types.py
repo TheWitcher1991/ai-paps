@@ -59,9 +59,11 @@ class TrainingOptimizer(models.TextChoices):
 
 
 class TrainingLossFunction(models.TextChoices):
-    BCE = "BCE", "BCE"
+    BCE = "BCE", t("BCE")
+    DICE = "DICE", t("DICE Loss")
     BCE_WITH_LOGITS = "BCEWithLogits", t("BCEWithLogits")
     CROSS_ENTROPY = "CrossEntropy", t("CrossEntropy")
+    BINARY_CROSS_ENTROPY = "BinaryCrossEntropy", t("Binary Cross-Entropy")
     MSE = "MSE", t("MSE")
 
 

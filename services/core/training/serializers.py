@@ -41,9 +41,10 @@ class TrainingRunSerializer(serializers.ModelSerializer):
 
 
 class TrainingSerializer(serializers.ModelSerializer):
-    config = TrainingConfigSerializer(required=False)
+    config = TrainingConfigSerializer()
     datasets = TrainingDatasetSerializer(many=True, read_only=True)
     runs = TrainingRunSerializer(many=True, read_only=True)
+    model = ModelSerializer(read_only=True)
 
     class Meta:
         model = Training

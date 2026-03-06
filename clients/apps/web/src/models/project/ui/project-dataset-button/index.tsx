@@ -36,8 +36,7 @@ export const ProjectDatasetButton = ({
 				onClickButtonApply={handleDataset}
 				size={'s'}
 			>
-				Вы действительно хотите экспортировать датасет для проекта #$
-				{project.id}?
+				Вы действительно хотите экспортировать датасет для проекта "{project.name}"?
 			</Dialog>
 
 			<Action

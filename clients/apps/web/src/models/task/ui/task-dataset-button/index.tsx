@@ -36,8 +36,8 @@ export const TaskDatasetButton = ({
 				onClickButtonApply={handleDataset}
 				size={'s'}
 			>
-				Вы действительно хотите экспортировать датасет для задачи #$
-				{task.id}?
+				Вы действительно хотите экспортировать датасет для задачи "
+				{task.name}"?
 			</Dialog>
 
 			<Action

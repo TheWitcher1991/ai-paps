@@ -1,6 +1,7 @@
 'use client'
 
-import React, { use } from 'react'
+import { IconDatabase } from '@tabler/icons-react'
+import { use } from 'react'
 
 import Assets, {
 	AssetsFetcher,
@@ -10,7 +11,7 @@ import Assets, {
 import { AssetsIndicators } from '~widgets/dashkit/assets-indicators'
 import { setBreadcrumbs } from '~widgets/nav'
 
-import { Group, PageTitle } from '~infra/ui'
+import { Group } from '~infra/ui'
 
 import { useMount } from '@wcsc/hooks'
 import { toDatasetID } from '@wcsc/models'
@@ -27,13 +28,7 @@ export default function AssetsPage({
 
 	return (
 		<Group>
-			<PageTitle
-				title={'Датасет'}
-				subtitle={
-					'Панель мониторинга и управления ключевыми метриками системы'
-				}
-			/>
-			<AssetsIndicators />
+			<AssetsIndicators dataset={toDatasetID(id)} />
 			<AssetsFilter />
 			<Assets />
 			<AssetsFetcher dataset={toDatasetID(id)} />

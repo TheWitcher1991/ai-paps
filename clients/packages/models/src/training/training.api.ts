@@ -1,17 +1,23 @@
+import { QueryKey, useMutation, useQuery } from '@tanstack/react-query'
+
 import {
+	BaseRepository,
 	createApi,
 	createReadonlyApi,
 	HttpClientInstance,
+	optimisticInvalidateQueries,
 	ReadonlyRepository,
 } from '@wcsc/toolkit'
-import { Paginated } from '@wcsc/types'
+import { Paginated, RequestResponse } from '@wcsc/types'
 
-import { trainingConfig } from './training.config'
+import { trainingConfig, trainingRunConfig } from './training.config'
 import {
 	ICreateTraining,
 	ITraining,
+	ITrainingRun,
 	IUpdateTraining,
 	TrainingID,
+	TrainingRunID,
 	UseTrainings,
 } from './training.types'
 
@@ -64,5 +70,60 @@ export const createTrainingApi = (http: HttpClientInstance) => {
 		useCreateTraining: api.useCreateEntity,
 		useUpdateTraining: api.useUpdateEntity,
 		trainingRepository: api.repo,
+	}
+}
+
+class TrainingRunRepository extends BaseRepository {
+	async start(id: TrainingID): RequestResponse<ITrainingRun> {
+		return this.http.post(`${trainingConfig.models}/${id}/start/`)
+	}
+
+	async cancel(id: TrainingRunID): RequestResponse<ITrainingRun> {
+		return this.http.post(`${trainingRunConfig.models}/${id}/cancel/`)
+	}
+
+	async findById(id: TrainingRunID): RequestResponse<ITrainingRun> {
+		return await this.http.get(`${trainingRunConfig.models}/${id}/`)
+	}
+}
+
+export const createTrainingRunRepository = (http: HttpClientInstance) =>
+	new TrainingRunRepository(http, trainingConfig.models)
+
+export const createTrainingRunApi = (http: HttpClientInstance) => {
+	const trainingRunRepository = createTrainingRunRepository(http)
+
+	const useStartTrainingRun = (id: TrainingID) =>
+		useMutation({
+			mutationFn: () => trainingRunRepository.start(id),
+			onSuccess: async () => {
+				await optimisticInvalidateQueries([
+					[trainingConfig.models, trainingRunConfig.models],
+				])
+			},
+		})
+
+	const useCancelTrainingRun = (id: TrainingRunID) =>
+		useMutation({
+			mutationFn: () => trainingRunRepository.cancel(id),
+			onSuccess: async () => {
+				await optimisticInvalidateQueries([
+					[trainingConfig.models, trainingRunConfig.models],
+				])
+			},
+		})
+
+	const useTrainingRun = (id: TrainingRunID) =>
+		useQuery({
+			queryKey: [trainingRunConfig.model, id] as QueryKey,
+			queryFn: () => trainingRunRepository.findById(id),
+			enabled: !!id,
+		})
+
+	return {
+		useTrainingRun,
+		useCancelTrainingRun,
+		useStartTrainingRun,
+		trainingRunRepository,
 	}
 }

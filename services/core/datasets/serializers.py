@@ -72,6 +72,7 @@ class DatasetAssetSerializer(ModelSerializer):
 
 class DatasetSerializer(ModelSerializer):
     classes = DatasetClassSerializer(many=True, read_only=True)
+    description = serializers.SerializerMethodField()
     size = serializers.SerializerMethodField()
     count_assets = serializers.SerializerMethodField()
     count_classes = serializers.SerializerMethodField()
@@ -88,6 +89,9 @@ class DatasetSerializer(ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         return super().update(instance, validated_data)
+
+    def get_description(self, obj: Dataset):
+        return 'Обучающий набор изображений томатов для семантической сегментации'
     
     def get_size(self, obj: Dataset):
         return obj.count_size()

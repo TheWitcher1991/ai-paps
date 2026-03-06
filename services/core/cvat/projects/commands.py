@@ -11,9 +11,9 @@ class ProjectCommand:
         self.projects = CVATProjectAdapter()
         self.dataset_engine = DatasetEngine()
 
-    def export(self, job_id: int):
+    def export(self, project_id: int):
         try:
-            return self.dataset_engine.export(DatasetSource.PROJECTS, job_id)
+            return self.dataset_engine.export(DatasetSource.PROJECTS, project_id)
         except Exception as e:
             validation_error(e)
 

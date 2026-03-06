@@ -38,8 +38,7 @@ export const JobDatasetButton = ({
 				onClickButtonApply={handleDataset}
 				size={'s'}
 			>
-				Вы действительно хотите экспортировать датасет для джобы #$
-				{job.id}?
+				Вы действительно хотите экспортировать датасет для джобы #{job.id}?
 			</Dialog>
 
 			<Action

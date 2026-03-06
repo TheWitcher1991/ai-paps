@@ -116,3 +116,10 @@ export const mergeRefs = (...inputRefs) => {
 		})
 	}
 }
+
+export const createSelectOptions = <T extends Record<string, string | number>>(items: T, mapper?: Record<string, string>) => {
+	return Object.entries(items).map(([_value, label]) => ({
+		value: label,
+		content: mapper ? mapper[label] : label,
+	}))
+}

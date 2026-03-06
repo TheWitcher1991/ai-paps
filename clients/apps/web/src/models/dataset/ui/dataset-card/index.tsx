@@ -58,7 +58,7 @@ export const DatasetCard = ({ dataset }: WithDataset) => {
 				},
 			]}
 		>
-			Обучающий набор изображений томатов для семантической сегментации
+			{dataset.description}
 		</ModelCard>
 	)
 }

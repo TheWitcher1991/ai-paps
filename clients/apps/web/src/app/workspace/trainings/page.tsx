@@ -1,8 +1,5 @@
 'use client'
 
-import { GearBranches } from '@gravity-ui/icons'
-import { Button, Icon } from '@gravity-ui/uikit'
-
 import { TrainingsIndicators } from '~widgets/dashkit/trainings-indicators'
 import { setBreadcrumbs } from '~widgets/nav'
 import Trainings, {
@@ -11,6 +8,8 @@ import Trainings, {
 	TrainingsPagination,
 	TrainingsWider,
 } from '~widgets/trainings'
+
+import { TrainingCreateButton } from '~models/training'
 
 import { Group, PageTitle } from '~infra/ui'
 
@@ -25,12 +24,7 @@ export default function TrainingsPage() {
 			<PageTitle
 				title={'Обучения'}
 				subtitle={'Все запуски обучения моделей'}
-				action={
-					<Button type={'button'} view={'action'} size={'l'}>
-						<Icon data={GearBranches} size={16} />
-						Новое обучение
-					</Button>
-				}
+				action={<TrainingCreateButton />}
 			/>
 			<TrainingsIndicators />
 			<TrainingsFilter />

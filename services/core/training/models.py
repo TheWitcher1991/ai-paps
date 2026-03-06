@@ -80,6 +80,8 @@ class TrainingConfig(ModelAdapter):
     hsv_s = models.IntegerField(t("Насыщенность"), default=0)
     hsv_h = models.IntegerField(t("Оттенок"), default=0)
 
+    training = models.OneToOneField(Training, on_delete=models.SET_NULL, null=True, related_name="config")
+
     class Meta:
         ordering = ("-created_date",)
         verbose_name = t("Конфигурация обучения модели")

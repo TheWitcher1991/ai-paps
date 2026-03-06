@@ -20,7 +20,15 @@ export const AssetCell = ({ asset }: WithAsset) => {
 				<Icon color='secondary' data={Picture} />
 				<Text variant='subheader-1'>{asset.file_name}</Text>
 			</Flex>
-			<Text color='secondary' variant='caption-2'>
+			<Text
+				color='secondary'
+				variant='caption-2'
+				style={{
+					overflow: 'hidden',
+					textOverflow: 'ellipsis',
+					whiteSpace: 'nowrap',
+				}}
+			>
 				{removeHostInUrl(asset.file)}
 			</Text>
 		</Flex>

@@ -1,3 +1,4 @@
+import type { SelectProps as SelectComponentProps } from '@gravity-ui/uikit'
 import React from 'react'
 import type { JSXElementConstructor } from 'react'
 
@@ -19,6 +20,16 @@ declare global {
 		type: T
 		props: P
 		key: string | null
+	}
+
+	interface SelectProps<T = string, REGISTER = any> {
+		defaultValue?: T
+		value?: T
+		size?: SelectComponentProps['size']
+		errorMessage?: Message
+		disabled?: boolean
+		onSelect?: (value: T) => void
+		register?: UseFormRegister<REGISTER>
 	}
 
 	type ListViewType = 'list' | 'table'

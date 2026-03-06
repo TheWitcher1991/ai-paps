@@ -1,13 +1,13 @@
 import {
 	BookOpen,
+	Database,
+	DisplayPulse,
+	GraduationCap,
 	House,
 	LocationArrowFill,
 	Molecule,
 	NutHex,
 	Persons,
-	Picture,
-	Database,
-	GraduationCap,
 } from '@gravity-ui/icons'
 import { MenuItem } from '@gravity-ui/navigation'
 import { usePathname, useRouter } from 'next/navigation'
@@ -70,20 +70,19 @@ export default function useMenuItems(): MenuItem[] {
 		{
 			id: 'recognitions',
 			iconSize: 20,
-			title: 'Инференс',
-			icon: Picture,
+			title: 'Мониторинг',
+			icon: DisplayPulse,
 			current: pathname.startsWith(href.recognitions.index),
 			onItemClick: () => router.push(href.recognitions.index),
 		},
 		{
 			id: 'users',
 			iconSize: 20,
-			title: 'Сотрудники',
+			title: 'Пользователи',
 			icon: Persons,
 			current: pathname.startsWith(href.users.index),
 			onItemClick: () => router.push(href.users.index),
 		},
-
 		{
 			id: 'import',
 			title: 'Открыть CVAT',

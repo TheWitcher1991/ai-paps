@@ -6,7 +6,7 @@ export const TrainingStatus = {
 	RUNNING: 'running',
 	VALIDATING: 'validating',
 	FINISHED: 'finished',
-	FAILED: 'FAfailedILED',
+	FAILED: 'failed',
 	CANCELLED: 'cancelled',
 } as const
 
@@ -23,8 +23,10 @@ export type TrainingOptimizer = EnumType<typeof TrainingOptimizer>
 
 export const TrainingLossFunction = {
 	BCE: 'BCE',
+	DICE: 'DICE',
 	BCE_WITH_LOGITS: 'BCEWithLogits',
 	CROSS_ENTROPY: 'CrossEntropy',
+	BINARY_CROSS_ENTROPY: 'BinaryCrossEntropy',
 	MSE: 'MSE',
 } as const
 
