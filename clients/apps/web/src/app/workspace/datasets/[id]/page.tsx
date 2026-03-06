@@ -7,14 +7,13 @@ import Assets, {
 	AssetsFilter,
 	AssetsPagination,
 } from '~widgets/assets'
+import { AssetsIndicators } from '~widgets/dashkit/assets-indicators'
 import { setBreadcrumbs } from '~widgets/nav'
-
-import { DatasetUnionButton } from '~models/dataset'
 
 import { Group, PageTitle } from '~infra/ui'
 
 import { useMount } from '@wcsc/hooks'
-import { toAssetID } from '@wcsc/models'
+import { toDatasetID } from '@wcsc/models'
 import { generateBreadcrumbs } from '@wcsc/toolkit'
 
 export default function AssetsPage({
@@ -33,11 +32,11 @@ export default function AssetsPage({
 				subtitle={
 					'Панель мониторинга и управления ключевыми метриками системы'
 				}
-				action={<DatasetUnionButton />}
 			/>
+			<AssetsIndicators />
 			<AssetsFilter />
 			<Assets />
-			<AssetsFetcher asset={toAssetID(id)} />
+			<AssetsFetcher dataset={toDatasetID(id)} />
 			<AssetsPagination />
 		</Group>
 	)

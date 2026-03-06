@@ -1,4 +1,9 @@
-import { CirclesConcentric, CurlyBracketsFunction, SquareDashedCircle } from '@gravity-ui/icons'
+import {
+	CirclesConcentric,
+	CurlyBracketsFunction,
+	SquareDashedCircle,
+	Tag,
+} from '@gravity-ui/icons'
 import { Flex, Icon, Text } from '@gravity-ui/uikit'
 
 import styles from './index.module.scss'
@@ -12,7 +17,7 @@ interface IndicatorProps {
 
 const icon = {
 	classes: CurlyBracketsFunction,
-	annotations: SquareDashedCircle,
+	annotations: Tag,
 	tasks: CirclesConcentric,
 	jobs: SquareDashedCircle,
 }

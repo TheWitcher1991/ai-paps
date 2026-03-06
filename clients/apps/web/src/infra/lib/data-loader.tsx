@@ -1,3 +1,9 @@
+import {
+	Detail,
+	InternalError,
+	NoSearchResults,
+} from '@gravity-ui/illustrations'
+import { Icon, PlaceholderContainer } from '@gravity-ui/uikit'
 import { memo, PropsWithChildren, ReactNode } from 'react'
 import { match } from 'ts-pattern'
 
@@ -10,11 +16,32 @@ interface DataLoaderProps extends PropsWithChildren {
 	emptyFallback?: ReactNode
 }
 
-const DefaultLoadingFallback = memo(() => 'Поиск данных...')
+const DefaultLoadingFallback = memo(() => (
+	<PlaceholderContainer
+		title='Поиск данных...'
+		size='m'
+		align='center'
+		image={<Icon data={Detail} size={120} />}
+	/>
+))
 
-const DefaultErrorFallback = memo(() => 'При загрузке данных произошла ошибка')
+const DefaultErrorFallback = memo(() => (
+	<PlaceholderContainer
+		title='При загрузке данных произошла ошибка'
+		size='m'
+		align='center'
+		image={<Icon data={Detail} size={120} />}
+	/>
+))
 
-const DefaultEmptyFallback = memo(() => 'Ничего не нашлось')
+const DefaultEmptyFallback = memo(() => (
+	<PlaceholderContainer
+		title='Ничего не нашлось'
+		size='m'
+		align='center'
+		image={<Icon data={NoSearchResults} size={120} />}
+	/>
+))
 
 export const DataLoader = ({
 	isLoading,

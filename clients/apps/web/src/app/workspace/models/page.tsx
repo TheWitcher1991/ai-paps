@@ -1,12 +1,14 @@
 'use client'
-import { Button, Icon } from '@gravity-ui/uikit'
+
 import { GearBranches } from '@gravity-ui/icons'
+import { Button, Icon } from '@gravity-ui/uikit'
 
 import { ModelsIndicators } from '~widgets/dashkit/models-indicators'
 import Models, {
 	ModelsFetcher,
 	ModelsFilter,
 	ModelsPagination,
+	ModelsWider,
 } from '~widgets/models'
 import { setBreadcrumbs } from '~widgets/nav'
 
@@ -34,6 +36,7 @@ export default function ModelsPage() {
 			/>
 			<ModelsIndicators />
 			<ModelsFilter />
+			<ModelsWider />
 			<Models />
 			<ModelsFetcher />
 			<ModelsPagination />

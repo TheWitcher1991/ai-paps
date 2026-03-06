@@ -1,20 +1,25 @@
 import { AssetActions } from '../asset-actions'
+import { Text } from '@gravity-ui/uikit'
 import { useMemo } from 'react'
 
-import { Indicator, TableLink } from '~infra/ui'
+import { AssetCell } from '~models/asset'
 
-import { href } from '@wcsc/href'
+import { Indicator } from '~infra/ui'
+
 import { IAsset } from '@wcsc/models'
-import { formatDateInRu } from '@wcsc/toolkit'
+import { formatFileSize } from '@wcsc/toolkit'
 
 export const useAssetTableData = (assets: IAsset[]) =>
 	useMemo(
 		() =>
 			assets.map(asset => ({
-				name: (
-					<TableLink href={href.assets.view(asset.id)}>
-						Ассет #{asset.id}
-					</TableLink>
+				name: <AssetCell asset={asset} />,
+				format: <Text color='secondary'>{asset.file_format}</Text>,
+				size: formatFileSize(asset.file_size),
+				solution: (
+					<Text color='secondary'>
+						{asset.width}x{asset.height}
+					</Text>
 				),
 				annotations: (
 					<Indicator
@@ -22,8 +27,6 @@ export const useAssetTableData = (assets: IAsset[]) =>
 						count={asset.annotations.length}
 					/>
 				),
-				size: `${asset.width} x ${asset.height}`,
-				date: formatDateInRu(asset.created_at),
 				actions: <AssetActions asset={asset} />,
 			})),
 		[assets],

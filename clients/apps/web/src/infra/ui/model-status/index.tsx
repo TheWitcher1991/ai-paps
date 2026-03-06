@@ -4,8 +4,8 @@ import { Icon, Label } from '@gravity-ui/uikit'
 import styles from './index.module.scss'
 
 export const ModelStatus = () => (
-	<Label theme='success' size='m' className={styles.modelCardStatus}>
-		<Icon data={CircleCheck} />
+	<Label theme='success' size='s' className={styles.modelCardStatus}>
+		<Icon data={CircleCheck} size={14} />
 		Готов
 	</Label>
 )

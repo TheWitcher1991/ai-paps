@@ -103,6 +103,13 @@ body,
 }
 
 .g-root {
+    --gil-color-object-base: var(--g-color-private-brand-450-solid);
+    --gil-color-object-accent-heavy: #fff;
+    --gil-color-object-hightlight: var(--g-color-private-brand-550-solid);
+    --gil-color-shadow-over-object: rgb(211, 158, 80);
+    --gil-color-background-lines: rgb(140, 140, 140);
+    --gil-color-object-danger: rgb(255, 0, 61);
+
     --g-text-body-1-font-size: 14px;
     --g-text-body-1-line-height: 19px;
     --g-text-body-2-font-size: 16px;
@@ -139,14 +146,14 @@ body,
 
     --gn-aside-header-item-expanded-radius: var(--g-border-radius-m);
 
+    --g-card-border-radius: var(--g-border-radius-m);
+
     --g-border-radius-xs: 10px;
     --g-border-radius-s: 12px;
     --g-border-radius-m: 14px;
     --g-border-radius-l: 18px;
     --g-border-radius-xl: 22px;
 
-    --g-card-border-radius: var(--g-border-radius-m);
-    
     --g-font-family-sans: 'Jost';
     --g-font-family-monospace: 'Jost';
 
@@ -278,6 +285,22 @@ body,
     --gn-aside-header-item-current-text-color: var(--g-color-base-brand);
     --gn-aside-header-item-current-icon-color: var(--g-color-base-brand);
     --gn-aside-header-expanded-background-color: rgb(10 10 10);
+    --g-text-input-background-color: #151618;
+    --g-text-input-border-color: #1e2022;
+    --g-text-area-background-color: #151618;
+    --g-text-area-border-color: #1e2022;
+
+    .g-table__sort-content {
+        svg {
+            color: var(--g-color-text-secondary);
+        }
+    }
+
+    .g-table__table {
+        border: 1px solid #1e2022;
+        border-radius: var(--g-border-radius-m);
+        background: rgb(10 10 10);
+    }
 
     --g-color-private-white-950-solid: rgb(243 243 243);
     --g-color-private-white-900-solid: rgb(230 230 230);

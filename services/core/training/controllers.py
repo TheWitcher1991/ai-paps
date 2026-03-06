@@ -23,50 +23,12 @@ class ModelSetController(ModelSetController):
     filterset_class = ModelFilter
 
 
-class TrainingSetController(BaseSetController):
-    prefix = "training"
-    queryset = training_use_case.all()
+class TrainingSetController(ModelSetController):
+    prefix = "trainings"
+
+    queryset = training_use_case.optimize()
     serializer_class = TrainingSerializer
     filterset_class = TrainingFilter
-
-    def list(self, request, *args, **kwargs):
-        queryset = training_use_case.all()
-        serializer = TrainingSerializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def create(self, request, *args, **kwargs):
-        data = request.data
-        training = training_use_case.create(data)
-        serializer = TrainingSerializer(training)
-        logger.info(f"Training created: {training.id}")
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def retrieve(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
-        training = training_use_case.get(pk)
-        if not training:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = TrainingSerializer(training)
-        return Response(serializer.data)
-
-    def update(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
-        data = request.data
-        training = training_use_case.update(pk, data)
-        serializer = TrainingSerializer(training)
-        return Response(serializer.data)
-
-    def partial_update(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
-        data = request.data
-        training = training_use_case.update(pk, data)
-        serializer = TrainingSerializer(training)
-        return Response(serializer.data)
-
-    def destroy(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
-        training_use_case.delete(pk)
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=True, methods=["post"])
     def start(self, request, pk=None):
@@ -83,7 +45,7 @@ class TrainingSetController(BaseSetController):
 
 
 class TrainingRunController(BaseSetController):
-    prefix = "training-runs"
+    prefix = "training/runs"
     queryset = training_run_use_case.all(0)
     serializer_class = TrainingRunSerializer
 
@@ -104,7 +66,7 @@ class TrainingRunController(BaseSetController):
 
 
 class InferenceController(BaseSetController):
-    prefix = "inference"
+    prefix = "inferences"
     parser_classes = [MultiPartParser]
 
     @action(detail=True, methods=["post"])

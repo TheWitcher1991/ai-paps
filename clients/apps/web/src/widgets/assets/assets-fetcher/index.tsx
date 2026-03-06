@@ -7,14 +7,14 @@ import { setCount, setError, setList, setLoading } from '~widgets/assets'
 
 import { useAssets } from '~models/asset'
 
-import { WithAssetID } from '@wcsc/models'
+import { WithDatasetID } from '@wcsc/models'
 
-export function AssetsFetcher({ asset }: WithAssetID) {
+export function AssetsFetcher({ dataset }: WithDatasetID) {
 	const { filter } = useAssetsStore()
 
 	const { data, isLoading, isError } = useAssets({
 		...filter,
-		asset,
+		dataset,
 	})
 
 	useEffect(() => {

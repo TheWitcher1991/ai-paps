@@ -1,39 +1,44 @@
-import { Cpu, CurlyBracketsFunction, Layers } from '@gravity-ui/icons'
+import {
+	Cpu,
+	CurlyBracketsFunction,
+	DatabaseMagnifier,
+	Layers,
+} from '@gravity-ui/icons'
 import { IconBrain } from '@tabler/icons-react'
 
-import { ModelStatus } from '~infra/ui'
+import { ModelStatus, ModelCard as UiModelCard } from '~infra/ui'
 
 import { ModelSubsetMapper, WithModel } from '@wcsc/models'
 
 export const ModelCard = ({ model }: WithModel) => (
-	<ModelCard
+	<UiModelCard
 		icon={<IconBrain />}
-		title={model.name}
-		caption={model.alias}
+		title={model?.name}
+		caption={model?.alias}
 		status={<ModelStatus />}
 		grid={[
 			{
 				icon: Layers,
 				title: 'АРХИТЕКТУРА',
-				caption: model.architecture,
+				caption: model?.architecture,
 			},
 			{
 				icon: Cpu,
 				title: 'BACKBONE',
-				caption: model.backbone,
+				caption: model?.backbone,
 			},
 			{
 				icon: CurlyBracketsFunction,
 				title: 'ФРЕЙМВОРК',
-				caption: model.framework,
+				caption: model?.framework,
 			},
 			{
 				icon: DatabaseMagnifier,
 				title: 'ТИП ЗАДАЧИ',
-				caption: ModelSubsetMapper[model.subset],
+				caption: ModelSubsetMapper[model?.subset],
 			},
 		]}
 	>
-		{model.description}
-	</ModelCard>
+		{model?.description}
+	</UiModelCard>
 )

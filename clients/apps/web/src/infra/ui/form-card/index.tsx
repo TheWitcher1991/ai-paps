@@ -10,7 +10,7 @@ interface FormCardProps extends PropsWithChildren {
 
 export function FormCard({ children, title, width }: FormCardProps) {
 	return (
-		<Card className={styles.form__card} style={{ width }}>
+		<Card view='filled' className={styles.form__card} style={{ width }}>
 			{title && (
 				<Text variant={'header-1'} className={styles.form__card__title}>
 					{title}

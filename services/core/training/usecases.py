@@ -23,7 +23,7 @@ class TrainingUseCase(UseCaseAdapter):
         self.config_repo = TrainingConfigRepository()
         self.run_repo = TrainingRunRepository()
 
-    def all(self):
+    def optimize(self):
         return self.repo.all()
 
     def get(self, training_id: TrainingId):

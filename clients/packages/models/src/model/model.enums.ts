@@ -20,18 +20,25 @@ export const ModelStatus = {
 	READY: 'ready',
 	DEPLOYED: 'deployed',
 	TRAINING: 'training',
-	ARCHIVED: 'archived'
+	ARCHIVED: 'archived',
 } as const
 
 export type ModelStatus = EnumType<typeof ModelStatus>
 
 export const ModelArchitecture = {
-	resnet50: 'resnet50',
-	resnet101: 'resnet101',
-	resnet152: 'resnet152',
 	deeplabv3: 'deeplabv3',
 	unet: 'unet',
 	yolo: 'yolo',
+	fpn: 'fpn',
+	mask_rcnn: 'mask_rcnn',
 } as const
 
 export type ModelArchitecture = EnumType<typeof ModelArchitecture>
+
+export const ModelBackbone = {
+	resnet50: 'resnet50',
+	resnet101: 'resnet101',
+	resnet152: 'resnet152',
+} as const
+
+export type ModelBackbone = EnumType<typeof ModelBackbone>

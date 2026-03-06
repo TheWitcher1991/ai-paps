@@ -5,5 +5,6 @@ export * from './models-pagination'
 export * from './models-fetcher'
 export * from './models.store'
 export * from './models.hooks'
+export * from './models-wider'
 
 export default Models

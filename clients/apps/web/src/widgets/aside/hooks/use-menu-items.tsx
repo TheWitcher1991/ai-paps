@@ -70,7 +70,7 @@ export default function useMenuItems(): MenuItem[] {
 		{
 			id: 'recognitions',
 			iconSize: 20,
-			title: 'Распознавание',
+			title: 'Инференс',
 			icon: Picture,
 			current: pathname.startsWith(href.recognitions.index),
 			onItemClick: () => router.push(href.recognitions.index),

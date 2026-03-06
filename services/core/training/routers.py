@@ -13,9 +13,9 @@ app_name = "models"
 
 router = DefaultRouter()
 router.register(r"models", ModelSetController, basename="models")
-router.register(r"training", TrainingSetController, basename="training")
-router.register(r"training-runs", TrainingRunController, basename="training-runs")
-router.register(r"inference", InferenceController, basename="inference")
+router.register(r"trainings", TrainingSetController, basename="trainings")
+router.register(r"training/runs", TrainingRunController, basename="training/runs")
+router.register(r"inferences", InferenceController, basename="inferences")
 
 urlpatterns = [
     path("", include(router.urls)),

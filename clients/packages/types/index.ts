@@ -28,7 +28,12 @@ export type OrderDirection = 'ASC' | 'DESC'
 
 export type LogLevel = 'log' | 'warn' | 'error'
 
-export type ResourceType = 'datasets' | 'models' | 'users' | 'assets'
+export type ResourceType =
+	| 'datasets'
+	| 'models'
+	| 'users'
+	| 'assets'
+	| 'trainings'
 
 export type MergeObjectEntries<T extends ObjectSchema<any, any>[]> =
 	UnionToIntersection<
@@ -102,7 +107,6 @@ export type ValidationErrorResponse =
 	| string[]
 	| Record<string, string>
 	| Record<string, string[]>
-
 
 export type UnionToIntersection<U> = (
 	U extends any ? (k: U) => void : never

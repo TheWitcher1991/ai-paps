@@ -19,6 +19,26 @@ export const spaced = (val?: number | string): string => {
 	return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
 }
 
+export const removeHostInUrl = (url: string): string => {
+	try {
+		const urlObject = new URL(url)
+
+		let result = urlObject.pathname
+
+		if (urlObject.search) {
+			result += urlObject.search
+		}
+
+		if (urlObject.hash) {
+			result += urlObject.hash
+		}
+
+		return result || '/'
+	} catch (error) {
+		return url
+	}
+}
+
 export const formatBytes = (
 	bytes?: number,
 	system: 'b' | 'kb' | 'mb' | 'gb' = 'mb',

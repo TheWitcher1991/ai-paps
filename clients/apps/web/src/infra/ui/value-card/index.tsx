@@ -12,7 +12,7 @@ export const ValueCard = ({ value, title, icon }: ValueCardProps) => {
 	return (
 		<Card className={styles.valueCard} view={'filled'}>
 			<Flex direction={'column'}>
-				<Text variant={'display-1'}>{value}</Text>
+				<Text variant={'header-1'}>{value}</Text>
 				<Text variant={'body-2'} color={'secondary'}>
 					{title}
 				</Text>

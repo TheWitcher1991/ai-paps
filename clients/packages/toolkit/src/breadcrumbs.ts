@@ -38,6 +38,12 @@ export const breadcrumbsMapper: Record<
 		edit: 'Редактировать ассет',
 		view: 'Просмотр ассета',
 	},
+	trainings: {
+		index: 'Обучения',
+		create: 'Добавить обучение',
+		edit: 'Редактировать обучения',
+		view: 'Просмотр обучения',
+	},
 }
 
 export interface GenerateBreadcrumbsOptions {

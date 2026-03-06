@@ -1,57 +1,64 @@
 import {
-	Archive,
 	CurlyBracketsFunction,
 	DatabaseMagnifier,
-	NutHex,
+	HardDrive,
+	Layers,
 	Picture,
 	Tag,
 } from '@gravity-ui/icons'
 import { IconDatabase } from '@tabler/icons-react'
+import { useRouter } from 'next/navigation'
 
 import { ModelCard, ModelStatus } from '~infra/ui'
 
-import { DatasetSourceMapper, WithDataset } from '@wcsc/models'
-import { formatDateInRu } from '@wcsc/toolkit'
+import { href } from '@wcsc/href'
+import { DatasetSubsetMapper, WithDataset } from '@wcsc/models'
+import { formatDateInRu, formatFileSize } from '@wcsc/toolkit'
 
-export const DatasetCard = ({ dataset }: WithDataset) => (
-	<ModelCard
-		icon={<IconDatabase />}
-		title={dataset.name}
-		caption={formatDateInRu(dataset.created_date)}
-		status={<ModelStatus />}
-		grid={[
-			{
-				icon: Picture,
-				title: 'ИЗОБРАЖЕНИЙ',
-				caption: dataset.classes.length,
-			},
-			{
-				icon: Tag,
-				title: 'АННОТАЦИЙ',
-				caption: dataset.classes.length,
-			},
-			{
-				icon: CurlyBracketsFunction,
-				title: 'КЛАССОВ',
-				caption: dataset.classes.length,
-			},
-			{
-				icon: DatabaseMagnifier,
-				title: 'ФОРМАТ',
-				caption: dataset.format,
-			},
-			{
-				icon: Archive,
-				title: 'РАЗМЕР',
-				caption: '3.4 ГБ',
-			},
-			{
-				icon: NutHex,
-				title: 'ИСТОЧНИК',
-				caption: DatasetSourceMapper[dataset.source],
-			},
-		]}
-	>
-		Обучающий набор изображений томатов для семантической сегментации
-	</ModelCard>
-)
+export const DatasetCard = ({ dataset }: WithDataset) => {
+	const router = useRouter()
+
+	return (
+		<ModelCard
+			onClick={() => router.push(href.datasets.view(dataset.id))}
+			icon={<IconDatabase />}
+			title={dataset.name}
+			caption={formatDateInRu(dataset.created_date)}
+			status={<ModelStatus />}
+			grid={[
+				{
+					icon: Picture,
+					title: 'ИЗОБРАЖЕНИЙ',
+					caption: dataset.count_assets,
+				},
+				{
+					icon: Tag,
+					title: 'АННОТАЦИЙ',
+					caption: dataset.count_annotations,
+				},
+				{
+					icon: CurlyBracketsFunction,
+					title: 'КЛАССОВ',
+					caption: dataset.count_classes,
+				},
+				{
+					icon: DatabaseMagnifier,
+					title: 'ФОРМАТ',
+					caption: dataset.format,
+				},
+				{
+					icon: HardDrive,
+					title: 'РАЗМЕР',
+					caption: formatFileSize(dataset.size),
+				},
+				{
+					icon: Layers,
+					title: 'ТИП ЗАДАЧИ',
+					caption: DatasetSubsetMapper[dataset.subset],
+				},
+			]}
+		>
+			Обучающий набор изображений томатов для семантической сегментации
+		</ModelCard>
+	)
+}

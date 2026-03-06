@@ -20,7 +20,7 @@ from datasets.repositories import (
     dataset_repository,
 )
 from datasets.types import DatasetFormat, DatasetSource
-from packages.kernel.utils import validation_error
+from packages.kernel.utils import get_content_type, validation_error
 
 
 class COCODatasetRegistry:
@@ -152,17 +152,26 @@ class DatasetEngine:
             for img in coco.get("images", []):
                 image_path = images_dir / img["file_name"]
 
-                dataset_asset = dataset_asset_repository.create(
-                    dataset=dataset,
-                    width=img["width"],
-                    height=img["height"],
-                    source_id=img["id"],
-                )
-
                 with open(image_path, "rb") as f:
+                    file = File(f)
+
+                    print(f)
+
+                    print(file)
+
+                    dataset_asset = dataset_asset_repository.create(
+                        dataset=dataset,
+                        width=img["width"],
+                        height=img["height"],
+                        file_name=img["file_name"],
+                        file_size=file.size,
+                        file_format=get_content_type(file),
+                        source_id=img["id"],
+                    )
+
                     dataset_asset.file.save(
                         img["file_name"],
-                        File(f),
+                        file,
                         save=True,
                     )
 

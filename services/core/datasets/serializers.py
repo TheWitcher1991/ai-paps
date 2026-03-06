@@ -72,6 +72,10 @@ class DatasetAssetSerializer(ModelSerializer):
 
 class DatasetSerializer(ModelSerializer):
     classes = DatasetClassSerializer(many=True, read_only=True)
+    size = serializers.SerializerMethodField()
+    count_assets = serializers.SerializerMethodField()
+    count_classes = serializers.SerializerMethodField()
+    count_annotations = serializers.SerializerMethodField()
 
     class Meta:
         model = Dataset
@@ -84,3 +88,15 @@ class DatasetSerializer(ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         return super().update(instance, validated_data)
+    
+    def get_size(self, obj: Dataset):
+        return obj.count_size()
+    
+    def get_count_assets(self, obj: Dataset):
+        return obj.count_assets()
+    
+    def get_count_annotations(self, obj: Dataset):
+        return obj.count_annotations()
+    
+    def get_count_classes(self, obj: Dataset):
+        return obj.count_classes()

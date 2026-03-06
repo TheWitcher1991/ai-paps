@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
+import mimetypes
 from typing import Type, Union
 
 import jwt
+from django.core.files.uploadedfile import UploadedFile
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Model
 from django.utils.translation import gettext_lazy
@@ -12,6 +14,10 @@ from config.settings import HASH_ALGORITHM, SECRET_KEY, SESSION_EXPIRE_DAYS, SES
 
 def validation_error(exp):
     raise ValidationError(str(exp))
+
+
+def get_content_type(file: UploadedFile) -> str:
+    return mimetypes.guess_type(file.name)[0]
 
 
 def get_content_type_for_model(obj: Union[Model, Type[Model]], for_concrete_model=True) -> ContentType:

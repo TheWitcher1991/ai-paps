@@ -17,16 +17,42 @@ class Dataset(ModelAdapter):
     modality = models.CharField(
         t("Модальность"), choices=DatasetModality.choices, default=DatasetModality.RGB, max_length=32
     )
+    size = models.BigIntegerField(t("Общий размер"), blank=True, null=True)
 
     class Meta:
         ordering = ("-created_date",)
         verbose_name = t("Датасет")
         verbose_name_plural = t("Датасеты")
 
+    def count_size(self):
+        size = 0 
+
+        for asset in self.assets.all():
+            size += asset.file_size
+
+        return size
+
+    def count_assets(self):
+        return self.assets.count()
+
+    def count_classes(self):
+        return self.classes.count()
+
+    def count_annotations(self):
+        return self.annotations.count()
+
+    def update_size(self):
+        total = self.assets.aggregate(total=models.Sum("file_size"))["total"] or 0
+        self.size = total
+        self.save(update_fields=["size"])
+
 
 class DatasetAsset(ModelAdapter):
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="assets")
     file = S3PrivateFileField(upload_to="datasets/images")
+    file_name = models.CharField(t("Имя файла"), max_length=255)
+    file_size = models.BigIntegerField(t("Размер файла"))
+    file_format = models.CharField(t("Формат"), max_length=32)
     width = models.IntegerField(t("Ширина"))
     height = models.IntegerField(t("Высота"))
     source_id = models.IntegerField(t("Source ID"))

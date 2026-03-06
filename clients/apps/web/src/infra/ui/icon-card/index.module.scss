@@ -1,0 +1,10 @@
+.modelCardIcon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--g-border-radius-s);
+    background: var(--g-color-base-positive-light);
+    color: var(--g-color-text-brand);
+}

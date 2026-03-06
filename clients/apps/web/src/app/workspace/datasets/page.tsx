@@ -5,6 +5,7 @@ import Datasets, {
 	DatasetsFetcher,
 	DatasetsFilter,
 	DatasetsPagination,
+	DatasetsWider,
 } from '~widgets/datasets'
 import { setBreadcrumbs } from '~widgets/nav'
 
@@ -22,13 +23,12 @@ export default function DatasetsPage() {
 		<Group>
 			<PageTitle
 				title={'Датасеты'}
-				subtitle={
-					'Наборы данных для обучения и валидации моделей'
-				}
+				subtitle={'Наборы данных для обучения и валидации моделей'}
 				action={<DatasetUnionButton />}
 			/>
 			<DatasetsIndicators />
 			<DatasetsFilter />
+			<DatasetsWider />
 			<Datasets />
 			<DatasetsFetcher />
 			<DatasetsPagination />

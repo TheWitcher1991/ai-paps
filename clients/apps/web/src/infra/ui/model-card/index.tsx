@@ -1,7 +1,7 @@
 import { Card, Flex, Icon, IconData, Text } from '@gravity-ui/uikit'
 import { PropsWithChildren, ReactNode } from 'react'
 
-import { Grid } from '~infra/ui'
+import { Grid, IconCard } from '~infra/ui'
 
 import styles from './index.module.scss'
 
@@ -11,13 +11,13 @@ type ModelCardGrid = {
 	caption: string
 }
 
-
 interface ModelCardProps extends PropsWithChildren {
 	title: string
 	caption: ReactNode
 	icon: ReactNode
 	status: ReactNode
 	grid: ModelCardGrid[]
+	onClick?: () => void
 }
 
 export const ModelCard = ({
@@ -27,13 +27,19 @@ export const ModelCard = ({
 	grid,
 	children,
 	icon,
+	onClick,
 }: ModelCardProps) => (
-	<Card className={styles.modelCard} view='filled'>
+	<Card
+		className={styles.modelCard}
+		view='filled'
+		type='action'
+		onClick={onClick}
+	>
 		<Flex justifyContent={'space-between'}>
 			<Flex alignItems={'center'} gap={3}>
-				<span className={styles.modelCardIcon}>{icon}</span>
+				<IconCard>{icon}</IconCard>
 				<Flex direction={'column'} gap={0}>
-					<Text variant='subheader-3'>{title}</Text>
+					<Text variant='subheader-2'>{title}</Text>
 					<Text color='secondary' variant='body-1'>
 						{caption}
 					</Text>
@@ -41,7 +47,7 @@ export const ModelCard = ({
 			</Flex>
 			{status}
 		</Flex>
-		<Text color='secondary' variant='body-2'>
+		<Text color='secondary' variant='body-1'>
 			{children}
 		</Text>
 		<Grid gap={10} gridTemplateColumns={'1fr 1fr'}>

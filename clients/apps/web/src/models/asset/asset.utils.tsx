@@ -1,9 +1,10 @@
 import {
-	Calendar,
 	CurlyBracketsFunction,
+	DatabaseMagnifier,
 	HandStop,
+	HardDrive,
 	Picture,
-	SquareDashedCircle,
+	Tag,
 } from '@gravity-ui/icons'
 import { TableColumnConfig } from '@gravity-ui/uikit'
 
@@ -12,29 +13,34 @@ import { TableName } from '~infra/ui'
 export const assetTableColumns: TableColumnConfig<any>[] = [
 	{
 		id: 'name',
-		name: () => <TableName icon={Picture}>Ассет</TableName>,
-		width: '20%',
+		name: () => <TableName icon={Picture}>Имя файла</TableName>,
+		width: '26%',
 		align: 'left',
 		meta: { sort: true },
 	},
 	{
-		id: 'annotations',
-		name: () => <TableName icon={SquareDashedCircle}>Аннотаций</TableName>,
-		width: '20%',
+		id: 'format',
+		name: () => <TableName icon={DatabaseMagnifier}>Формат</TableName>,
 		align: 'left',
 		meta: { sort: true },
 	},
 	{
 		id: 'size',
-		name: () => <TableName icon={CurlyBracketsFunction}>Размер</TableName>,
-		width: '20%',
+		name: () => <TableName icon={HardDrive}>Размер</TableName>,
 		align: 'left',
 		meta: { sort: true },
 	},
 	{
-		id: 'date',
-		name: () => <TableName icon={Calendar}>Дата</TableName>,
-		width: '20%',
+		id: 'solution',
+		name: () => (
+			<TableName icon={CurlyBracketsFunction}>Разрешение</TableName>
+		),
+		align: 'left',
+		meta: { sort: true },
+	},
+	{
+		id: 'annotations',
+		name: () => <TableName icon={Tag}>Аннотаций</TableName>,
 		align: 'left',
 		meta: { sort: true },
 	},
