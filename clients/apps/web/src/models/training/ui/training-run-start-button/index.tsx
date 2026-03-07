@@ -7,7 +7,7 @@ import { Action } from '~infra/ui'
 
 import { WithTraining } from '@wcsc/models'
 
-export const TrainingRunStartButton = ({
+export const TrainingRunCaButton = ({
 	training,
 	onlyIcon,
 }: PropsWithAction<WithTraining>) => {
@@ -23,7 +23,7 @@ export const TrainingRunStartButton = ({
 		})
 
 	return (
-		<Action view={'action'} onClick={handleStart} icon={CirclePlay} onlyIcon={onlyIcon}>
+		<Action view={'action'} loading={run.isPending} onClick={handleStart} icon={CirclePlay} onlyIcon={onlyIcon}>
 			Запуск
 		</Action>
 	)

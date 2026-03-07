@@ -6,7 +6,8 @@ import { IconSchool } from '@tabler/icons-react'
 import { ModelCard, Progress, Spacing } from '~infra/ui'
 
 import { WithTraining } from '@wcsc/models'
-import { formatDateInRu } from '@wcsc/toolkit'
+import { formatDateInRu, formatDuration } from '@wcsc/toolkit'
+import { TrainingRunCancelButton } from '../training-cancel-start-button'
 
 export const TrainingCard = ({ training }: WithTraining) => (
 	<ModelCard
@@ -18,17 +19,17 @@ export const TrainingCard = ({ training }: WithTraining) => (
 			{
 				icon: ChartLineArrowUp,
 				title: 'TRAIN LOSS',
-				caption: training?.runs[0]?.train_loss || 0,
+				caption: training?.runs[0]?.train_loss?.toFixed(3) || 0,
 			},
 			{
 				icon: ChartLineArrowUp,
 				title: 'VAL LOSS',
-				caption: training?.runs[0]?.val_loss || 0,
+				caption: training?.runs[0]?.val_loss?.toFixed(3) || 0,
 			},
 			{
 				icon: Stopwatch,
 				title: 'ДЛИТЕЛЬНОСТЬ',
-				caption: '0м',
+				caption: formatDuration(training?.runs[0]?.started_date, training?.runs[0]?.finished_date),
 			},
 			{
 				icon: CirclePlay,
@@ -47,10 +48,10 @@ export const TrainingCard = ({ training }: WithTraining) => (
 				content: training.config.loss_function,
 			},
 			{
-				content: `${training.datasets.length} датасета`,
+				content: `${training.datasets.length} датасет`,
 			},
 		]}
-		actions={<TrainingRunStartButton training={training} />}
+		actions={<TrainingRunCancelButton training={training} />}
 	>
 		{training.description}
 		<Spacing v='xs' />

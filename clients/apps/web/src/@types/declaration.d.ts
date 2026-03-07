@@ -1,4 +1,9 @@
-import type { SelectProps as SelectComponentProps } from '@gravity-ui/uikit'
+import type {
+	ButtonSize,
+	ButtonView,
+	ButtonWidth,
+	SelectProps as SelectComponentProps,
+} from '@gravity-ui/uikit'
 import React from 'react'
 import type { JSXElementConstructor } from 'react'
 

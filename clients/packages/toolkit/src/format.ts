@@ -19,6 +19,43 @@ export const spaced = (val?: number | string): string => {
 	return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
 }
 
+export const formatDuration = (started_date, finished_date): string => {
+    // Проверяем, есть ли дата начала
+    if (!started_date) {
+        return 'не начат';
+    }
+
+    // Парсим дату начала
+    const startDate = new Date(started_date);
+    
+    // Определяем дату окончания (если процесс завершён, иначе - текущее время)
+    let endDate: Date;
+    if (finished_date) {
+        endDate = new Date(finished_date);
+    } else {
+        endDate = new Date();
+    }
+
+    // Вычисляем разницу в миллисекундах
+    const diffMs = endDate.getTime() - startDate.getTime();
+    
+    // Конвертируем в минуты и часы
+    const totalMinutes = Math.floor(diffMs / (1000 * 60));
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+
+    // Форматируем результат
+    if (hours > 0 && minutes > 0) {
+        return `${hours} ч ${minutes} мин`;
+    } else if (hours > 0) {
+        return `${hours} ч`;
+    } else if (minutes > 0) {
+        return `${minutes} мин`;
+    } else {
+        return 'менее минуты';
+    }
+}
+
 export const removeHostInUrl = (url: string): string => {
 	try {
 		const urlObject = new URL(url)

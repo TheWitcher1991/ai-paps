@@ -92,7 +92,7 @@ class TrainingService:
             return optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode="min", patience=3, factor=0.1)
 
     def _create_loss_function(self):
-        loss_name = self.config.loss_function if self.config else "BCEWithLogits"
+        loss_name = self.config.loss_function if self.config else "CrossEntropy"
 
         logger.info(f"Creating loss function: {loss_name}")
 

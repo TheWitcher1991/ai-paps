@@ -12,6 +12,22 @@ from packages.usecases.logging import logger
 class DatasetLoader:
     def __init__(self, training_datasets):
         self.training_datasets = training_datasets
+        self._class_mapping = None
+
+    def _build_class_mapping(self):
+        if self._class_mapping is not None:
+            return self._class_mapping
+
+        class_ids = set()
+        for td in self.training_datasets:
+            dataset = td.dataset
+            classes = DatasetClass.objects.filter(dataset=dataset)
+            for cls in classes:
+                class_ids.add(cls.source_id)
+
+        self._class_mapping = {source_id: idx for idx, source_id in enumerate(sorted(class_ids))}
+        logger.info(f"Built class mapping: {self._class_mapping}")
+        return self._class_mapping
 
     def load_dataset(self, subset="train"):
         assets = []
@@ -32,15 +48,17 @@ class DatasetLoader:
 
     def create_dataset(self, subset="train", image_size=(512, 512)):
         assets, annotations_by_asset = self.load_dataset(subset)
+        class_mapping = self._build_class_mapping()
 
-        return TorchDataset(assets, annotations_by_asset, image_size)
+        return TorchDataset(assets, annotations_by_asset, image_size, class_mapping)
 
 
 class TorchDataset(Dataset):
-    def __init__(self, assets, annotations_by_asset, image_size=(512, 512)):
+    def __init__(self, assets, annotations_by_asset, image_size=(512, 512), class_mapping=None):
         self.assets = assets
         self.annotations_by_asset = annotations_by_asset
         self.image_size = image_size
+        self.class_mapping = class_mapping or {}
 
     def __len__(self):
         return len(self.assets)
@@ -72,7 +90,8 @@ class TorchDataset(Dataset):
 
                         temp_mask = Image.new("L", self.image_size, 0)
                         draw = ImageDraw.Draw(temp_mask)
-                        draw.polygon([tuple(p) for p in poly_array], fill=ann.cls.source_id)
+                        class_idx = self.class_mapping.get(ann.cls.source_id, 0)
+                        draw.polygon([tuple(p) for p in poly_array], fill=class_idx)
                         mask = np.maximum(mask, np.array(temp_mask))
 
         mask = torch.from_numpy(mask).long()
