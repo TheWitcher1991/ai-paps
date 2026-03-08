@@ -23,6 +23,7 @@ export const TaskDatasetButton = ({
 				title: 'Датасет для задачи успешно экспортирован',
 				name: 'dataset-exported',
 			})
+			toggle()
 		})
 
 	return (

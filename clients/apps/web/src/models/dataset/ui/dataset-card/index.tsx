@@ -9,7 +9,7 @@ import {
 import { IconDatabase } from '@tabler/icons-react'
 import { useRouter } from 'next/navigation'
 
-import { ModelCard, ModelStatus } from '~infra/ui'
+import { ModelCard, ModelStatus, Progress } from '~infra/ui'
 
 import { href } from '@wcsc/href'
 import { DatasetSubsetMapper, WithDataset } from '@wcsc/models'
@@ -37,26 +37,33 @@ export const DatasetCard = ({ dataset }: WithDataset) => {
 					caption: dataset.count_annotations,
 				},
 				{
-					icon: CurlyBracketsFunction,
-					title: 'КЛАССОВ',
-					caption: dataset.count_classes,
+					icon: HardDrive,
+					title: 'РАЗМЕР',
+					caption: formatFileSize(dataset.size),
 				},
 				{
 					icon: DatabaseMagnifier,
 					title: 'ФОРМАТ',
 					caption: dataset.format,
 				},
+			]}
+			tags={[
 				{
-					icon: HardDrive,
-					title: 'РАЗМЕР',
-					caption: formatFileSize(dataset.size),
+					content: DatasetSubsetMapper[dataset.subset],
 				},
 				{
-					icon: Layers,
-					title: 'ТИП ЗАДАЧИ',
-					caption: DatasetSubsetMapper[dataset.subset],
+					content: dataset.format,
+				},
+				{
+					content: `Классов ${dataset.count_classes}`,
 				},
 			]}
+			footer={<Progress
+				disableStack={true}
+				caption='Аннотировано'
+				value={dataset.annotated_percent}
+				max={100}
+			/>}
 		>
 			{dataset.description}
 		</ModelCard>

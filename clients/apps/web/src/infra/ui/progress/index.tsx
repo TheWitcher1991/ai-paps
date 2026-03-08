@@ -9,16 +9,17 @@ interface ProgressProps {
 	value: number
 	max: number
 	status?: TrainingStatus
+	disableStack?: boolean
 }
 
-export const Progress = ({ caption, value, max, status }: ProgressProps) => {
+export const Progress = ({ caption, value, max, status, disableStack }: ProgressProps) => {
 	const percentage = Math.min(100, Math.max(0, (value / max) * 100))
 
 	return (
 		<Flex direction={'column'} gap={1.5}>
 			<Flex alignItems={'center'} justifyContent={'space-between'}>
-				<Text variant='caption-2'>
-					{caption} {value} / {max}
+				<Text variant='caption-2' color='secondary'>
+					{caption} {!disableStack && `${value} / ${max}`}
 				</Text>
 				<Text variant='caption-2' color='primary'>
 					{percentage.toFixed(0)}%
@@ -27,7 +28,7 @@ export const Progress = ({ caption, value, max, status }: ProgressProps) => {
 			<div className={styles.progress}>
 				<div
 					className={styles.progressActive}
-					style={{ background: TrainingStatusColorMapper[status] }}
+					style={{ background: TrainingStatusColorMapper[status], width: `${percentage}%` }}
 				/>
 			</div>
 		</Flex>

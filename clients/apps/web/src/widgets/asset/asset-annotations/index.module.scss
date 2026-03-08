@@ -1,9 +1,9 @@
 .annotations {
-    width: 300px;
-    top: 6px;
+    width: 400px;
+    top: 0;
     right: 6px;
     z-index: 100;
-    padding: 10px;
+    padding: 0 10px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -16,4 +16,22 @@
     background: var(--g-color-base-selection);
     padding: 10px 12px;
     border-radius: 8px;
+}
+
+.annotationCard {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--g-color-base-generic);
+    transition: all 0.1s linear;
+
+    &:hover {
+        cursor: pointer;
+        border-color: var(--g-color-text-brand);
+    }
+
+    svg {
+        color: var(--g-color-text-brand);
+    }
 }

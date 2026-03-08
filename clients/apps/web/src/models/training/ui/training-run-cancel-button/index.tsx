@@ -11,7 +11,7 @@ export const TrainingRunCancelButton = ({
 	training,
 	onlyIcon,
 }: PropsWithAction<WithTraining>) => {
-	const run = useCancelTrainingRun(training.id)
+	const run = useCancelTrainingRun(training?.runs[0]?.id)
 
 	const handleCancel = async () =>
 		await query(async () => {

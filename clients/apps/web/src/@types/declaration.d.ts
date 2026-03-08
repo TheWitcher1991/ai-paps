@@ -37,6 +37,16 @@ declare global {
 		register?: UseFormRegister<REGISTER>
 	}
 
+	interface SelectMiltipleProps<T = string, REGISTER = any> {
+		defaultValue?: T[]
+		value?: T[]
+		size?: SelectComponentProps['size']
+		errorMessage?: Message
+		disabled?: boolean
+		onSelect?: (value: T[]) => void
+		register?: UseFormRegister<REGISTER>
+	}
+
 	type ListViewType = 'list' | 'table'
 
 	type PropsWithAction<P = unknown> = P & {

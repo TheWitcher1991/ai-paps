@@ -27,6 +27,7 @@ export default function Aside({ children }: PropsWithChildren) {
 				className: styles.text,
 				iconClassName: styles.aside,
 			}}
+			hideCollapseButton={true}
 			compact={compact}
 			onChangeCompact={setCompact}
 			headerDecoration={false}

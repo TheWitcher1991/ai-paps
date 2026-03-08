@@ -13,7 +13,7 @@ import { TableName } from '~infra/ui'
 export const requestTableColumns: TableColumnConfig<any>[] = [
 	{
 		id: 'name',
-		name: () => <TableName icon={ArrowDownToSquare}>Запросы</TableName>,
+		name: () => <TableName icon={ArrowDownToSquare}>Запрос</TableName>,
 		width: '20%',
 		align: 'left',
 		meta: { sort: true },

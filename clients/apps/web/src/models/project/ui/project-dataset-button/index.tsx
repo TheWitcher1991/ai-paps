@@ -23,6 +23,7 @@ export const ProjectDatasetButton = ({
 				title: 'Датасет для проекта успешно экспортирован',
 				name: 'dataset-exported',
 			})
+			toggle()
 		})
 
 	return (

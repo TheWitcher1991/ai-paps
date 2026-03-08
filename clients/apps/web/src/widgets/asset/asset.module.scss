@@ -5,7 +5,7 @@
     position: relative;
     overflow: hidden;
     justify-content: center;
-    height: 89dvh;
+    height: 82dvh;
     width: auto;
 
 }
@@ -19,6 +19,7 @@
     display: flex;
     border-radius: 30px;
     justify-content: center;
+    border: 1px solid var(--g-card-border-color);
 }
 
 .annotationRelative {

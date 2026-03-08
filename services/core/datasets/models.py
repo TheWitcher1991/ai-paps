@@ -41,6 +41,16 @@ class Dataset(ModelAdapter):
     def count_annotations(self):
         return self.annotations.count()
 
+    def count_annotated_assets(self):
+        return self.assets.annotate(annotated=models.Count("annotations")).filter(annotated__gt=0).count()
+
+    def get_annotated_percent(self):
+        total = self.count_assets()
+        if total == 0:
+            return 0
+        annotated = self.count_annotated_assets()
+        return round(annotated / total * 100, 1)
+
     def update_size(self):
         total = self.assets.aggregate(total=models.Sum("file_size"))["total"] or 0
         self.size = total

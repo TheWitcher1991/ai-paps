@@ -33,9 +33,11 @@ class TrainingSetController(ModelSetController):
     @action(detail=True, methods=["post"], serializer_class=TrainingRunSerializer)
     def start(self, request, pk=None):
         logger.info(f"Starting training: {pk}")
-        training = training_use_case.start_training(pk)
+        training, run = training_use_case.start_training(pk)
         serializer = TrainingSerializer(training)
-        return Response(serializer.data)
+        data = serializer.data
+        data["run"] = TrainingRunSerializer(run).data
+        return Response(data)
 
     @action(detail=True, methods=["get"], serializer_class=TrainingRunSerializer)
     def runs(self, request, pk=None):

@@ -1,3 +1,4 @@
+from datetime import datetime
 from packages.framework.usecases import UseCaseAdapter
 from packages.usecases.logging import logger
 from training.repositories import (
@@ -6,7 +7,7 @@ from training.repositories import (
     TrainingRepository,
     TrainingRunRepository,
 )
-from training.types import ModelId, TrainingId
+from training.types import TrainingId
 
 
 class ModelUseCase(UseCaseAdapter):
@@ -27,7 +28,7 @@ class TrainingUseCase(UseCaseAdapter):
         return self.repo.all()
 
     def get(self, training_id: TrainingId):
-        return self.repo.get(training_id)
+        return self.repo.get_by_id(training_id)
 
     def create(self, data: dict):
         training = self.repo.create(data)
@@ -44,20 +45,28 @@ class TrainingUseCase(UseCaseAdapter):
         logger.info(f"Training deleted: {training_id}")
 
     def start_training(self, training_id: TrainingId):
-        from training.services.training_service import TrainingService
+        from training.background import get_training_runner
 
         training = self.repo.get_by_id(training_id)
-        logger.info(f"Starting training: {training_id}")
+        logger.info(f"Scheduling training: {training_id}")
 
-        service = TrainingService(training)
-        service.run()
+        runner = get_training_runner()
+        runner.start_async(training_id)
 
-        logger.info(f"Training completed: {training_id}")
-        return training
+        run = self.run_repo.model.objects.filter(training_id=training_id).last()
+
+        return training, run
 
     def cancel_training(self, run_id: int):
-        run = self.run_repo.get(run_id)
+        from training.background import get_training_runner
+
+        run = self.run_repo.get_by_id(run_id)
+
+        runner = get_training_runner()
+        runner.cancel(run.training_id)
+
         run.status = "cancelled"
+        run.finished_date = datetime.now()
         run.save()
         logger.info(f"Training run cancelled: {run_id}")
         return run
@@ -71,7 +80,7 @@ class TrainingRunUseCase(UseCaseAdapter):
         return self.repo.model.objects.filter(training_id=training_id)
 
     def get(self, run_id: int):
-        return self.repo.get(run_id)
+        return self.repo.get_by_id(run_id)
 
 
 model_use_case = ModelUseCase()

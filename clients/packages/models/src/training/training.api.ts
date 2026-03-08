@@ -98,7 +98,8 @@ export const createTrainingRunApi = (http: HttpClientInstance) => {
 			mutationFn: () => trainingRunRepository.start(id),
 			onSuccess: async () => {
 				await optimisticInvalidateQueries([
-					[trainingConfig.models, trainingRunConfig.models],
+					[trainingConfig.models],
+					[trainingRunConfig.models],
 				])
 			},
 		})
@@ -108,7 +109,8 @@ export const createTrainingRunApi = (http: HttpClientInstance) => {
 			mutationFn: () => trainingRunRepository.cancel(id),
 			onSuccess: async () => {
 				await optimisticInvalidateQueries([
-					[trainingConfig.models, trainingRunConfig.models],
+					[trainingConfig.models],
+					[trainingRunConfig.models],
 				])
 			},
 		})

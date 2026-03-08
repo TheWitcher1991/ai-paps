@@ -1,15 +1,40 @@
-import AssetTabs from '../asset-tabs'
-import { Flex } from '@gravity-ui/uikit'
 
-import { IAnnotation } from '@wcsc/models'
+import { Button, Card, Divider, Flex, Icon, Text } from '@gravity-ui/uikit'
+
+import { IAnnotation, WithAnnotation } from '@wcsc/models'
 import { Nullable } from '@wcsc/types'
 
 import styles from './index.module.scss'
-
+import { Tag } from '@gravity-ui/icons'
 interface AssetAnnotationsProps {
 	annotations: IAnnotation[]
 	hoveredId: Nullable<number>
 	onHovered: (hoveredId: Nullable<number>) => void
+}
+
+interface AnnotationCardProps extends WithAnnotation {
+	onMouseEnter: () => void
+	onMouseLeave: () => void
+}
+
+export const AnnotationCard = ({ annotation, onMouseEnter, onMouseLeave }: AnnotationCardProps) => {
+	return <Card className={styles.annotationCard} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+		<Flex gap={3} alignItems={'center'}>
+			<Icon data={Tag} size={17} />
+			<Flex direction={'column'} gap={0}>
+				<Text color='secondary' variant='caption-2'>АННОТАЦИЯ</Text>
+				<Text variant='subheader-1' color='primary'>{annotation.cls.name}</Text>
+			</Flex>
+		</Flex>
+		<Flex alignItems={'center'} gap={1}>
+			<Button view='raised' size='s'>
+				<Text variant='caption-2'>Полигонов {annotation.area}</Text>
+			</Button>
+			{annotation.area_cm2 && <Button view='raised' size='s'>
+				<Text variant='caption-2'>Площадь {annotation.area_cm2} cм²</Text>
+			</Button>}
+		</Flex>
+	</Card>
 }
 
 export default function AssetAnnotations({
@@ -20,33 +45,10 @@ export default function AssetAnnotations({
 	return (
 		<>
 			<div className={styles.annotations}>
-				<AssetTabs />
-
-				<Flex direction={'column'} gap={1}>
-					{annotations.map((ann: any) => (
-						<div
-							className={styles.annotation}
-							key={ann.id}
-							onMouseEnter={() => onHovered(ann.id)}
-							onMouseLeave={() => onHovered(null)}
-							style={{
-								cursor: 'pointer',
-								color: 'white',
-								border:
-									hoveredId === ann.id
-										? '1px solid yellow'
-										: '1px solid #333',
-								transition: '0.2s',
-							}}
-						>
-							<b>
-								#{ann.id} {ann.cls?.name}
-							</b>
-							<div>Полигонов: {ann.area}</div>
-							{ann.area_cm2 && (
-								<div>Площадь: {ann.area_cm2} cм²</div>
-							)}
-						</div>
+				<Flex direction={'column'} gap={2}>
+					{annotations.map((ann) => (
+						<AnnotationCard onMouseEnter={() => onHovered(ann.id)}
+							onMouseLeave={() => onHovered(null)} annotation={ann} />
 					))}
 				</Flex>
 			</div>

@@ -9,6 +9,7 @@ import {
 	TrainingScheduler,
 	TrainingStatus,
 } from './training.enums'
+import { vDatasetId } from '../dataset'
 
 export const vTrainingId = vBrand(vShape.id, 'TrainingID')
 
@@ -90,6 +91,7 @@ export const WriteableTrainingModel = merge(
 	BaseTrainingModel,
 	object({
 		model: vModelId,
+		dataset_ids: array(vDatasetId),
 		config: WriteableTrainingConfigModel,
 	}),
 )

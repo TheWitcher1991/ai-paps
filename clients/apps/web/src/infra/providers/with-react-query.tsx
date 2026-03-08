@@ -9,7 +9,7 @@ const WithReactQuery = ({ children }: PropsWithChildren) => {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<>{children}</>
-			{IS_DEV && <ReactQueryDevtools initialIsOpen={false} />}
+			{IS_DEV && <ReactQueryDevtools initialIsOpen={false} buttonPosition='top-right' />}
 		</QueryClientProvider>
 	)
 }

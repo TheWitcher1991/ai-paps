@@ -33,8 +33,8 @@ export const useAssetSegmentation = (
 				const isActive = ann.id === hoveredId
 				ctx.strokeStyle = isActive ? 'yellow' : 'lime'
 				ctx.fillStyle = isActive
-					? 'rgba(255,255,0,0.4)'
-					: 'rgba(0,255,0,0.25)'
+					? 'rgba(255,255,0,0.5)'
+					: 'rgba(0,255,0,0.3)'
 				ctx.lineWidth = isActive ? 3 : 2
 
 				if (ann.segmentation?.length) {

@@ -77,6 +77,7 @@ class DatasetSerializer(ModelSerializer):
     count_assets = serializers.SerializerMethodField()
     count_classes = serializers.SerializerMethodField()
     count_annotations = serializers.SerializerMethodField()
+    annotated_percent = serializers.SerializerMethodField()
 
     class Meta:
         model = Dataset
@@ -104,3 +105,6 @@ class DatasetSerializer(ModelSerializer):
     
     def get_count_classes(self, obj: Dataset):
         return obj.count_classes()
+
+    def get_annotated_percent(self, obj: Dataset):
+        return obj.get_annotated_percent()

@@ -9,6 +9,9 @@ import { WithAsset } from '@wcsc/models'
 import AssetAnnotations from './asset-annotations'
 import { useAssetSegmentation } from './asset.hooks'
 import styles from './asset.module.scss'
+import { CardIconTitle } from '~infra/ui'
+import { IconPhoto } from '@tabler/icons-react'
+import { removeHostInUrl } from '@wcsc/toolkit'
 
 export default function Asset({ asset }: WithAsset) {
 	const { data, isLoading } = useAnnotations({ asset: asset.id })
@@ -79,35 +82,43 @@ export default function Asset({ asset }: WithAsset) {
 	}, [scale, drawAnnotations])
 
 	return (
-		<div className={styles.annotationConter}>
-			<div className={styles.annotationBlocker}>
-				<div
-					ref={containerRef}
-					className={styles.annotationRelative}
-					style={{
-						transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
-						transformOrigin: 'top left',
-						cursor: dragging.current ? 'grabbing' : 'grab',
-					}}
-				>
-					<img
-						ref={imgRef}
-						src={asset.file}
-						alt=''
-						className={styles.annotationAsset}
-					/>
-					<canvas
-						ref={canvasRef}
-						className={styles.annotationCanvas}
-					/>
-				</div>
-			</div>
-
-			<AssetAnnotations
-				annotations={results}
-				hoveredId={hoveredId}
-				onHovered={hoveredId => setHoveredId(hoveredId)}
+		<>
+			<CardIconTitle
+				icon={<IconPhoto />}
+				title={asset.file_name}
+				caption={removeHostInUrl(asset.file)}
 			/>
-		</div>
+
+			<div className={styles.annotationConter}>
+				<div className={styles.annotationBlocker}>
+					<div
+						ref={containerRef}
+						className={styles.annotationRelative}
+						style={{
+							transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
+							transformOrigin: 'top left',
+							cursor: dragging.current ? 'grabbing' : 'grab',
+						}}
+					>
+						<img
+							ref={imgRef}
+							src={asset.file}
+							alt=''
+							className={styles.annotationAsset}
+						/>
+						<canvas
+							ref={canvasRef}
+							className={styles.annotationCanvas}
+						/>
+					</div>
+				</div>
+
+				<AssetAnnotations
+					annotations={results}
+					hoveredId={hoveredId}
+					onHovered={hoveredId => setHoveredId(hoveredId)}
+				/>
+			</div>
+		</>
 	)
 }

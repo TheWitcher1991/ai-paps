@@ -30,6 +30,7 @@ export const DatasetModel = merge(
 		modality: vShape.enum(DatasetModality),
 		classes: array(ClassModel),
 		size: number(),
+		annotated_percent: number(),
 		count_assets: number(),
 		count_classes: number(),
 		count_annotations: number(),

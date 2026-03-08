@@ -1,9 +1,9 @@
 import {
-	CurlyBracketsFunction,
-	DatabaseMagnifier,
-	Flask,
+	Shield,
+	Calendar,
+	SquareHashtag,
 	HandStop,
-	SquareDashedCircle,
+	Person,
 } from '@gravity-ui/icons'
 import { TableColumnConfig } from '@gravity-ui/uikit'
 
@@ -11,29 +11,29 @@ import { TableName } from '~infra/ui'
 
 export const userTableColumns: TableColumnConfig<any>[] = [
 	{
-		id: 'name',
-		name: () => <TableName icon={SquareDashedCircle}>Имя</TableName>,
+		id: 'id',
+		name: () => <TableName icon={SquareHashtag}>ID</TableName>,
 		width: '20%',
 		align: 'left',
 		meta: { sort: true },
 	},
 	{
-		id: 'format',
-		name: () => <TableName icon={Flask}>Формат</TableName>,
+		id: 'username',
+		name: () => <TableName icon={Person}>Логин</TableName>,
 		width: '20%',
 		align: 'left',
 		meta: { sort: true },
 	},
 	{
-		id: 'classes',
-		name: () => <TableName icon={CurlyBracketsFunction}>Классов</TableName>,
+		id: 'roles',
+		name: () => <TableName icon={Shield}>Роли</TableName>,
 		width: '20%',
 		align: 'left',
 		meta: { sort: true },
 	},
 	{
-		id: 'source',
-		name: () => <TableName icon={DatabaseMagnifier}>Источник</TableName>,
+		id: 'last_login',
+		name: () => <TableName icon={Calendar}>Последний вход</TableName>,
 		width: '20%',
 		align: 'left',
 		meta: { sort: true },

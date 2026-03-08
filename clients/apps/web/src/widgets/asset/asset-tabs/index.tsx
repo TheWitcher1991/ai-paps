@@ -4,10 +4,10 @@ export default function AssetTabs() {
 	return (
 		<SegmentedRadioGroup defaultValue='1'>
 			<SegmentedRadioGroup.Option value='1'>
-				Анализ
+				Аннотации
 			</SegmentedRadioGroup.Option>
 			<SegmentedRadioGroup.Option value='2'>
-				Классы
+				Макси
 			</SegmentedRadioGroup.Option>
 		</SegmentedRadioGroup>
 	)

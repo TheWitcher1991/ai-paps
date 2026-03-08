@@ -1,0 +1,13 @@
+.modelCell {
+    background: #151618;
+    border-radius: var(--g-border-radius-s);
+    padding: 12px;
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    svg {
+        color: var(--g-color-text-brand)
+    }
+}

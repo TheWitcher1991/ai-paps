@@ -44,14 +44,6 @@ export default function useMenuItems(): MenuItem[] {
 			onItemClick: () => router.push(href.cvat.projects.index),
 		},
 		{
-			id: 'datasets',
-			iconSize: 20,
-			title: 'Датасеты',
-			icon: Database,
-			current: pathname.startsWith(href.datasets.index),
-			onItemClick: () => router.push(href.datasets.index),
-		},
-		{
 			id: 'models',
 			iconSize: 20,
 			title: 'Нейронные сети',
@@ -67,6 +59,15 @@ export default function useMenuItems(): MenuItem[] {
 			current: pathname.startsWith(href.trainings.index),
 			onItemClick: () => router.push(href.trainings.index),
 		},
+		{
+			id: 'datasets',
+			iconSize: 20,
+			title: 'Датасеты',
+			icon: Database,
+			current: pathname.startsWith(href.datasets.index),
+			onItemClick: () => router.push(href.datasets.index),
+		},
+
 		{
 			id: 'recognitions',
 			iconSize: 20,

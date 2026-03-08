@@ -1,0 +1,17 @@
+.footer {
+    position: absolute;
+    right: 0;
+    width: 100%;
+    background: var(--gn-aside-header-expanded-background-color);
+    bottom: 0;
+}
+
+.aside {
+    font-size: 20px;
+    color: var(--g-color-base-brand);
+}
+
+.text {
+    font-weight: 600;
+    letter-spacing: 1px;
+}

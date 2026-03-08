@@ -1,4 +1,4 @@
-import { TrainingRunStartButton } from '../training-run-start-button'
+import { TrainingAction } from '../training-action'
 import { TrainingRunStatusLabel } from '../training-run-status-label'
 import { ChartLineArrowUp, CirclePlay, Stopwatch } from '@gravity-ui/icons'
 import { IconSchool } from '@tabler/icons-react'
@@ -7,7 +7,7 @@ import { ModelCard, Progress, Spacing } from '~infra/ui'
 
 import { WithTraining } from '@wcsc/models'
 import { formatDateInRu, formatDuration } from '@wcsc/toolkit'
-import { TrainingRunCancelButton } from '../training-cancel-start-button'
+import { ModelCell } from '~models/model'
 
 export const TrainingCard = ({ training }: WithTraining) => (
 	<ModelCard
@@ -29,7 +29,10 @@ export const TrainingCard = ({ training }: WithTraining) => (
 			{
 				icon: Stopwatch,
 				title: 'ДЛИТЕЛЬНОСТЬ',
-				caption: formatDuration(training?.runs[0]?.started_date, training?.runs[0]?.finished_date),
+				caption: formatDuration(
+					training?.runs[0]?.started_date,
+					training?.runs[0]?.finished_date,
+				),
 			},
 			{
 				icon: CirclePlay,
@@ -48,12 +51,14 @@ export const TrainingCard = ({ training }: WithTraining) => (
 				content: training.config.loss_function,
 			},
 			{
-				content: `${training.datasets.length} датасет`,
+				content: `Датасета ${training.datasets.length}`,
 			},
 		]}
-		actions={<TrainingRunCancelButton training={training} />}
+		actions={<TrainingAction training={training} />}
 	>
 		{training.description}
+		<Spacing v='xs' />
+		<ModelCell model={training?.model} />
 		<Spacing v='xs' />
 		<Progress
 			status={training?.runs[0]?.status}

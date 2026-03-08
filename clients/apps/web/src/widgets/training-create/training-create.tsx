@@ -41,6 +41,7 @@ import {
 	TrainingScheduler,
 	WriteableTrainingModel,
 } from '@wcsc/models'
+import { DatasetSelect } from '~models/dataset'
 
 export const TrainingCreate = () => {
 	const createTraining = useCreateTraining()
@@ -50,6 +51,7 @@ export const TrainingCreate = () => {
 			defaultValues: {
 				name: '',
 				description: '',
+				dataset_ids: [],
 				config: {
 					lr_scheduler: TrainingScheduler.STEP,
 					optimizer: TrainingOptimizer.ADAM,
@@ -117,7 +119,9 @@ export const TrainingCreate = () => {
 					<FormSection
 						withOutMargin={true}
 						label={'Датасеты'}
-					></FormSection>
+					>
+						<DatasetSelect value={get('dataset_ids')} errorMessage={errors.dataset_ids?.message} onSelect={value => set('dataset_ids', value)} />
+					</FormSection>
 				</FormCard>
 				<FormCard>
 					<CardIconTitle

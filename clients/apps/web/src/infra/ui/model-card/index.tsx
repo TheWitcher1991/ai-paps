@@ -29,6 +29,7 @@ interface ModelCardProps extends PropsWithChildren {
 	icon: ReactNode
 	status: ReactNode
 	actions?: ReactNode
+	footer?: ReactNode
 	grid: ModelCardGrid[]
 	tags?: ModelCardTag[]
 	onClick?: () => void
@@ -43,6 +44,7 @@ export const ModelCard = ({
 	icon,
 	tags,
 	actions,
+	footer,
 	onClick,
 }: ModelCardProps) => (
 	<Card
@@ -71,7 +73,7 @@ export const ModelCard = ({
 				<Flex
 					key={i}
 					alignItems={'center'}
-					gap={3}
+					gap={2.5}
 					className={styles.modelCardGrid}
 				>
 					<Icon data={grid.icon} size={17} color='secondary' />
@@ -84,6 +86,7 @@ export const ModelCard = ({
 				</Flex>
 			))}
 		</Grid>
+		{footer}
 		{tags && (
 			<>
 				<Divider />

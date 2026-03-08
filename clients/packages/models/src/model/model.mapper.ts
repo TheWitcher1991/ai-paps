@@ -19,7 +19,7 @@ export const ModelStatusMapper: Record<ModelStatus, string> = {
 }
 
 export const ModelFrameworkMapper: Record<ModelFramework, string> = {
-	[ModelFramework.PYTORCH]: 'Pytorch',
+	[ModelFramework.PYTORCH]: 'PyTorch',
 	[ModelFramework.ULTRALYTICS]: 'Ultralytics',
 	[ModelFramework.TENSORFLOW]: 'TensorFlow',
 }
