@@ -11,17 +11,77 @@ DatasetClassId = NewType("DatasetClassId", int)
 DatasetAnnotationId = NewType("DatasetAnnotationId", int)
 
 
+class AnnotationView(StrEnum):
+    DISEASE = "disease"
+    PEST = "pest"
+    HEALTHY = "healthy"
+
+
 class AnnotationClass(StrEnum):
     TOMATO_LEAF = "tomato_leaf"
+    TOMATO_STEM = "tomato_stem"
     TOMATO_FRUIT = "tomato_fruit"
     TOMATO_PLANT = "tomato_plant"
     TOMATO_FLOWER = "tomato_flower"
+    
+    LEAF = "leaf"
+    FRUIT = "fruit"
+    FLOWER = "flower"
+    
     TOMATO_POWDERY_MILDEW = "tomato_powdery_mildew"
+    
+    TOMATO_POWDERY_MILDEW_SEVERITY_1 = "tomato_powdery_mildew_severity_1"
+    TOMATO_POWDERY_MILDEW_SEVERITY_2 = "tomato_powdery_mildew_severity_2"
+    TOMATO_POWDERY_MILDEW_SEVERITY_3 = "tomato_powdery_mildew_severity_3"
+    TOMATO_POWDERY_MILDEW_SEVERITY_4 = "tomato_powdery_mildew_severity_4"
+    TOMATO_POWDERY_MILDEW_SEVERITY_5 = "tomato_powdery_mildew_severity_5"
+    TOMATO_POWDERY_MILDEW_SEVERITY_6 = "tomato_powdery_mildew_severity_6"
+    TOMATO_POWDERY_MILDEW_SEVERITY_7 = "tomato_powdery_mildew_severity_7"
+    TOMATO_POWDERY_MILDEW_SEVERITY_8 = "tomato_powdery_mildew_severity_8"
+    
+    POWDERY_MILDEW = "powdery_mildew"
+    
+    POWDERY_MILDEW_SEVERITY_1 = "powdery_mildew_severity_1"
+    POWDERY_MILDEW_SEVERITY_2 = "powdery_mildew_severity_2"
+    POWDERY_MILDEW_SEVERITY_3 = "powdery_mildew_severity_3"
+    POWDERY_MILDEW_SEVERITY_4 = "powdery_mildew_severity_4"
+    POWDERY_MILDEW_SEVERITY_5 = "powdery_mildew_severity_5"
+    POWDERY_MILDEW_SEVERITY_6 = "powdery_mildew_severity_6"
+    POWDERY_MILDEW_SEVERITY_7 = "powdery_mildew_severity_7"
+    POWDERY_MILDEW_SEVERITY_8 = "powdery_mildew_severity_8"
 
 
-ANNOTATION_CLASSES_FOR_AREA = [AnnotationClass.TOMATO_LEAF]
+ANNOTATION_CLASSES_FOR_AREA = [
+    AnnotationClass.TOMATO_LEAF, 
+    AnnotationClass.TOMATO_FRUIT, 
+    AnnotationClass.TOMATO_FLOWER,
+     AnnotationClass.LEAF, 
+    AnnotationClass.FRUIT, 
+    AnnotationClass.FLOWER,
+]
 
-ANNOTATION_CLASSES_DISEASES = [AnnotationClass.TOMATO_POWDERY_MILDEW]
+ANNOTATION_CLASSES_DISEASES = [
+    AnnotationClass.TOMATO_POWDERY_MILDEW,
+    AnnotationClass.TOMATO_POWDERY_MILDEW_SEVERITY_1,
+    AnnotationClass.TOMATO_POWDERY_MILDEW_SEVERITY_2,
+    AnnotationClass.TOMATO_POWDERY_MILDEW_SEVERITY_3,
+    AnnotationClass.TOMATO_POWDERY_MILDEW_SEVERITY_4,
+    AnnotationClass.TOMATO_POWDERY_MILDEW_SEVERITY_5,
+    AnnotationClass.TOMATO_POWDERY_MILDEW_SEVERITY_6,
+    AnnotationClass.TOMATO_POWDERY_MILDEW_SEVERITY_7,
+    AnnotationClass.TOMATO_POWDERY_MILDEW_SEVERITY_8,
+    AnnotationClass.POWDERY_MILDEW,
+    AnnotationClass.POWDERY_MILDEW_SEVERITY_1,
+    AnnotationClass.POWDERY_MILDEW_SEVERITY_2,
+    AnnotationClass.POWDERY_MILDEW_SEVERITY_3,
+    AnnotationClass.POWDERY_MILDEW_SEVERITY_4,
+    AnnotationClass.POWDERY_MILDEW_SEVERITY_5,
+    AnnotationClass.POWDERY_MILDEW_SEVERITY_6,
+    AnnotationClass.POWDERY_MILDEW_SEVERITY_7,
+    AnnotationClass.POWDERY_MILDEW_SEVERITY_8,
+]
+
+ANNOTATION_CLASSES_PESTS = []
 
 
 class DatasetModality(models.TextChoices):

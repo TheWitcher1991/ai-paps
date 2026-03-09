@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-PAPS | Детали модели</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a2332;
+            --bg-card-hover: #232d3f;
+            --accent-green: #10b981;
+            --accent-green-light: #34d399;
+            --accent-blue: #3b82f6;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border-color: #374151;
+            --gradient-green: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --gradient-orange: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --gradient-red: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0 30px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--gradient-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-green-light), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+        }
+
+        .nav-link.active {
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .header-title {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent-green);
+        }
+
+        .breadcrumb span {
+            color: var(--text-secondary);
+        }
+
+        .header-title h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .header-title p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .btn-danger {
+            background: var(--gradient-red);
+            color: white;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-ready {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+        }
+
+        .status-deployed {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .status-training {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-orange);
+        }
+
+        .status-archived {
+            background: rgba(107, 114, 128, 0.15);
+            color: var(--text-muted);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .model-header {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .model-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-green);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .model-info {
+            flex: 1;
+        }
+
+        .model-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .model-alias {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .model-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .model-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .meta-item i {
+            color: var(--text-muted);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .info-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .info-card:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .info-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .info-card-icon.architecture {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .info-card-icon.backbone {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+
+        .info-card-icon.framework {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        .info-card-icon.task {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .info-card-icon.size {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+        }
+
+        .info-card-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-card-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }
+
+        .metric-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .metric-value.green {
+            color: var(--accent-green);
+        }
+
+        .metric-value.blue {
+            color: var(--accent-blue);
+        }
+
+        .metric-value.orange {
+            color: var(--accent-orange);
+        }
+
+        .metric-value.purple {
+            color: var(--accent-purple);
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .chart-container {
+            height: 250px;
+            position: relative;
+        }
+
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .class-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .class-item:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .class-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .class-name {
+            font-size: 14px;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .class-count {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: var(--bg-card);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .training-runs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .training-run-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .training-run-item:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .run-status {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .run-status.finished {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+        }
+
+        .run-status.failed {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+        }
+
+        .run-status.running {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-orange);
+        }
+
+        .run-status.cancelled {
+            background: rgba(107, 114, 128, 0.15);
+            color: var(--text-muted);
+        }
+
+        .run-info {
+            flex: 1;
+        }
+
+        .run-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .run-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .run-metrics {
+            display: flex;
+            gap: 24px;
+        }
+
+        .run-metric {
+            text-align: right;
+        }
+
+        .run-metric-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .run-metric-value.success {
+            color: var(--accent-green);
+        }
+
+        .run-metric-value.error {
+            color: var(--accent-red);
+        }
+
+        .run-metric-label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--bg-card);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 8px;
+            width: 100px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-fill.green {
+            background: var(--accent-green);
+        }
+
+        .progress-fill.orange {
+            background: var(--accent-orange);
+        }
+
+        .progress-fill.red {
+            background: var(--accent-red);
+        }
+
+        .datasets-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .dataset-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .dataset-item:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .dataset-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .dataset-info {
+            flex: 1;
+        }
+
+        .dataset-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .dataset-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .dataset-stats {
+            display: flex;
+            gap: 16px;
+        }
+
+        .dataset-stat {
+            text-align: center;
+        }
+
+        .dataset-stat-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+
+        .dataset-stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .inference-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 60px 40px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: var(--bg-secondary);
+        }
+
+        .upload-zone:hover {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .upload-zone.dragover {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .upload-text {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .result-box {
+            padding: 24px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+        }
+
+        .result-main {
+            text-align: center;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .result-main.healthy {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.1) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .result-main.disease {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.1) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .result-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .result-main.healthy .result-title {
+            color: var(--accent-green);
+        }
+
+        .result-main.disease .result-title {
+            color: var(--accent-red);
+        }
+
+        .result-confidence {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .result-main.healthy .result-confidence {
+            color: var(--accent-green);
+        }
+
+        .result-main.disease .result-confidence {
+            color: var(--accent-red);
+        }
+
+        .result-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.4;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-secondary);
+            padding: 4px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .tab.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--text-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .action-menu {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+        }
+
+        .action-btn:hover {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 80px;
+                padding: 15px;
+            }
+            
+            .logo-text, .nav-link span {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+            
+            .nav-link {
+                justify-content: center;
+                padding: 12px;
+            }
+            
+            .model-header {
+                flex-direction: column;
+            }
+            
+            .inference-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <span class="logo-text">AI-PAPS</span>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="monitoring.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Мониторинг</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="recognition.html" class="nav-link">
+                    <i class="fas fa-microscope"></i>
+                    <span>Распознавание</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-database"></i>
+                    <span>Датасеты</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-brain"></i>
+                    <span>Обучение</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-network-wired"></i>
+                    <span>Модели</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Справочник</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Проекты</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header class="header">
+            <div class="header-title">
+                <div class="breadcrumb">
+                    <a href="#">Модели</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Детали модели</span>
+                </div>
+                <h1>Томаты - Сегментация v2.1</h1>
+                <p>Модель для определения болезней и вредителей томатов</p>
+            </div>
+            <div class="header-actions">
+                <div class="status-badge status-deployed">
+                    <span class="status-dot"></span>
+                    Развёрнута
+                </div>
+                <button class="btn btn-primary">
+                    <i class="fas fa-play"></i>
+                    Запустить инференс
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-edit"></i>
+                    Редактировать
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="model-header">
+            <div class="model-icon">
+                <i class="fas fa-brain"></i>
+            </div>
+            <div class="model-info">
+                <div class="model-name">
+                    Tomato Disease Detector
+                    <span class="status-badge status-deployed">
+                        <i class="fas fa-check-circle"></i>
+                        Развёрнута
+                    </span>
+                </div>
+                <div class="model-alias">alias: tomato-seg-v2.1</div>
+                <div class="model-description">
+                    Специализированная модель для детектирования и сегментации заболеваний томатов: фитофтороз, мучнистая роса, альтернариоз, септориоз, бактериальный рак. Модель обучена на данных с 5 тепличных комплексов.
+                </div>
+                <div class="model-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>Создана: 15.01.2026</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-sync"></i>
+                        <span>Обновлена: 28.02.2026</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-database"></i>
+                        <span>Размер: 245 MB</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-download"></i>
+                        <span>Загрузок: 1,247</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-grid" style="margin-bottom: 24px;">
+            <div class="info-card">
+                <div class="info-card-icon architecture">
+                    <i class="fas fa-cube"></i>
+                </div>
+                <div class="info-card-title">Архитектура</div>
+                <div class="info-card-value">U-Net</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-icon backbone">
+                    <i class="fas fa-server"></i>
+                </div>
+                <div class="info-card-title">Backbone</div>
+                <div class="info-card-value">ResNet-101</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-icon framework">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="info-card-title">Фреймворк</div>
+                <div class="info-card-value">PyTorch</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-icon task">
+                    <i class="fas fa-crosshairs"></i>
+                </div>
+                <div class="info-card-title">Тип задачи</div>
+                <div class="info-card-value">Сегментация</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-icon size">
+                    <i class="fas fa-expand"></i>
+                </div>
+                <div class="info-card-title">Input Size</div>
+                <div class="info-card-value">512 x 512</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="overview">Обзор</button>
+            <button class="tab" data-tab="training">Обучение</button>
+            <button class="tab" data-tab="classes">Классы</button>
+            <button class="tab" data-tab="datasets">Датасеты</button>
+            <button class="tab" data-tab="inference">Инференс</button>
+        </div>
+
+        <div class="tab-content active" id="overview">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Метрики модели</h3>
+                </div>
+                <div class="card-body">
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-value green">94.2%</div>
+                            <div class="metric-label">Mean IoU</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value green">96.8%</div>
+                            <div class="metric-label">Precision</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value green">95.4%</div>
+                            <div class="metric-label">Recall</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value purple">96.1%</div>
+                            <div class="metric-label">F1-Score</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value blue">98.2%</div>
+                            <div class="metric-label">Accuracy</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value orange">42ms</div>
+                            <div class="metric-label">Inference Time</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">График обучения</h3>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="trainingChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="training">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">История обучений</h3>
+                </div>
+                <div class="card-body">
+                    <div class="training-runs-list">
+                        <div class="training-run-item">
+                            <div class="run-status finished">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="run-info">
+                                <div class="run-title">Обучение v2.1 (финальное)</div>
+                                <div class="run-meta">Завершено 28.02.2026 • 50 эпох • 14ч 32м</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill green" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div class="run-metrics">
+                                <div class="run-metric">
+                                    <div class="run-metric-value success">0.0234</div>
+                                    <div class="run-metric-label">Val Loss</div>
+                                </div>
+                                <div class="run-metric">
+                                    <div class="run-metric-value success">94.2%</div>
+                                    <div class="run-metric-label">mIoU</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="training-run-item">
+                            <div class="run-status finished">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="run-info">
+                                <div class="run-title">Обучение v2.0</div>
+                                <div class="run-meta">Завершено 15.01.2026 • 40 эпох • 11ч 45м</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill green" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div class="run-metrics">
+                                <div class="run-metric">
+                                    <div class="run-metric-value success">0.0312</div>
+                                    <div class="run-metric-label">Val Loss</div>
+                                </div>
+                                <div class="run-metric">
+                                    <div class="run-metric-value success">91.8%</div>
+                                    <div class="run-metric-label">mIoU</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="training-run-item">
+                            <div class="run-status failed">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <div class="run-info">
+                                <div class="run-title">Обучение v1.9 (превью)</div>
+                                <div class="run-meta">Остановлено 10.01.2026 • 12 эпох • 3ч 20м</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill red" style="width: 24%"></div>
+                                </div>
+                            </div>
+                            <div class="run-metrics">
+                                <div class="run-metric">
+                                    <div class="run-metric-value error">0.0891</div>
+                                    <div class="run-metric-label">Val Loss</div>
+                                </div>
+                                <div class="run-metric">
+                                    <div class="run-metric-value error">72.3%</div>
+                                    <div class="run-metric-label">mIoU</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Параметры обучения (последнего)</h3>
+                </div>
+                <div class="card-body">
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="info-card-title">Оптимизатор</div>
+                            <div class="info-card-value">AdamW</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-title">Learning Rate</div>
+                            <div class="info-card-value">0.0001</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-title">Batch Size</div>
+                            <div class="info-card-value">8</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-title">Epochs</div>
+                            <div class="info-card-value">50</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-title">Loss Function</div>
+                            <div class="info-card-value">Dice + BCE</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-title">Scheduler</div>
+                            <div class="info-card-value">ReduceLROnPlateau</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-title">Early Stopping</div>
+                            <div class="info-card-value">10 эпох</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-title">Image Size</div>
+                            <div class="info-card-value">512 x 512</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="classes">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Классы (12)</h3>
+                </div>
+                <div class="card-body">
+                    <div class="classes-grid">
+                        <div class="class-item">
+                            <div class="class-color" style="background: #10b981;"></div>
+                            <span class="class-name">Здоровое растение</span>
+                            <span class="class-count">4,521</span>
+                        </div>
+                        <div class="class-item">
+                            <div class="class-color" style="background: #ef4444;"></div>
+                            <span class="class-name">Фитофтороз</span>
+                            <span class="class-count">2,134</span>
+                        </div>
+                        <div class="class-item">
+                            <div class="class-color" style="background: #f59e0b;"></div>
+                            <span class="class-name">Мучнистая роса</span>
+                            <span class="class-count">1,876</span>
+                        </div>
+                        <div class="class-item">
+                            <div class="class-color" style="background: #8b5cf6;"></div>
+                            <span class="class-name">Альтернариоз</span>
+                            <span class="class-count">1,423</span>
+                        </div>
+                        <div class="class-item">
+                            <div class="class-color" style="background: #3b82f6;"></div>
+                            <span class="class-name">Септориоз</span>
+                            <span class="class-count">987</span>
+                        </div>
+                        <div class="class-item">
+                            <div class="class-color" style="background: #ec4899;"></div>
+                            <span class="class-name">Бактериальный рак</span>
+                            <span class="class-count">654</span>
+                        </div>
+                        <div class="class-item">
+                            <div class="class-color" style="background: #14b8a6;"></div>
+                            <span class="class-name">Вершинная гниль</span>
+                            <span class="class-count">543</span>
+                        </div>
+                        <div class="class-item">
+                            <div class="class-color" style="background: #f97316;"></div>
+                            <span class="class-name">Кладоспориоз</span>
+                            <span class="class-count">432</span>
+                        </div>
+                        <div class="class-item">
+                            <div class="class-color" style="background: #6366f1;"></div>
+                            <span class="class-name">Фузариоз</span>
+                            <span class="class-count">321</span>
+                        </div>
+                        <div class="class-item">
+                            <div class="class-color" style="background: #84cc16;"></div>
+                            <span class="class-name">Тля</span>
+                            <span class="class-count">287</span>
+                        </div>
+                        <div class="class-item">
+                            <div class="class-color" style="background: #a855f7;"></div>
+                            <span class="class-name">Паутинный клещ</span>
+                            <span class="class-count">198</span>
+                        </div>
+                        <div class="class-item">
+                            <div class="class-color" style="background: #6b7280;"></div>
+                            <span class="class-name">Белокрылка</span>
+                            <span class="class-count">156</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="datasets">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Использованные датасеты</h3>
+                </div>
+                <div class="card-body">
+                    <div class="datasets-list">
+                        <div class="dataset-item">
+                            <div class="dataset-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="dataset-info">
+                                <div class="dataset-name">Томаты - Основной датасет v3</div>
+                                <div class="dataset-meta">Добавлен 15.01.2026 • Теплицы РФ</div>
+                            </div>
+                            <div class="dataset-stats">
+                                <div class="dataset-stat">
+                                    <div class="dataset-stat-value">8,432</div>
+                                    <div class="dataset-stat-label">Изображений</div>
+                                </div>
+                                <div class="dataset-stat">
+                                    <div class="dataset-stat-value">12</div>
+                                    <div class="dataset-stat-label">Классов</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dataset-item">
+                            <div class="dataset-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="dataset-info">
+                                <div class="dataset-name">Болезни томатов - CVAT Export</div>
+                                <div class="dataset-meta">Добавлен 10.01.2026 • Аннотировано</div>
+                            </div>
+                            <div class="dataset-stats">
+                                <div class="dataset-stat">
+                                    <div class="dataset-stat-value">3,214</div>
+                                    <div class="dataset-stat-label">Изображений</div>
+                                </div>
+                                <div class="dataset-stat">
+                                    <div class="dataset-stat-value">8</div>
+                                    <div class="dataset-stat-label">Классов</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dataset-item">
+                            <div class="dataset-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="dataset-info">
+                                <div class="dataset-name">Вредители томатов - Расширенный</div>
+                                <div class="dataset-meta">Добавлен 05.01.2026 • Лаборатория</div>
+                            </div>
+                            <div class="dataset-stats">
+                                <div class="dataset-stat">
+                                    <div class="dataset-stat-value">1,856</div>
+                                    <div class="dataset-stat-label">Изображений</div>
+                                </div>
+                                <div class="dataset-stat">
+                                    <div class="dataset-stat-value">4</div>
+                                    <div class="dataset-stat-label">Классов</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="inference">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Тестирование модели</h3>
+                </div>
+                <div class="card-body">
+                    <div class="inference-section">
+                        <div>
+                            <div class="upload-zone" id="uploadZone">
+                                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="upload-text">Загрузите изображение для тестирования</div>
+                            </div>
+                        </div>
+                        <div class="result-box">
+                            <div class="empty-state">
+                                <i class="fas fa-flask"></i>
+                                <p>Загрузите изображение для запуска инференса</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        const trainingChart = new Chart(document.getElementById('trainingChart'), {
+            type: 'line',
+            data: {
+                labels: ['5', '10', '15', '20', '25', '30', '35', '40', '45', '50'],
+                datasets: [
+                    {
+                        label: 'Train Loss',
+                        data: [0.45, 0.32, 0.24, 0.18, 0.14, 0.11, 0.09, 0.07, 0.05, 0.04],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Validation Loss',
+                        data: [0.52, 0.38, 0.29, 0.24, 0.20, 0.17, 0.14, 0.11, 0.09, 0.08],
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'mIoU',
+                        data: [0.62, 0.74, 0.82, 0.87, 0.90, 0.92, 0.93, 0.94, 0.94, 0.94],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#9ca3af',
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: '#374151'
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Эпоха',
+                            color: '#9ca3af'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: '#374151'
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Loss',
+                            color: '#9ca3af'
+                        }
+                    },
+                    y1: {
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                        ticks: {
+                            color: '#3b82f6',
+                            callback: function(value) {
+                                return (value * 100).toFixed(0) + '%';
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'mIoU',
+                            color: '#3b82f6'
+                        },
+                        min: 0,
+                        max: 1
+                    }
+                }
+            }
+        });
+
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadZone.addEventListener('click', () => fileInput.click());
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                uploadZone.innerHTML = `
+                    <div class="upload-icon">
+                        <i class="fas fa-check-circle" style="color: var(--accent-green);"></i>
+                    </div>
+                    <div class="upload-text">${file.name}</div>
+                `;
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                uploadZone.innerHTML = `
+                    <div class="upload-icon">
+                        <i class="fas fa-check-circle" style="color: var(--accent-green);"></i>
+                    </div>
+                    <div class="upload-text">${file.name}</div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

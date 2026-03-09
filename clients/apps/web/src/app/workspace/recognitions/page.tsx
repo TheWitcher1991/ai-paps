@@ -9,18 +9,14 @@ import { href } from '@wcsc/href'
 
 export default function Recognitions() {
 	useMount(() =>
-		setBreadcrumbs([
-			{ text: 'Распознавание', href: href.recognitions.index },
-		]),
+		setBreadcrumbs([{ text: 'Мониторинг', href: href.recognitions.index }]),
 	)
 
 	return (
 		<Group>
 			<PageTitle
-				title={'Распознавание'}
-				subtitle={
-					'Панель мониторинга и управления ключевыми метриками системы'
-				}
+				title={'Мониторинг'}
+				subtitle={'Загрузите изображение растения для AI-анализа'}
 			/>
 		</Group>
 	)

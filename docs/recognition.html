@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-PAPS | Распознавание</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a2332;
+            --bg-card-hover: #232d3f;
+            --accent-green: #10b981;
+            --accent-green-light: #34d399;
+            --accent-blue: #3b82f6;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border-color: #374151;
+            --gradient-green: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --gradient-orange: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --gradient-red: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0 30px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--gradient-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-green-light), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+        }
+
+        .nav-link.active {
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .header-title h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .header-title p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .btn-danger {
+            background: var(--gradient-red);
+            color: white;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-online {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+        }
+
+        .status-warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-orange);
+        }
+
+        .status-alert {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .recognition-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 1200px) {
+            .recognition-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 60px 40px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: var(--bg-secondary);
+        }
+
+        .upload-zone:hover {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .upload-zone.dragover {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .upload-zone.has-image {
+            padding: 0;
+            border-style: solid;
+            border-color: var(--border-color);
+        }
+
+        .upload-icon {
+            font-size: 64px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+
+        .upload-text {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .upload-formats {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .preview-container {
+            position: relative;
+            display: none;
+        }
+
+        .preview-container.active {
+            display: block;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: var(--bg-secondary);
+        }
+
+        .preview-overlay {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .preview-actions {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .preview-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+        }
+
+        .preview-btn:hover {
+            background: var(--accent-green);
+        }
+
+        .preview-btn.remove:hover {
+            background: var(--accent-red);
+        }
+
+        .image-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+
+        .image-info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .image-info-item i {
+            color: var(--text-muted);
+        }
+
+        .settings-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+        }
+
+        .setting-label {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .setting-label span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .setting-label small {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .select-input {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 14px;
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        .select-input:focus {
+            outline: none;
+            border-color: var(--accent-green);
+        }
+
+        .results-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .result-main {
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .result-main.healthy {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.1) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .result-main.disease {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.1) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .result-main.warning {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .result-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .result-main.healthy .result-icon {
+            color: var(--accent-green);
+        }
+
+        .result-main.disease .result-icon {
+            color: var(--accent-red);
+        }
+
+        .result-main.warning .result-icon {
+            color: var(--accent-orange);
+        }
+
+        .result-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .result-confidence {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .result-main.healthy .result-confidence {
+            color: var(--accent-green);
+        }
+
+        .result-main.disease .result-confidence {
+            color: var(--accent-red);
+        }
+
+        .result-main.warning .result-confidence {
+            color: var(--accent-orange);
+        }
+
+        .result-subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .result-details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .result-detail-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+        }
+
+        .result-detail-item.danger {
+            border-left: 4px solid var(--accent-red);
+        }
+
+        .result-detail-item.warning {
+            border-left: 4px solid var(--accent-orange);
+        }
+
+        .result-detail-item.info {
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .result-detail-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .result-detail-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .result-detail-confidence {
+            text-align: right;
+        }
+
+        .confidence-bar {
+            width: 120px;
+            height: 8px;
+            background: var(--bg-card);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .confidence-fill.danger {
+            background: var(--accent-red);
+        }
+
+        .confidence-fill.warning {
+            background: var(--accent-orange);
+        }
+
+        .confidence-fill.info {
+            background: var(--accent-blue);
+        }
+
+        .confidence-fill.success {
+            background: var(--accent-green);
+        }
+
+        .recommendations {
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+        }
+
+        .recommendations h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .recommendations h4 i {
+            color: var(--accent-green);
+        }
+
+        .recommendation-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .recommendation-item:last-child {
+            border-bottom: none;
+        }
+
+        .recommendation-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+        }
+
+        .recommendation-content h5 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .recommendation-content p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 15, 26, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--accent-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .loading-progress {
+            width: 200px;
+            height: 4px;
+            background: var(--bg-card);
+            border-radius: 2px;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+
+        .loading-progress-bar {
+            height: 100%;
+            background: var(--accent-green);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .history-section {
+            margin-top: 24px;
+        }
+
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .history-item {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .history-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .history-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: var(--bg-card);
+        }
+
+        .history-content {
+            padding: 16px;
+        }
+
+        .history-result {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .history-result-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .history-result-text.healthy {
+            color: var(--accent-green);
+        }
+
+        .history-result-text.disease {
+            color: var(--accent-red);
+        }
+
+        .history-result-text.warning {
+            color: var(--accent-orange);
+        }
+
+        .history-confidence {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .history-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 40px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.4;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-secondary);
+            padding: 4px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .tab.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--text-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .batch-upload {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .batch-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .batch-item:hover {
+            border-color: var(--accent-green);
+        }
+
+        .batch-item.active {
+            border-color: var(--accent-green);
+        }
+
+        .batch-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .batch-item-overlay {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .batch-item.active .batch-item-overlay {
+            display: flex;
+        }
+
+        .batch-add {
+            background: var(--bg-secondary);
+            border: 2px dashed var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--text-muted);
+        }
+
+        .batch-add:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .segmentation-view {
+            position: relative;
+        }
+
+        .segmentation-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .toggle-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: var(--accent-green);
+            color: white;
+            border-color: var(--accent-green);
+        }
+
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 80px;
+                padding: 15px;
+            }
+            
+            .logo-text, .nav-link span {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+            
+            .nav-link {
+                justify-content: center;
+                padding: 12px;
+            }
+            
+            .batch-upload {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .batch-upload {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <span class="logo-text">AI-PAPS</span>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="monitoring.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Мониторинг</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-microscope"></i>
+                    <span>Распознавание</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-database"></i>
+                    <span>Датасеты</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-brain"></i>
+                    <span>Обучение</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Справочник</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Проекты</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Настройки</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header class="header">
+            <div class="header-title">
+                <h1>Распознавание болезней и вредителей</h1>
+                <p>Загрузите изображение растения для AI-анализа</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-history"></i>
+                    История
+                </button>
+            </div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="single">Одиночное распознавание</button>
+            <button class="tab" data-tab="batch">Пакетное распознавание</button>
+            <button class="tab" data-tab="camera">Камера</button>
+        </div>
+
+        <div class="tab-content active" id="single">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Загрузка изображения</h3>
+                </div>
+                <div class="card-body">
+                    <div class="recognition-grid">
+                        <div class="upload-section">
+                            <div class="upload-zone" id="uploadZone">
+                                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div class="upload-text">Перетащите изображение или нажмите для загрузки</div>
+                                <div class="upload-formats">JPG, PNG, WebP (макс. 10MB)</div>
+                            </div>
+
+                            <div class="preview-container" id="previewContainer">
+                                <img id="previewImage" class="preview-image" alt="Preview">
+                                <div class="preview-actions">
+                                    <button class="preview-btn" onclick="document.getElementById('fileInput').click()" title="Заменить">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </button>
+                                    <button class="preview-btn remove" onclick="removeImage()" title="Удалить">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="image-info">
+                                    <div class="image-info-item">
+                                        <i class="fas fa-expand"></i>
+                                        <span id="imageSize">1920 x 1080</span>
+                                    </div>
+                                    <div class="image-info-item">
+                                        <i class="fas fa-file-alt"></i>
+                                        <span id="imageFormat">JPEG</span>
+                                    </div>
+                                    <div class="image-info-item">
+                                        <i class="fas fa-weight-hanging"></i>
+                                        <span id="imageWeight">2.4 MB</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="settings-section">
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <span>Модель</span>
+                                        <small>Архитектура нейросети для анализа</small>
+                                    </div>
+                                    <select class="select-input" id="modelSelect">
+                                        <option value="yolov8">YOLOv8 (Рекомендуется)</option>
+                                        <option value="unet">U-Net (Сегментация)</option>
+                                        <option value="deeplabv3">DeepLabV3</option>
+                                        <option value="maskrcnn">Mask R-CNN</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <span>Культура</span>
+                                        <small>Тип растения для более точного анализа</small>
+                                    </div>
+                                    <select class="select-input" id="cropSelect">
+                                        <option value="auto">Автоопределение</option>
+                                        <option value="tomato">Томат</option>
+                                        <option value="cucumber">Огурец</option>
+                                        <option value="pepper">Перец</option>
+                                        <option value="lettuce">Салат</option>
+                                        <option value="strawberry">Клубника</option>
+                                        <option value="rose">Роза</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <div class="setting-label">
+                                        <span>Чувствительность</span>
+                                        <small>Порог уверенности для обнаружения</small>
+                                    </div>
+                                    <select class="select-input" id="sensitivitySelect">
+                                        <option value="0.9">Высокая (90%)</option>
+                                        <option value="0.7" selected>Средняя (70%)</option>
+                                        <option value="0.5">Низкая (50%)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" onclick="runInference()">
+                                <i class="fas fa-search"></i>
+                                Запустить распознавание
+                            </button>
+                        </div>
+
+                        <div class="results-section">
+                            <div id="resultsContainer">
+                                <div class="empty-state">
+                                    <i class="fas fa-microscope"></i>
+                                    <h3>Ожидание изображения</h3>
+                                    <p>Загрузите фото растения для начала анализа</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="batch">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Пакетное распознавание</h3>
+                    <div class="header-actions">
+                        <button class="btn btn-secondary" onclick="document.getElementById('batchInput').click()">
+                            <i class="fas fa-plus"></i>
+                            Добавить изображения
+                        </button>
+                        <input type="file" id="batchInput" accept="image/*" multiple style="display: none;">
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="batch-upload" id="batchUpload">
+                        <div class="batch-item batch-add" onclick="document.getElementById('batchInput').click()">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="runBatchInference()">
+                        <i class="fas fa-play"></i>
+                        Распознать все изображения
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="camera">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Камера</h3>
+                </div>
+                <div class="card-body">
+                    <div class="empty-state">
+                        <i class="fas fa-video"></i>
+                        <h3>Подключение камеры</h3>
+                        <p>Для использования камеры необходимо предоставить доступ к устройству</p>
+                        <button class="btn btn-primary" style="margin-top: 20px;">
+                            <i class="fas fa-camera"></i>
+                            Включить камеру
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="history-section">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Последние распознавания</h3>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-download"></i>
+                        Экспорт
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="history-grid" id="historyGrid">
+                        <div class="history-item">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='160' viewBox='0 0 280 160'%3E%3Crect fill='%231a2332' width='280' height='160'/%3E%3Ctext fill='%236b7280' font-family='sans-serif' font-size='14' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3E%3C/text%3E%3C/svg%3E" class="history-image" alt="History">
+                            <div class="history-content">
+                                <div class="history-result">
+                                    <span class="history-result-text healthy">Здоров</span>
+                                    <span class="history-confidence">98.5%</span>
+                                </div>
+                                <div class="history-meta">Зона А • Томат • 5 мин. назад</div>
+                            </div>
+                        </div>
+                        <div class="history-item">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='160' viewBox='0 0 280 160'%3E%3Crect fill='%231a2332' width='280' height='160'/%3E%3Ctext fill='%236b7280' font-family='sans-serif' font-size='14' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3E%3C/text%3E%3C/svg%3E" class="history-image" alt="History">
+                            <div class="history-content">
+                                <div class="history-result">
+                                    <span class="history-result-text disease">Фитофтороз</span>
+                                    <span class="history-confidence">94.2%</span>
+                                </div>
+                                <div class="history-meta">Зона А • Томат • 15 мин. назад</div>
+                            </div>
+                        </div>
+                        <div class="history-item">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='160' viewBox='0 0 280 160'%3E%3Crect fill='%231a2332' width='280' height='160'/%3E%3Ctext fill='%236b7280' font-family='sans-serif' font-size='14' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3E%3C/text%3E%3C/svg%3E" class="history-image" alt="History">
+                            <div class="history-content">
+                                <div class="history-result">
+                                    <span class="history-result-text warning">Дефицит азота</span>
+                                    <span class="history-confidence">87.8%</span>
+                                </div>
+                                <div class="history-meta">Зона C • Перец • 32 мин. назад</div>
+                            </div>
+                        </div>
+                        <div class="history-item">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='160' viewBox='0 0 280 160'%3E%3Crect fill='%231a2332' width='280' height='160'/%3E%3Ctext fill='%236b7280' font-family='sans-serif' font-size='14' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3E%3C/text%3E%3C/svg%3E" class="history-image" alt="History">
+                            <div class="history-content">
+                                <div class="history-result">
+                                    <span class="history-result-text healthy">Здоров</span>
+                                    <span class="history-confidence">96.1%</span>
+                                </div>
+                                <div class="history-meta">Зона D • Салат • 1 час назад</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Анализ изображения...</div>
+        <div class="loading-progress">
+            <div class="loading-progress-bar" id="loadingProgress" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <script>
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewImage = document.getElementById('previewImage');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loadingProgress = document.getElementById('loadingProgress');
+
+        uploadZone.addEventListener('click', () => fileInput.click());
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) processFile(file);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) processFile(file);
+        });
+
+        function processFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Пожалуйста, выберите изображение');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImage.src = e.target.result;
+                uploadZone.style.display = 'none';
+                previewContainer.classList.add('active');
+                
+                const img = new Image();
+                img.onload = function() {
+                    document.getElementById('imageSize').textContent = `${this.width} x ${this.height}`;
+                };
+                img.src = e.target.result;
+                
+                document.getElementById('imageFormat').textContent = file.type.split('/')[1].toUpperCase();
+                document.getElementById('imageWeight').textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage() {
+            previewContainer.classList.remove('active');
+            uploadZone.style.display = 'block';
+            fileInput.value = '';
+            resultsContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-microscope"></i>
+                    <h3>Ожидание изображения</h3>
+                    <p>Загрузите фото растения для начала анализа</p>
+                </div>
+            `;
+        }
+
+        function runInference() {
+            if (!previewImage.src || previewImage.src === window.location.href) {
+                alert('Пожалуйста, загрузите изображение');
+                return;
+            }
+
+            loadingOverlay.classList.add('active');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                loadingProgress.style.width = progress + '%';
+            }, 200);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                loadingProgress.style.width = '100%';
+                setTimeout(() => {
+                    loadingOverlay.classList.remove('active');
+                    showResults();
+                }, 300);
+            }, 2500);
+        }
+
+        function showResults() {
+            const model = document.getElementById('modelSelect').value;
+            const crop = document.getElementById('cropSelect').value;
+            
+            resultsContainer.innerHTML = `
+                <div class="result-main disease">
+                    <div class="result-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="result-title">Фитофтороз</div>
+                    <div class="result-confidence">94.2%</div>
+                    <div class="result-subtitle">Phytophthora infestans</div>
+                </div>
+
+                <div class="result-details">
+                    <div class="result-detail-item danger">
+                        <div class="result-detail-info">
+                            <h4>Фитофтороз (Phytophthora infestans)</h4>
+                            <p>Грибковое заболевание, поражающее листья, стебли и плоды</p>
+                        </div>
+                        <div class="result-detail-confidence">
+                            <div style="font-size: 18px; font-weight: 700; color: var(--accent-red);">94.2%</div>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill danger" style="width: 94.2%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-detail-item info">
+                        <div class="result-detail-info">
+                            <h4>Альтернариоз</h4>
+                            <p>Сухая пятнистость листьев</p>
+                        </div>
+                        <div class="result-detail-confidence">
+                            <div style="font-size: 18px; font-weight: 700; color: var(--accent-blue);">12.8%</div>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill info" style="width: 12.8%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-detail-item info">
+                        <div class="result-detail-info">
+                            <h4>Септориоз</h4>
+                            <p>Белая пятнистость</p>
+                        </div>
+                        <div class="result-detail-confidence">
+                            <div style="font-size: 18px; font-weight: 700; color: var(--accent-blue);">5.3%</div>
+                            <div class="confidence-bar">
+                                <div class="confidence-fill info" style="width: 5.3%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <h4><i class="fas fa-lightbulb"></i> Рекомендации</h4>
+                    <div class="recommendation-item">
+                        <div class="recommendation-icon">
+                            <i class="fas fa-spray-can"></i>
+                        </div>
+                        <div class="recommendation-content">
+                            <h5>Обработка фунгицидами</h5>
+                            <p>Примените препараты: Ридомил Голд, Квадрис, Метаксил</p>
+                        </div>
+                    </div>
+                    <div class="recommendation-item">
+                        <div class="recommendation-icon">
+                            <i class="fas fa-cut"></i>
+                        </div>
+                        <div class="recommendation-content">
+                            <h5>Удаление поражённых частей</h5>
+                            <p>Немедленно удалите и уничтожьте поражённые листья и плоды</p>
+                        </div>
+                    </div>
+                    <div class="recommendation-item">
+                        <div class="recommendation-icon">
+                            <i class="fas fa-tint-slash"></i>
+                        </div>
+                        <div class="recommendation-content">
+                            <h5>Снижение влажности</h5>
+                            <p>Уменьшите полив и обеспечьте хорошую вентиляцию</p>
+                        </div>
+                    </div>
+                    <div class="recommendation-item">
+                        <div class="recommendation-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="recommendation-content">
+                            <h5>Повторный анализ</h5>
+                            <p>Проведите повторное распознавание через 3-5 дней после обработки</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        const batchInput = document.getElementById('batchInput');
+        const batchUpload = document.getElementById('batchUpload');
+        let batchFiles = [];
+
+        batchInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                if (batchFiles.length < 8) {
+                    batchFiles.push(file);
+                    addBatchItem(file);
+                }
+            });
+        });
+
+        function addBatchItem(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const div = document.createElement('div');
+                div.className = 'batch-item';
+                div.innerHTML = `
+                    <img src="${e.target.result}" alt="Batch">
+                    <div class="batch-item-overlay">
+                        <i class="fas fa-check"></i>
+                    </div>
+                `;
+                batchUpload.insertBefore(div, batchUpload.lastElementChild);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function runBatchInference() {
+            if (batchFiles.length === 0) {
+                alert('Добавьте изображения для распознавания');
+                return;
+            }
+            
+            loadingOverlay.classList.add('active');
+            
+            setTimeout(() => {
+                loadingOverlay.classList.remove('active');
+                alert(`Обработано ${batchFiles.length} изображений`);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

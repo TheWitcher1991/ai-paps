@@ -1,6 +1,5 @@
 'use client'
 
-import { IconDatabase } from '@tabler/icons-react'
 import { use } from 'react'
 
 import Assets, {

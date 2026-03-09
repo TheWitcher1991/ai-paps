@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 from datasets.models import Dataset, DatasetAnnotation, DatasetAsset, DatasetClass
-from datasets.types import ANNOTATION_CLASSES_DISEASES, ANNOTATION_CLASSES_FOR_AREA
+from datasets.types import ANNOTATION_CLASSES_DISEASES, ANNOTATION_CLASSES_FOR_AREA, ANNOTATION_CLASSES_PESTS, AnnotationView
 
 
 class MergeDatasetsSerializer(serializers.Serializer):
@@ -25,7 +25,7 @@ class DatasetAnnotationSerializer(ModelSerializer):
     cls = DatasetClassSerializer(read_only=True)
     area_mm2 = SerializerMethodField(read_only=True)
     area_cm2 = SerializerMethodField(read_only=True)
-    is_disease = SerializerMethodField(read_only=True)
+    view = SerializerMethodField(read_only=True)
 
     class Meta:
         model = DatasetAnnotation
@@ -58,8 +58,15 @@ class DatasetAnnotationSerializer(ModelSerializer):
             return None
         return round(area / 100.0, 2)
 
-    def get_is_disease(self, obj: DatasetAnnotation):
-        return bool(obj.cls.name in ANNOTATION_CLASSES_DISEASES)
+    def get_view(self, obj: DatasetAnnotation):
+        cls = obj.cls.name
+        
+        if cls in ANNOTATION_CLASSES_DISEASES:
+            return AnnotationView.DISEASE
+        if cls in ANNOTATION_CLASSES_PESTS:
+            return AnnotationView.PEST
+        else: 
+            return AnnotationView.HEALTHY
 
 
 class DatasetAssetSerializer(ModelSerializer):

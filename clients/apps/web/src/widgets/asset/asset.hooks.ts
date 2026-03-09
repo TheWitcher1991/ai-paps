@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 
-import { IAnnotation, IAsset } from '@wcsc/models'
+import { getAnnotationActiveColor, getAnnotationColor, getAnnotationStrokeColor, IAnnotation, IAsset } from '@wcsc/models'
 import { Nullable } from '@wcsc/types'
 
 export const useAssetSegmentation = (
@@ -31,10 +31,10 @@ export const useAssetSegmentation = (
 
 			results.forEach(ann => {
 				const isActive = ann.id === hoveredId
-				ctx.strokeStyle = isActive ? 'yellow' : 'lime'
+				ctx.strokeStyle = getAnnotationStrokeColor(ann.view)
 				ctx.fillStyle = isActive
-					? 'rgba(255,255,0,0.5)'
-					: 'rgba(0,255,0,0.3)'
+					? getAnnotationActiveColor(ann.view)
+					: getAnnotationColor(ann.view)
 				ctx.lineWidth = isActive ? 3 : 2
 
 				if (ann.segmentation?.length) {

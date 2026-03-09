@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-PAPS | Детали ассета</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a2332;
+            --bg-card-hover: #232d3f;
+            --accent-green: #10b981;
+            --accent-green-light: #34d399;
+            --accent-blue: #3b82f6;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border-color: #374151;
+            --gradient-green: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --gradient-orange: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --gradient-red: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0 30px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--gradient-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-green-light), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+        }
+
+        .nav-link.active {
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .breadcrumb a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent-green);
+        }
+
+        .breadcrumb span {
+            color: var(--text-secondary);
+        }
+
+        .breadcrumb i {
+            font-size: 10px;
+        }
+
+        .header-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            justify-content: center;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .asset-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+        }
+
+        @media (max-width: 1400px) {
+            .asset-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .viewer-container {
+            position: relative;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            min-height: 500px;
+        }
+
+        .viewer-toolbar {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .toolbar-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            backdrop-filter: blur(8px);
+        }
+
+        .toolbar-btn:hover {
+            background: var(--accent-green);
+        }
+
+        .toolbar-btn.active {
+            background: var(--accent-green);
+        }
+
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 4px 8px;
+            border-radius: 8px;
+            backdrop-filter: blur(8px);
+        }
+
+        .zoom-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: white;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .zoom-value {
+            font-size: 12px;
+            color: white;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        .viewer-canvas {
+            width: 100%;
+            height: 500px;
+            cursor: grab;
+        }
+
+        .viewer-canvas:active {
+            cursor: grabbing;
+        }
+
+        .viewer-empty {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .viewer-empty i {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .nav-info {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .sidebar-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .info-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .stat-box {
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .stat-value.blue {
+            color: var(--accent-blue);
+        }
+
+        .stat-value.orange {
+            color: var(--accent-orange);
+        }
+
+        .stat-value.purple {
+            color: var(--accent-purple);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .file-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .file-info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .file-info-item i {
+            width: 18px;
+            color: var(--text-muted);
+        }
+
+        .file-info-item span {
+            color: var(--text-secondary);
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .filter-chip:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .filter-chip.active {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: white;
+        }
+
+        .annotations-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .annotation-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .annotation-card:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .annotation-card.active {
+            border-color: var(--accent-green);
+        }
+
+        .annotation-card.disease {
+            border-left: 3px solid var(--accent-red);
+        }
+
+        .annotation-card.healthy {
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .annotation-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .annotation-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .annotation-name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .annotation-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .annotation-stats {
+            text-align: right;
+        }
+
+        .annotation-polygons {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .annotation-area {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .empty-annotations {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-annotations i {
+            font-size: 36px;
+            margin-bottom: 12px;
+            opacity: 0.4;
+        }
+
+        .view-modes {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-secondary);
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .view-mode-btn {
+            flex: 1;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .view-mode-btn.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+        }
+
+        .coverage-bar {
+            margin-top: 12px;
+        }
+
+        .coverage-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .coverage-track {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .coverage-fill {
+            height: 100%;
+            background: var(--accent-green);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            z-index: 20;
+        }
+
+        .progress-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .progress-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .detail-item {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 80px;
+                padding: 15px;
+            }
+            
+            .logo-text, .nav-link span {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+            
+            .nav-link {
+                justify-content: center;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <span class="logo-text">AI-PAPS</span>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="monitoring.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Мониторинг</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="recognition.html" class="nav-link">
+                    <i class="fas fa-microscope"></i>
+                    <span>Распознавание</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-database"></i>
+                    <span>Датасеты</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-brain"></i>
+                    <span>Обучение</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-network-wired"></i>
+                    <span>Модели</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header class="header">
+            <div class="header-title">
+                <div class="breadcrumb">
+                    <a href="#">Датасеты</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="#">Томаты - Основной v3</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>IMG_4521.jpg</span>
+                </div>
+                <h1>
+                    <i class="fas fa-image" style="color: var(--accent-blue);"></i>
+                    IMG_4521.jpg
+                </h1>
+                <p>Изображение из датасета "Томаты - Основной v3"</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary">
+                    <i class="fas fa-edit"></i>
+                    Редактировать
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-download"></i>
+                    Скачать
+                </button>
+                <button class="btn btn-secondary btn-icon">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="asset-layout">
+            <div class="viewer-column">
+                <div class="card">
+                    <div class="viewer-container">
+                        <div class="viewer-toolbar">
+                            <div class="toolbar-group">
+                                <div class="view-modes">
+                                    <button class="view-mode-btn active" title="Изображение">
+                                        <i class="fas fa-image"></i>
+                                    </button>
+                                    <button class="view-mode-btn" title="Маски">
+                                        <i class="fas fa-border-all"></i>
+                                    </button>
+                                    <button class="view-mode-btn" title="Наложение">
+                                        <i class="fas fa-layer-group"></i>
+                                    </button>
+                                </div>
+                                <button class="toolbar-btn" title="Показать все">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="toolbar-btn" title="Скрыть все">
+                                    <i class="fas fa-eye-slash"></i>
+                                </button>
+                            </div>
+                            <div class="zoom-controls">
+                                <button class="zoom-btn" onclick="zoomOut()">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span class="zoom-value" id="zoomValue">100%</span>
+                                <button class="zoom-btn" onclick="zoomIn()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button class="zoom-btn" onclick="fitToScreen()">
+                                    <i class="fas fa-compress-arrows-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <canvas id="viewerCanvas" class="viewer-canvas"></canvas>
+                        
+                        <div class="navigation">
+                            <button class="nav-btn" id="prevBtn">
+                                <i class="fas fa-chevron-left"></i>
+                                Предыдущее
+                            </button>
+                            <span class="nav-info">12 / 847</span>
+                            <button class="nav-btn" id="nextBtn">
+                                Следующее
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Информация об изображении</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">Размер файла</div>
+                                <div class="detail-value">2.4 MB</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Формат</div>
+                                <div class="detail-value">JPEG</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Разрешение</div>
+                                <div class="detail-value">1920 × 1080</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Дата загрузки</div>
+                                <div class="detail-value">15.02.2026</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">ID источника</div>
+                                <div class="detail-value">#89234</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Статус</div>
+                                <div class="detail-value" style="color: var(--accent-green);">
+                                    <i class="fas fa-check-circle"></i> Размечено
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-panel">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Статистика разметки</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-stats">
+                            <div class="stat-box">
+                                <div class="stat-value">8</div>
+                                <div class="stat-label">Аннотаций</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value blue">5</div>
+                                <div class="stat-label">Болезней</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value orange">3</div>
+                                <div class="stat-label">Вредителей</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value purple">12</div>
+                                <div class="stat-label">Полигонов</div>
+                            </div>
+                        </div>
+                        
+                        <div class="coverage-bar">
+                            <div class="coverage-header">
+                                <span>Покрытие изображения</span>
+                                <span>34.2%</span>
+                            </div>
+                            <div class="coverage-track">
+                                <div class="coverage-fill" style="width: 34.2%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Фильтр аннотаций</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="filter-bar">
+                            <button class="filter-chip active">Все</button>
+                            <button class="filter-chip">Болезни</button>
+                            <button class="filter-chip">Вредители</button>
+                            <button class="filter-chip">Здоровые</button>
+                        </div>
+                        
+                        <div class="legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #ef4444;"></div>
+                                <span>Болезнь</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #f59e0b;"></div>
+                                <span>Вредитель</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #10b981;"></div>
+                                <span>Здоровый</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Аннотации (8)</h3>
+                        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;">
+                            <i class="fas fa-plus"></i>
+                            Добавить
+                        </button>
+                    </div>
+                    <div class="card-body" style="padding: 12px;">
+                        <div class="annotations-list">
+                            <div class="annotation-card disease active">
+                                <div class="annotation-info">
+                                    <div class="annotation-color" style="background: #ef4444;"></div>
+                                    <div>
+                                        <div class="annotation-name">Фитофтороз</div>
+                                        <div class="annotation-meta">Polygon</div>
+                                    </div>
+                                </div>
+                                <div class="annotation-stats">
+                                    <div class="annotation-polygons">3</div>
+                                    <div class="annotation-area">124.5 см²</div>
+                                </div>
+                            </div>
+                            
+                            <div class="annotation-card disease">
+                                <div class="annotation-info">
+                                    <div class="annotation-color" style="background: #f59e0b;"></div>
+                                    <div>
+                                        <div class="annotation-name">Мучнистая роса</div>
+                                        <div class="annotation-meta">Polygon</div>
+                                    </div>
+                                </div>
+                                <div class="annotation-stats">
+                                    <div class="annotation-polygons">2</div>
+                                    <div class="annotation-area">56.2 см²</div>
+                                </div>
+                            </div>
+                            
+                            <div class="annotation-card disease">
+                                <div class="annotation-info">
+                                    <div class="annotation-color" style="background: #8b5cf6;"></div>
+                                    <div>
+                                        <div class="annotation-name">Альтернариоз</div>
+                                        <div class="annotation-meta">Polygon</div>
+                                    </div>
+                                </div>
+                                <div class="annotation-stats">
+                                    <div class="annotation-polygons">2</div>
+                                    <div class="annotation-area">43.1 см²</div>
+                                </div>
+                            </div>
+                            
+                            <div class="annotation-card disease">
+                                <div class="annotation-info">
+                                    <div class="annotation-color" style="background: #ec4899;"></div>
+                                    <div>
+                                        <div class="annotation-name">Бактериальный рак</div>
+                                        <div class="annotation-meta">Polygon</div>
+                                    </div>
+                                </div>
+                                <div class="annotation-stats">
+                                    <div class="annotation-polygons">1</div>
+                                    <div class="annotation-area">18.7 см²</div>
+                                </div>
+                            </div>
+                            
+                            <div class="annotation-card healthy">
+                                <div class="annotation-info">
+                                    <div class="annotation-color" style="background: #10b981;"></div>
+                                    <div>
+                                        <div class="annotation-name">Здоровый лист</div>
+                                        <div class="annotation-meta">Polygon</div>
+                                    </div>
+                                </div>
+                                <div class="annotation-stats">
+                                    <div class="annotation-polygons">3</div>
+                                    <div class="annotation-area">892.4 см²</div>
+                                </div>
+                            </div>
+                            
+                            <div class="annotation-card disease">
+                                <div class="annotation-info">
+                                    <div class="annotation-color" style="background: #14b8a6;"></div>
+                                    <div>
+                                        <div class="annotation-name">Тля</div>
+                                        <div class="annotation-meta">Point</div>
+                                    </div>
+                                </div>
+                                <div class="annotation-stats">
+                                    <div class="annotation-polygons">1</div>
+                                    <div class="annotation-area">-</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Действия</h3>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <button class="btn btn-secondary" style="width: 100%; justify-content: flex-start;">
+                                <i class="fas fa-external-link-alt"></i>
+                                Открыть в CVAT
+                            </button>
+                            <button class="btn btn-secondary" style="width: 100%; justify-content: flex-start;">
+                                <i class="fas fa-code"></i>
+                                Экспорт в COCO
+                            </button>
+                            <button class="btn btn-secondary" style="width: 100%; justify-content: flex-start;">
+                                <i class="fas fa-file-export"></i>
+                                Экспорт в YOLO
+                            </button>
+                            <button class="btn btn-secondary" style="width: 100%; justify-content: flex-start;">
+                                <i class="fas fa-copy"></i>
+                                Копировать разметку
+                            </button>
+                            <button class="btn btn-secondary" style="width: 100%; justify-content: flex-start; color: var(--accent-red);">
+                                <i class="fas fa-trash"></i>
+                                Удалить ассет
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('viewerCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let scale = 1;
+        let posX = 0;
+        let posY = 0;
+        let isDragging = false;
+        let lastX = 0;
+        let lastY = 0;
+        let activeAnnotation = null;
+
+        const mockImage = new Image();
+        mockImage.src = 'data:image/svg+xml,' + encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+                <rect fill="#1a2332" width="1920" height="1080"/>
+                <rect fill="#2d3a4d" x="200" y="150" width="600" height="400" rx="20"/>
+                <rect fill="#3d4a5d" x="800" y="200" width="700" height="500" rx="20"/>
+                <rect fill="#4d5a6d" x="400" y="550" width="800" height="350" rx="20"/>
+                <circle fill="#10b981" cx="500" cy="350" r="80" opacity="0.3"/>
+                <circle fill="#ef4444" cx="900" cy="400" r="60" opacity="0.3"/>
+                <circle fill="#f59e0b" cx="1100" cy="450" r="50" opacity="0.3"/>
+                <text fill="#6b7280" font-family="sans-serif" font-size="60" x="960" y="540" text-anchor="middle">Изображение растения</text>
+            </svg>
+        `);
+
+        mockImage.onload = () => {
+            drawCanvas();
+        };
+
+        const annotations = [
+            { id: 1, name: 'Фитофтороз', color: '#ef4444', polygons: 3, area: 124.5, isDisease: true },
+            { id: 2, name: 'Мучнистая роса', color: '#f59e0b', polygons: 2, area: 56.2, isDisease: true },
+            { id: 3, name: 'Альтернариоз', color: '#8b5cf6', polygons: 2, area: 43.1, isDisease: true },
+            { id: 4, name: 'Бактериальный рак', color: '#ec4899', polygons: 1, area: 18.7, isDisease: true },
+            { id: 5, name: 'Здоровый лист', color: '#10b981', polygons: 3, area: 892.4, isDisease: false },
+            { id: 6, name: 'Тля', color: '#14b8a6', polygons: 1, area: 0, isDisease: true },
+        ];
+
+        function drawCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.save();
+            ctx.translate(posX, posY);
+            ctx.scale(scale, scale);
+            
+            ctx.drawImage(mockImage, 0, 0, 1920, 1080);
+            
+            annotations.forEach(ann => {
+                const isActive = activeAnnotation === ann.id;
+                ctx.strokeStyle = isActive ? '#ffff00' : ann.color;
+                ctx.fillStyle = isActive 
+                    ? 'rgba(255, 255, 0, 0.5)' 
+                    : ann.color + '40';
+                ctx.lineWidth = isActive ? 3 : 2;
+                
+                const cx = 400 + ann.id * 150;
+                const cy = 300 + ann.id * 50;
+                
+                ctx.beginPath();
+                ctx.ellipse(cx, cy, 60 + ann.polygons * 10, 40 + ann.polygons * 5, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+            });
+            
+            ctx.restore();
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            lastX = e.clientX;
+            lastY = e.clientY;
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const dx = e.clientX - lastX;
+            const dy = e.clientY - lastY;
+            posX += dx;
+            posY += dy;
+            lastX = e.clientX;
+            lastY = e.clientY;
+            drawCanvas();
+        });
+
+        canvas.addEventListener('mouseup', () => isDragging = false);
+        canvas.addEventListener('mouseleave', () => isDragging = false);
+
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
+            scale = Math.max(0.1, Math.min(5, scale * zoomFactor));
+            document.getElementById('zoomValue').textContent = Math.round(scale * 100) + '%';
+            drawCanvas();
+        });
+
+        function zoomIn() {
+            scale = Math.min(5, scale * 1.2);
+            document.getElementById('zoomValue').textContent = Math.round(scale * 100) + '%';
+            drawCanvas();
+        }
+
+        function zoomOut() {
+            scale = Math.max(0.1, scale / 1.2);
+            document.getElementById('zoomValue').textContent = Math.round(scale * 100) + '%';
+            drawCanvas();
+        }
+
+        function fitToScreen() {
+            scale = Math.min(canvas.offsetWidth / 1920, canvas.offsetHeight / 1080);
+            posX = (canvas.offsetWidth - 1920 * scale) / 2;
+            posY = (canvas.offsetHeight - 1080 * scale) / 2;
+            document.getElementById('zoomValue').textContent = Math.round(scale * 100) + '%';
+            drawCanvas();
+        }
+
+        document.querySelectorAll('.annotation-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.annotation-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                activeAnnotation = parseInt(card.dataset.id) || annotations.findIndex(a => 
+                    card.querySelector('.annotation-name').textContent === a.name
+                ) + 1;
+                drawCanvas();
+            });
+        });
+
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('.view-mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.view-mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        window.addEventListener('resize', drawCanvas);
+    </script>
+</body>
+</html>

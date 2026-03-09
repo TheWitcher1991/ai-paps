@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Распознавание - AI PAPS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #818CF8;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --bg-dark: #1F2937;
+            --bg-card: #FFFFFF;
+            --bg-body: #F3F4F6;
+            --text-main: #111827;
+            --text-muted: #6B7280;
+            --border: #E5E7EB;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        .header {
+            margin-bottom: 24px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: #E5E7EB;
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            width: fit-content;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+        
+        .tab.active {
+            background: var(--bg-card);
+            color: var(--text-main);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 48px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .upload-zone:hover {
+            border-color: var(--primary);
+            background: #F9FAFB;
+        }
+        
+        .upload-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            background: #EEF2FF;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .upload-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary);
+        }
+        
+        .upload-text {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .upload-text strong {
+            color: var(--primary);
+        }
+        
+        .image-preview {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .image-preview img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            background: #F9FAFB;
+        }
+        
+        .image-placeholder {
+            height: 300px;
+            background: #F9FAFB;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+        
+        .model-select {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .model-option {
+            flex: 1;
+            padding: 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .model-option:hover {
+            border-color: var(--primary-light);
+        }
+        
+        .model-option.selected {
+            border-color: var(--primary);
+            background: #EEF2FF;
+        }
+        
+        .model-option h4 {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .model-option p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #4338CA;
+        }
+        
+        .btn-primary:disabled {
+            background: #9CA3AF;
+            cursor: not-allowed;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+        
+        .btn-outline:hover {
+            background: #F9FAFB;
+        }
+        
+        .result-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .result-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .result-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
+        
+        .result-info {
+            flex: 1;
+        }
+        
+        .result-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .result-type {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .result-confidence {
+            text-align: right;
+        }
+        
+        .confidence-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .confidence-label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .badge-detection {
+            background: #DBEAFE;
+            color: #1D4ED8;
+        }
+        
+        .badge-segmentation {
+            background: #D1FAE5;
+            color: #059669;
+        }
+        
+        .badge-disease {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+        
+        .badge-healthy {
+            background: #D1FAE5;
+            color: #059669;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            padding: 16px;
+            background: #F9FAFB;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #E5E7EB;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        
+        .detection-box {
+            position: absolute;
+            border: 2px solid;
+            border-radius: 4px;
+        }
+        
+        .detection-label {
+            position: absolute;
+            top: -24px;
+            left: -2px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+            color: white;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 48px;
+            color: var(--text-muted);
+        }
+        
+        .segmentation-legend {
+            margin-top: 16px;
+        }
+        
+        .legend-title {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+            font-size: 13px;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .section {
+            margin-top: 20px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Распознавание</h1>
+            <p>Инференс моделей машинного обучения для детекции и сегментации заболеваний растений</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('detection')">Детекция</button>
+            <button class="tab" onclick="switchTab('segmentation')">Сегментация</button>
+        </div>
+        
+        <div class="grid">
+            <div>
+                <div class="card">
+                    <div class="card-title">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        Загрузка изображения
+                    </div>
+                    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                        <div class="upload-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                        </div>
+                        <p class="upload-text"><strong>Нажмите для загрузки</strong> или перетащите изображение</p>
+                        <p class="upload-text" style="margin-top: 8px;">PNG, JPG до 10 МБ</p>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none" onchange="handleFileSelect(event)">
+                    
+                    <div class="image-preview" id="imagePreview" style="display: none; margin-top: 16px;">
+                        <img src="" alt="Preview" id="previewImg">
+                    </div>
+                </div>
+                
+                <div class="card" id="resultCard" style="display: none;">
+                    <div class="card-title">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Результаты распознавания
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Объектов найдено</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">92%</div>
+                            <div class="stat-label">Средняя точность</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Найденные классы</div>
+                        <div id="detectionResults">
+                            <div class="result-item">
+                                <div class="result-color" style="background: #EF4444;"></div>
+                                <div class="result-info">
+                                    <div class="result-name">Alternaria</div>
+                                    <div class="result-type">
+                                        <span class="badge badge-disease">Заболевание</span>
+                                        <span class="badge badge-detection">Детекция</span>
+                                    </div>
+                                </div>
+                                <div class="result-confidence">
+                                    <div class="confidence-value">94.2%</div>
+                                    <div class="confidence-label">confidence</div>
+                                </div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-color" style="background: #F59E0B;"></div>
+                                <div class="result-info">
+                                    <div class="result-name">Healthy Leaf</div>
+                                    <div class="result-type">
+                                        <span class="badge badge-healthy">Здоровое</span>
+                                        <span class="badge badge-detection">Детекция</span>
+                                    </div>
+                                </div>
+                                <div class="result-confidence">
+                                    <div class="confidence-value">87.8%</div>
+                                    <div class="confidence-label">confidence</div>
+                                </div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-color" style="background: #10B981;"></div>
+                                <div class="result-info">
+                                    <div class="result-name">Powdery Mildew</div>
+                                    <div class="result-type">
+                                        <span class="badge badge-disease">Заболевание</span>
+                                        <span class="badge badge-detection">Детекция</span>
+                                    </div>
+                                </div>
+                                <div class="result-confidence">
+                                    <div class="confidence-value">76.3%</div>
+                                    <div class="confidence-label">confidence</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="segmentationResults" style="display: none;">
+                            <div class="result-item">
+                                <div class="result-color" style="background: rgba(239, 68, 68, 0.7);"></div>
+                                <div class="result-info">
+                                    <div class="result-name">Alternaria - Поражённая область</div>
+                                    <div class="result-type">
+                                        <span class="badge badge-disease">Заболевание</span>
+                                        <span class="badge badge-segmentation">Сегментация</span>
+                                    </div>
+                                </div>
+                                <div class="result-confidence">
+                                    <div class="confidence-value">91.5%</div>
+                                    <div class="confidence-label">IoU</div>
+                                </div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-color" style="background: rgba(245, 158, 11, 0.7);"></div>
+                                <div class="result-info">
+                                    <div class="result-name">Healthy Leaf - Здоровая область</div>
+                                    <div class="result-type">
+                                        <span class="badge badge-healthy">Здоровое</span>
+                                        <span class="badge badge-segmentation">Сегментация</span>
+                                    </div>
+                                </div>
+                                <div class="result-confidence">
+                                    <div class="confidence-value">89.2%</div>
+                                    <div class="confidence-label">IoU</div>
+                                </div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-color" style="background: rgba(16, 185, 129, 0.7);"></div>
+                                <div class="result-info">
+                                    <div class="result-name">Powdery Mildew - Поражённая область</div>
+                                    <div class="result-type">
+                                        <span class="badge badge-disease">Заболевание</span>
+                                        <span class="badge badge-segmentation">Сегментация</span>
+                                    </div>
+                                </div>
+                                <div class="result-confidence">
+                                    <div class="confidence-value">72.1%</div>
+                                    <div class="confidence-label">IoU</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Информация о модели</div>
+                        <div class="result-item">
+                            <div class="result-info">
+                                <div class="result-name">YOLOv8-Paps-Disease</div>
+                                <div class="result-type">Модель детекции • COCO Dataset v2.1</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <div class="card">
+                    <div class="card-title">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                        </svg>
+                        Выбор модели
+                    </div>
+                    
+                    <div class="model-select">
+                        <div class="model-option selected" id="detectionOption" onclick="selectModel('detection')">
+                            <h4>Детекция (YOLO)</h4>
+                            <p>Быстрое обнаружение объектов с bounding boxes</p>
+                        </div>
+                        <div class="model-option" id="segmentationOption" onclick="selectModel('segmentation')">
+                            <h4>Сегментация (U-Net)</h4>
+                            <p>Точное выделение областей поражения</p>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Доступные классы</div>
+                        <div class="segmentation-legend">
+                            <div class="legend-title">Заболевания</div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #EF4444;"></div>
+                                Alternaria
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #8B5CF6;"></div>
+                                Anthracnose
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #EC4899;"></div>
+                                Bacterial Spot
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #F59E0B;"></div>
+                                Blight
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #10B981;"></div>
+                                Powdery Mildew
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #06B6D4;"></div>
+                                Rust
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #6366F1;"></div>
+                                Leaf Curl
+                            </div>
+                        </div>
+                        <div class="segmentation-legend" style="margin-top: 16px;">
+                            <div class="legend-title">Здоровые</div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #84CC16;"></div>
+                                Healthy Leaf
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #22C55E;"></div>
+                                Healthy Stem
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 20px;" id="runBtn" disabled onclick="runInference()">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Запустить распознавание
+                    </button>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">История распознаваний</div>
+                    <div class="result-item">
+                        <div class="result-info">
+                            <div class="result-name">tomato_disease_01.jpg</div>
+                            <div class="result-type">3 объекта • 92%</div>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-info">
+                            <div class="result-name">leaf_sample_05.png</div>
+                            <div class="result-type">2 объекта • 88%</div>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-info">
+                            <div class="result-name">plant_scan_12.jpg</div>
+                            <div class="result-type">5 объектов • 95%</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline" style="width: 100%; margin-top: 12px;">Показать ещё</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentMode = 'detection';
+        let selectedFile = null;
+        
+        function switchTab(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (selectedFile) {
+                showResults();
+            }
+        }
+        
+        function selectModel(model) {
+            document.getElementById('detectionOption').classList.toggle('selected', model === 'detection');
+            document.getElementById('segmentationOption').classList.toggle('selected', model === 'segmentation');
+            currentMode = model;
+            
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            if (model === 'detection') {
+                document.querySelector('.tab:first-child').classList.add('active');
+            } else {
+                document.querySelector('.tab:last-child').classList.add('active');
+            }
+        }
+        
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                selectedFile = file;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                    document.getElementById('uploadZone').style.display = 'none';
+                    document.getElementById('runBtn').disabled = false;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function runInference() {
+            const btn = document.getElementById('runBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="animate-spin"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" stroke-dasharray="60" stroke-dashoffset="20"></circle></svg> Обработка...';
+            
+            setTimeout(() => {
+                btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Запустить распознавание';
+                btn.disabled = false;
+                showResults();
+            }, 1500);
+        }
+        
+        function showResults() {
+            document.getElementById('resultCard').style.display = 'block';
+            
+            if (currentMode === 'detection') {
+                document.getElementById('detectionResults').style.display = 'block';
+                document.getElementById('segmentationResults').style.display = 'none';
+            } else {
+                document.getElementById('detectionResults').style.display = 'none';
+                document.getElementById('segmentationResults').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

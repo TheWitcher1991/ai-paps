@@ -1,4 +1,4 @@
-import { ClassModel } from '../class'
+import { AnnotationView, ClassModel } from '../class'
 import { boolean, object } from 'valibot'
 
 import { BaseModel, merge, vBrand, vShape } from '@wcsc/toolkit'
@@ -18,7 +18,7 @@ export const AnnotationModel = merge(
 		area: vShape.datetime,
 		area_mm2: vShape.optional(vShape.positive),
 		area_сm2: vShape.optional(vShape.positive),
-		is_disease: boolean(),
+		view: vShape.enum(AnnotationView),
 		iscrowd: boolean(),
 	}),
 )

@@ -1,17 +1,20 @@
 'use client'
 
+import { Flex } from '@gravity-ui/uikit'
+import { IconPhoto } from '@tabler/icons-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useAnnotations } from '~models/annotation'
 
+import { CardIconTitle } from '~infra/ui'
+
 import { WithAsset } from '@wcsc/models'
+import { removeHostInUrl } from '@wcsc/toolkit'
 
 import AssetAnnotations from './asset-annotations'
+import { AssetPlayer } from './asset-player'
 import { useAssetSegmentation } from './asset.hooks'
 import styles from './asset.module.scss'
-import { CardIconTitle } from '~infra/ui'
-import { IconPhoto } from '@tabler/icons-react'
-import { removeHostInUrl } from '@wcsc/toolkit'
 
 export default function Asset({ asset }: WithAsset) {
 	const { data, isLoading } = useAnnotations({ asset: asset.id })
@@ -90,28 +93,31 @@ export default function Asset({ asset }: WithAsset) {
 			/>
 
 			<div className={styles.annotationConter}>
-				<div className={styles.annotationBlocker}>
-					<div
-						ref={containerRef}
-						className={styles.annotationRelative}
-						style={{
-							transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
-							transformOrigin: 'top left',
-							cursor: dragging.current ? 'grabbing' : 'grab',
-						}}
-					>
-						<img
-							ref={imgRef}
-							src={asset.file}
-							alt=''
-							className={styles.annotationAsset}
-						/>
-						<canvas
-							ref={canvasRef}
-							className={styles.annotationCanvas}
-						/>
+				<Flex width={'100%'} direction={'column'} gap={3}>
+					<div className={styles.annotationBlocker}>
+						<div
+							ref={containerRef}
+							className={styles.annotationRelative}
+							style={{
+								transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
+								transformOrigin: 'top left',
+								cursor: dragging.current ? 'grabbing' : 'grab',
+							}}
+						>
+							<img
+								ref={imgRef}
+								src={asset.file}
+								alt=''
+								className={styles.annotationAsset}
+							/>
+							<canvas
+								ref={canvasRef}
+								className={styles.annotationCanvas}
+							/>
+						</div>
 					</div>
-				</div>
+					<AssetPlayer asset={asset} />
+				</Flex>
 
 				<AssetAnnotations
 					annotations={results}

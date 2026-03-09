@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-PAPS | Мониторинг тепличного комплекса</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #111827;
+            --bg-card: #1a2332;
+            --bg-card-hover: #232d3f;
+            --accent-green: #10b981;
+            --accent-green-light: #34d399;
+            --accent-blue: #3b82f6;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border-color: #374151;
+            --gradient-green: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            --gradient-orange: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0 30px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--gradient-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-green-light), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+        }
+
+        .nav-link.active {
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .header-title h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .header-title p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-online {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+        }
+
+        .status-warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-orange);
+        }
+
+        .status-alert {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .metric-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .metric-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .metric-icon.temperature {
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+            color: white;
+        }
+
+        .metric-icon.humidity {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+        }
+
+        .metric-icon.co2 {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            color: white;
+        }
+
+        .metric-icon.light {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: white;
+        }
+
+        .metric-icon.water {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+        }
+
+        .metric-icon.ph {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .metric-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .metric-trend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+        .metric-trend.up {
+            color: var(--accent-green);
+        }
+
+        .metric-trend.down {
+            color: var(--accent-red);
+        }
+
+        .metric-range {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .chart-container {
+            height: 280px;
+            position: relative;
+        }
+
+        .zones-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .zone-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .zone-item:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .zone-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .zone-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .zone-icon.zone-a {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+        }
+
+        .zone-icon.zone-b {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .zone-icon.zone-c {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--accent-purple);
+        }
+
+        .zone-icon.zone-d {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-orange);
+        }
+
+        .zone-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .zone-crop {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .zone-temp {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .zone-temp span {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        .inference-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .upload-zone.dragover {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .upload-text {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .upload-formats {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .inference-results {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-green);
+        }
+
+        .result-item.disease {
+            border-left-color: var(--accent-red);
+        }
+
+        .result-item.warning {
+            border-left-color: var(--accent-orange);
+        }
+
+        .result-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .result-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .result-confidence {
+            text-align: right;
+        }
+
+        .confidence-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .confidence-value.high {
+            color: var(--accent-red);
+        }
+
+        .confidence-label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .alerts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .alert-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .alert-icon.critical {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+        }
+
+        .alert-icon.warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-orange);
+        }
+
+        .alert-icon.info {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .alert-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .alert-content p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .alert-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .plants-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 16px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-fill.green {
+            background: var(--accent-green);
+        }
+
+        .progress-fill.yellow {
+            background: var(--accent-orange);
+        }
+
+        .progress-fill.red {
+            background: var(--accent-red);
+        }
+
+        .sensor-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .sensor-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent-green);
+        }
+
+        .sensor-dot.error {
+            background: var(--accent-red);
+        }
+
+        .sensor-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tr:hover td {
+            background: var(--bg-secondary);
+        }
+
+        .crop-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .crop-tag.tomato {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .crop-tag.cucumber {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+
+        .crop-tag.pepper {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+        }
+
+        .crop-tag.lettuce {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+        }
+
+        .btn-icon:hover {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-spinner.active {
+            display: block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 1400px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .inference-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 80px;
+                padding: 15px;
+            }
+            
+            .logo-text, .nav-link span {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+            
+            .nav-link {
+                justify-content: center;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .plants-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <span class="logo-text">AI-PAPS</span>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Мониторинг</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="recognition.html" class="nav-link">
+                    <i class="fas fa-microscope"></i>
+                    <span>Распознавание</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-database"></i>
+                    <span>Датасеты</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-brain"></i>
+                    <span>Обучение</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Справочник</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Проекты</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Настройки</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header class="header">
+            <div class="header-title">
+                <h1>Мониторинг тепличного комплекса</h1>
+                <p>Обновлено: <span id="lastUpdate">09.03.2026 14:32:15</span></p>
+            </div>
+            <div class="header-actions">
+                <div class="status-badge status-online">
+                    <span class="status-dot"></span>
+                    Все системы работают
+                </div>
+                <button class="btn btn-primary">
+                    <i class="fas fa-sync-alt"></i>
+                    Обновить
+                </button>
+            </div>
+        </header>
+
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon temperature">
+                        <i class="fas fa-thermometer-half"></i>
+                    </div>
+                    <div class="status-badge status-online">
+                        <span class="status-dot"></span>
+                        Норма
+                    </div>
+                </div>
+                <div class="metric-value">24.5°C</div>
+                <div class="metric-label">Температура воздуха</div>
+                <div class="metric-trend up">
+                    <i class="fas fa-arrow-up"></i>
+                    +0.3°C за час
+                </div>
+                <div class="metric-range">
+                    <span>Мин: 18°C</span>
+                    <span>Макс: 28°C</span>
+                </div>
+                <div class="sensor-status">
+                    <div class="sensor-dot"></div>
+                    <span class="sensor-text">12 датчиков онлайн</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon humidity">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <div class="status-badge status-warning">
+                        <span class="status-dot"></span>
+                        Внимание
+                    </div>
+                </div>
+                <div class="metric-value">78%</div>
+                <div class="metric-label">Влажность воздуха</div>
+                <div class="metric-trend down">
+                    <i class="fas fa-arrow-down"></i>
+                    -2% за час
+                </div>
+                <div class="metric-range">
+                    <span>Мин: 60%</span>
+                    <span>Макс: 85%</span>
+                </div>
+                <div class="sensor-status">
+                    <div class="sensor-dot"></div>
+                    <span class="sensor-text">8 датчиков онлайн</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon co2">
+                        <i class="fas fa-wind"></i>
+                    </div>
+                    <div class="status-badge status-online">
+                        <span class="status-dot"></span>
+                        Норма
+                    </div>
+                </div>
+                <div class="metric-value">842 ppm</div>
+                <div class="metric-label">Уровень CO₂</div>
+                <div class="metric-trend up">
+                    <i class="fas fa-arrow-up"></i>
+                    +15 ppm за час
+                </div>
+                <div class="metric-range">
+                    <span>Мин: 400 ppm</span>
+                    <span>Макс: 1200 ppm</span>
+                </div>
+                <div class="sensor-status">
+                    <div class="sensor-dot"></div>
+                    <span class="sensor-text">4 датчика онлайн</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon light">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="status-badge status-online">
+                        <span class="status-dot"></span>
+                        День
+                    </div>
+                </div>
+                <div class="metric-value">45,200 lux</div>
+                <div class="metric-label">Освещённость</div>
+                <div class="metric-trend up">
+                    <i class="fas fa-arrow-up"></i>
+                    +1200 lux за час
+                </div>
+                <div class="metric-range">
+                    <span>Мин: 0 lux</span>
+                    <span>Макс: 60000 lux</span>
+                </div>
+                <div class="sensor-status">
+                    <div class="sensor-dot"></div>
+                    <span class="sensor-text">6 датчиков онлайн</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon water">
+                        <i class="fas fa-faucet"></i>
+                    </div>
+                    <div class="status-badge status-online">
+                        <span class="status-dot"></span>
+                        Активен
+                    </div>
+                </div>
+                <div class="metric-value">12.4 л/м²</div>
+                <div class="metric-label">Полив (сегодня)</div>
+                <div class="metric-trend up">
+                    <i class="fas fa-check"></i>
+                    План выполнен на 85%
+                </div>
+                <div class="metric-range">
+                    <span>План: 14.6 л/м²</span>
+                    <span>Осталось: 2.2 л/м²</span>
+                </div>
+                <div class="sensor-status">
+                    <div class="sensor-dot"></div>
+                    <span class="sensor-text">Система полива: OK</span>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon ph">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <div class="status-badge status-online">
+                        <span class="status-dot"></span>
+                        Норма
+                    </div>
+                </div>
+                <div class="metric-value">6.2 pH</div>
+                <div class="metric-label">pH питательного раствора</div>
+                <div class="metric-trend up">
+                    <i class="fas fa-minus"></i>
+                    Без изменений
+                </div>
+                <div class="metric-range">
+                    <span>Мин: 5.5 pH</span>
+                    <span>Макс: 6.8 pH</span>
+                </div>
+                <div class="sensor-status">
+                    <div class="sensor-dot"></div>
+                    <span class="sensor-text">EC: 2.1 мСм/см</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Динамика микроклимата (24 часа)</h3>
+                    <div class="header-actions">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="climateChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Зоны теплицы</h3>
+                </div>
+                <div class="card-body">
+                    <div class="zones-list">
+                        <div class="zone-item">
+                            <div class="zone-info">
+                                <div class="zone-icon zone-a">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div>
+                                    <div class="zone-name">Зона А - Томаты</div>
+                                    <div class="zone-crop">Фаза: Плодоношение</div>
+                                </div>
+                            </div>
+                            <div class="zone-temp">25.2°C</div>
+                        </div>
+                        <div class="zone-item">
+                            <div class="zone-info">
+                                <div class="zone-icon zone-b">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div>
+                                    <div class="zone-name">Зона B - Огурцы</div>
+                                    <div class="zone-crop">Фаза: Цветение</div>
+                                </div>
+                            </div>
+                            <div class="zone-temp">23.8°C</div>
+                        </div>
+                        <div class="zone-item">
+                            <div class="zone-info">
+                                <div class="zone-icon zone-c">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div>
+                                    <div class="zone-name">Зона C - Перец</div>
+                                    <div class="zone-crop">Фаза: Вегетация</div>
+                                </div>
+                            </div>
+                            <div class="zone-temp">24.1°C</div>
+                        </div>
+                        <div class="zone-item">
+                            <div class="zone-info">
+                                <div class="zone-icon zone-d">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <div>
+                                    <div class="zone-name">Зона D - Салат</div>
+                                    <div class="zone-crop">Фаза: Рассада</div>
+                                </div>
+                            </div>
+                            <div class="zone-temp">22.5°C</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card" style="margin-bottom: 24px;">
+            <div class="card-header">
+                <h3 class="card-title">Инференс: Распознавание болезней и вредителей</h3>
+            </div>
+            <div class="card-body">
+                <section class="inference-section">
+                    <div>
+                        <div class="upload-zone" id="uploadZone">
+                            <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <div class="upload-text">Перетащите изображение или нажмите для загрузки</div>
+                            <div class="upload-formats">JPG, PNG, WebP (макс. 10MB)</div>
+                        </div>
+                        <img id="previewImage" class="preview-image" style="display: none;">
+                        <div class="loading-spinner" id="loadingSpinner"></div>
+                    </div>
+                    <div class="inference-results" id="inferenceResults">
+                        <div class="empty-state">
+                            <i class="fas fa-microscope"></i>
+                            <p>Загрузите изображение растения для анализа</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <section class="dashboard-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Состояние растений</h3>
+                </div>
+                <div class="card-body">
+                    <div class="plants-stats">
+                        <div class="stat-box">
+                            <div class="stat-value">12,450</div>
+                            <div class="stat-label">Всего растений</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" style="color: var(--accent-green);">11,892</div>
+                            <div class="stat-label">Здоровые (95.5%)</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" style="color: var(--accent-orange);">423</div>
+                            <div class="stat-label">Требуют внимания (3.4%)</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" style="color: var(--accent-red);">135</div>
+                            <div class="stat-label">Больные (1.1%)</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">98%</div>
+                            <div class="stat-label">Всхожесть</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">23 дня</div>
+                            <div class="stat-label">До урожая (среднее)</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 24px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 14px;">Прогресс развития</span>
+                            <span style="font-size: 14px; color: var(--text-secondary);">Зона А - Томаты</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill green" style="width: 75%;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--text-muted);">
+                            <span>Посадка: 15.01.2026</span>
+                            <span>75%</span>
+                            <span>Урожай: 01.04.2026</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Оповещения</h3>
+                    <div class="status-badge status-alert">
+                        <span>3 новых</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="alerts-list">
+                        <div class="alert-item">
+                            <div class="alert-icon critical">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <h4>Критически низкая влажность</h4>
+                                <p>Зона B - Огурцы: 52% при норме 70-85%</p>
+                                <div class="alert-time">14:25 • 5 мин. назад</div>
+                            </div>
+                        </div>
+                        <div class="alert-item">
+                            <div class="alert-icon warning">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="alert-content">
+                                <h4>Обнаружены вредители</h4>
+                                <p>Зона C - Перец: подозрение на тлю</p>
+                                <div class="alert-time">13:45 • 45 мин. назад</div>
+                            </div>
+                        </div>
+                        <div class="alert-item">
+                            <div class="alert-icon info">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="alert-content">
+                                <h4>Плановое техобслуживание</h4>
+                                <p>Замена фильтров системы полива через 3 дня</p>
+                                <div class="alert-time">09:00 • 5 часов назад</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card-header">
+                <h3 class="card-title">История распознаваний</h3>
+                <div class="header-actions">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-filter"></i>
+                        Фильтр
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Изображение</th>
+                                <th>Культура</th>
+                                <th>Результат</th>
+                                <th>Уверенность</th>
+                                <th>Зона</th>
+                                <th>Дата</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#45892</td>
+                                <td><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect fill='%23374151' width='40' height='40'/%3E%3Ctext fill='%236b7280' font-family='sans-serif' font-size='10' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EIMG%3C/text%3E%3C/svg%3E" style="width: 40px; height: 40px; border-radius: 6px;"></td>
+                                <td><span class="crop-tag tomato">Томат</span></td>
+                                <td style="color: var(--accent-green);">Здоров</td>
+                                <td>98.5%</td>
+                                <td>Зона А</td>
+                                <td>09.03.2026 14:20</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-download"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#45891</td>
+                                <td><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect fill='%23374151' width='40' height='40'/%3E%3Ctext fill='%236b7280' font-family='sans-serif' font-size='10' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EIMG%3C/text%3E%3C/svg%3E" style="width: 40px; height: 40px; border-radius: 6px;"></td>
+                                <td><span class="crop-tag cucumber">Огурец</span></td>
+                                <td style="color: var(--accent-red);">Мучнистая роса</td>
+                                <td>94.2%</td>
+                                <td>Зона B</td>
+                                <td>09.03.2026 14:15</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-download"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#45890</td>
+                                <td><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect fill='%23374151' width='40' height='40'/%3E%3Ctext fill='%236b7280' font-family='sans-serif' font-size='10' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EIMG%3C/text%3E%3C/svg%3E" style="width: 40px; height: 40px; border-radius: 6px;"></td>
+                                <td><span class="crop-tag pepper">Перец</span></td>
+                                <td style="color: var(--accent-orange);">Дефицит азота</td>
+                                <td>87.8%</td>
+                                <td>Зона C</td>
+                                <td>09.03.2026 14:10</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-download"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#45889</td>
+                                <td><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect fill='%23374151' width='40' height='40'/%3E%3Ctext fill='%236b7280' font-family='sans-serif' font-size='10' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EIMG%3C/text%3E%3C/svg%3E" style="width: 40px; height: 40px; border-radius: 6px;"></td>
+                                <td><span class="crop-tag lettuce">Салат</span></td>
+                                <td style="color: var(--accent-green);">Здоров</td>
+                                <td>96.1%</td>
+                                <td>Зона D</td>
+                                <td>09.03.2026 14:05</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-download"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#45888</td>
+                                <td><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect fill='%23374151' width='40' height='40'/%3E%3Ctext fill='%236b7280' font-family='sans-serif' font-size='10' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EIMG%3C/text%3E%3C/svg%3E" style="width: 40px; height: 40px; border-radius: 6px;"></td>
+                                <td><span class="crop-tag tomato">Томат</span></td>
+                                <td style="color: var(--accent-red);">Фитофтороз</td>
+                                <td>91.3%</td>
+                                <td>Зона А</td>
+                                <td>09.03.2026 13:55</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-icon"><i class="fas fa-download"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const climateChart = new Chart(document.getElementById('climateChart'), {
+            type: 'line',
+            data: {
+                labels: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
+                datasets: [
+                    {
+                        label: 'Температура (°C)',
+                        data: [22, 21.5, 21, 20.5, 21, 22.5, 24, 24.5, 25, 24.5, 23.5, 23],
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Влажность (%)',
+                        data: [85, 87, 88, 86, 82, 78, 75, 78, 80, 82, 84, 85],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'CO₂ (ppm)',
+                        data: [600, 580, 560, 550, 580, 650, 750, 842, 800, 720, 680, 640],
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#9ca3af',
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: '#374151'
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: '#374151'
+                        },
+                        ticks: {
+                            color: '#9ca3af'
+                        }
+                    }
+                }
+            }
+        });
+
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const previewImage = document.getElementById('previewImage');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const inferenceResults = document.getElementById('inferenceResults');
+
+        uploadZone.addEventListener('click', () => fileInput.click());
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) processFile(file);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) processFile(file);
+        });
+
+        function processFile(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Пожалуйста, выберите изображение');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImage.src = e.target.result;
+                previewImage.style.display = 'block';
+                uploadZone.style.display = 'none';
+                runInference();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function runInference() {
+            loadingSpinner.classList.add('active');
+            
+            setTimeout(() => {
+                loadingSpinner.classList.remove('active');
+                showResults();
+            }, 2000);
+        }
+
+        function showResults() {
+            const mockResults = [
+                {
+                    disease: false,
+                    name: 'Здоровое растение',
+                    confidence: 96.8,
+                    description: 'Признаков заболеваний не обнаружено'
+                },
+                {
+                    disease: true,
+                    warning: false,
+                    name: 'Ранняя стадия стресса',
+                    confidence: 78.2,
+                    description: 'Возможен дефицит магния'
+                }
+            ];
+
+            inferenceResults.innerHTML = mockResults.map(result => `
+                <div class="result-item ${result.disease ? (result.warning ? 'warning' : 'disease') : ''}">
+                    <div class="result-info">
+                        <h4>${result.name}</h4>
+                        <p>${result.description}</p>
+                    </div>
+                    <div class="result-confidence">
+                        <div class="confidence-value ${result.disease && !result.warning ? 'high' : ''}">${result.confidence}%</div>
+                        <div class="confidence-label">уверенность</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = now.toLocaleString('ru-RU');
+        }, 1000);
+    </script>
+</body>
+</html>
