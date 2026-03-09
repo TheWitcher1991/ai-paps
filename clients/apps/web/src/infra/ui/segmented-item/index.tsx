@@ -23,7 +23,7 @@ export const SegmentedItem = ({
 	children,
 	onClick,
 	view = 'filled',
-	height = 36,
+	height = 34,
 	icon,
 }: SegmentedItemProps) => {
 	return (
