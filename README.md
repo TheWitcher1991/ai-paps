@@ -4,11 +4,6 @@
 
 - [Техническая документация](./docs/README.md)
 - [Продуктовая документация](./docs/PRODUCT.md)
-- [Документация пайплайна обучения](./docs/training_pipeline.md)
-- [Мониторинг тепличного комплекса (HTML)](./docs/monitoring.html)
-- [Распознавание (HTML)](./docs/recognition.html)
-- [Детали модели (HTML)](./docs/model-detail.html)
-- [Детали ассета/разметки (HTML)](./docs/asset-detail.html)
 
 ## Быстрый старт
 
