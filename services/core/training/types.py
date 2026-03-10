@@ -33,6 +33,7 @@ class ModelArchitecture(models.TextChoices):
     yolo = "yolo", t("yolo")
     fpn = "fpn", t("fpn")
     mask_rcnn = "mask_rcnn", t("mask_rcnn")
+    vision_net = "vision_net", t("vision_net")
 
 
 class ModelBackbone(models.TextChoices):

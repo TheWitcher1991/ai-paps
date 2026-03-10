@@ -46,9 +46,24 @@ class DatasetLoader:
 
         return assets, annotations_by_asset
 
-    def create_dataset(self, subset="train", image_size=(512, 512)):
+    def create_dataset(self, subset="train", image_size=(512, 512), valid_ratio=0.2, test_ratio=0.1):
         assets, annotations_by_asset = self.load_dataset(subset)
         class_mapping = self._build_class_mapping()
+
+        if subset in ("train", "val", "test") and len(assets) > 0:
+            total = len(assets)
+            test_size = int(total * test_ratio)
+            valid_size = int(total * valid_ratio)
+            train_size = total - test_size - valid_size
+
+            if subset == "train":
+                assets = assets[:train_size]
+            elif subset == "val":
+                assets = assets[train_size:train_size + valid_size]
+            elif subset == "test":
+                assets = assets[train_size + valid_size:]
+
+            annotations_by_asset = {k: v for k, v in annotations_by_asset.items() if k in [a.id for a in assets]}
 
         return TorchDataset(assets, annotations_by_asset, image_size, class_mapping)
 

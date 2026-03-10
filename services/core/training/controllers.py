@@ -66,6 +66,8 @@ class TrainingRunController(BaseSetController):
         serializer = TrainingRunSerializer(run)
         return Response(serializer.data)
 
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from drf_spectacular.types import OpenApiTypes
 
 class InferenceController(BaseSetController):
     prefix = "inferences"
@@ -101,6 +103,42 @@ class InferenceController(BaseSetController):
             logger.error(f"Inference failed: {str(e)}")
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    @extend_schema(
+        request={
+            'multipart/form-data': {
+                'type': 'object',
+                'properties': {
+                    'image': {
+                        'type': 'string',
+                        'format': 'binary',
+                        'description': 'Image file for inference'
+                    }
+                },
+                'required': ['image']
+            }
+        },
+        responses={
+            200: {
+                'type': 'object',
+                'properties': {
+                    'mask': {
+                        'type': 'array',
+                        'items': {'type': 'number'},
+                        'description': 'Predicted mask'
+                    },
+                    'confidence': {
+                        'type': 'number',
+                        'description': 'Confidence score'
+                    }
+                    # Добавьте другие поля, которые возвращает predict_with_confidence
+                }
+            },
+            400: {'description': 'Bad request - no image provided'},
+            404: {'description': 'Model not found'},
+            500: {'description': 'Internal server error'}
+        },
+        description='Predict mask with confidence score for image using specified model'
+    )
     @action(detail=True, methods=["post"])
     def predict_with_confidence(self, request, pk=None):
         model = model_use_case.get(pk)

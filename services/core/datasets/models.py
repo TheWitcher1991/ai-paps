@@ -19,6 +19,9 @@ class Dataset(ModelAdapter):
     )
     size = models.BigIntegerField(t("Общий размер"), blank=True, null=True)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         ordering = ("-created_date",)
         verbose_name = t("Датасет")
@@ -67,6 +70,9 @@ class DatasetAsset(ModelAdapter):
     height = models.IntegerField(t("Высота"))
     source_id = models.IntegerField(t("Source ID"))
 
+    def __str__(self):
+        return self.file_name
+
     class Meta:
         ordering = ("-created_date",)
         verbose_name = t("Ассет датасета")
@@ -77,6 +83,9 @@ class DatasetClass(ModelAdapter):
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE, related_name="classes")
     name = models.CharField(t("Название"), max_length=255)
     source_id = models.IntegerField(t("Source ID"))
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         ordering = ("-created_date",)
@@ -92,6 +101,9 @@ class DatasetAnnotation(models.Model):
     bbox = models.JSONField(t("Бокс"))
     area = models.FloatField(t("Площадь"))
     iscrowd = models.BooleanField(t("Скульптура"), default=False)
+
+    def __str__(self):
+        return f"{self.asset.file_name} - {self.cls.name}"
 
     class Meta:
         verbose_name = t("Аннотация")

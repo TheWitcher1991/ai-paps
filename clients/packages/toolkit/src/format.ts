@@ -40,19 +40,25 @@ export const formatDuration = (started_date, finished_date): string => {
     const diffMs = endDate.getTime() - startDate.getTime();
     
     // Конвертируем в минуты и часы
-    const totalMinutes = Math.floor(diffMs / (1000 * 60));
+    const totalSeconds = Math.floor(diffMs / 1000);
+    const totalMinutes = Math.floor(totalSeconds / 60);
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
+    const seconds = totalSeconds % 60;
 
     // Форматируем результат
     if (hours > 0 && minutes > 0) {
         return `${hours} ч ${minutes} мин`;
     } else if (hours > 0) {
         return `${hours} ч`;
+    } else if (minutes > 0 && seconds > 0) {
+        return `${minutes} мин ${seconds} сек`;
     } else if (minutes > 0) {
         return `${minutes} мин`;
+    } else if (seconds > 0) {
+        return `${seconds} сек`;
     } else {
-        return 'менее минуты';
+        return 'менее секунды';
     }
 }
 

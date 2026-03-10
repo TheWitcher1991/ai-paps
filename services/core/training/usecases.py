@@ -7,7 +7,7 @@ from training.repositories import (
     TrainingRepository,
     TrainingRunRepository,
 )
-from training.types import TrainingId
+from training.types import ModelId, TrainingId
 
 
 class ModelUseCase(UseCaseAdapter):
@@ -16,6 +16,9 @@ class ModelUseCase(UseCaseAdapter):
 
     def optimize(self):
         return self.repo.all()
+    
+    def get(self, model_id: ModelId):
+        return self.repo.get_by_id(model_id)
 
 
 class TrainingUseCase(UseCaseAdapter):

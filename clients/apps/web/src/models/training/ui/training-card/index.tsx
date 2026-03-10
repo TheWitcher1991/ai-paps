@@ -54,6 +54,9 @@ export const TrainingCard = ({ training }: WithTraining) => {
 					content: training.config.optimizer,
 				},
 				{
+					content: training.config.lr_scheduler,
+				},
+				{
 					content: `lr: ${training.config.learning_rate}`,
 				},
 				{
@@ -61,6 +64,9 @@ export const TrainingCard = ({ training }: WithTraining) => {
 				},
 				{
 					content: `Датасета ${training.datasets.length}`,
+				},
+				{
+					content: `${training.config.image_width}x${training.config.image_height}`,
 				},
 			]}
 			actions={<TrainingAction training={training} />}

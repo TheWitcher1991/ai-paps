@@ -27,6 +27,9 @@ class Model(ModelAdapter):
     backbone = models.CharField(t("Backbone"), choices=ModelBackbone.choices, max_length=32)
     status = models.CharField(t("Статус"), choices=ModelStatus.choices, default=ModelStatus.READY, max_length=32)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         ordering = ("-created_date",)
         verbose_name = t("Модель")
@@ -37,6 +40,9 @@ class Training(ModelAdapter):
     name = models.CharField(t("Название"), max_length=255)
     description = models.TextField(t("Описание"), blank=True, null=True)
     model = models.ForeignKey(Model, on_delete=models.CASCADE, related_name="training")
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         ordering = ("-created_date",)
@@ -69,6 +75,8 @@ class TrainingConfig(ModelAdapter):
 
     image_width = models.IntegerField(t("Ширина изображения"), default=512)
     image_height = models.IntegerField(t("Высота изображения"), default=512)
+    
+    in_channels = models.IntegerField(t("Количество каналов входного изображения"), default=3)
 
     seed = models.IntegerField(t("Сид"), default=42)
 
@@ -82,6 +90,9 @@ class TrainingConfig(ModelAdapter):
 
     training = models.OneToOneField(Training, on_delete=models.SET_NULL, null=True, related_name="config")
 
+    def __str__(self):
+        return f"Config: {self.training.name}"
+
     class Meta:
         ordering = ("-created_date",)
         verbose_name = t("Конфигурация обучения модели")
@@ -91,6 +102,9 @@ class TrainingConfig(ModelAdapter):
 class TrainingDataset(ModelAdapter):
     training = models.ForeignKey(Training, on_delete=models.CASCADE, related_name="datasets")
     dataset = models.ForeignKey("datasets.Dataset", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.training.name} - {self.dataset.name}"
 
     class Meta:
         ordering = ("-created_date",)
@@ -109,8 +123,17 @@ class TrainingRun(ModelAdapter):
     val_loss = models.FloatField(null=True, blank=True)
     test_loss = models.FloatField(null=True, blank=True)
 
+    iou = models.FloatField(null=True, blank=True)
+    precision = models.FloatField(null=True, blank=True)
+    recall = models.FloatField(null=True, blank=True)
+    f1_score = models.FloatField(null=True, blank=True)
+    accuracy = models.FloatField(null=True, blank=True)
+
     started_date = models.DateTimeField(null=True, blank=True)
     finished_date = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Run: {self.training.name} ({self.status})"
 
     class Meta:
         ordering = ("-created_date",)

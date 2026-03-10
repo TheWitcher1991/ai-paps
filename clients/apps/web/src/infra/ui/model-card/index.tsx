@@ -90,7 +90,7 @@ export const ModelCard = ({
 		{tags && (
 			<>
 				<Divider />
-				<Flex alignItems={'center'} gap={1}>
+				<Flex alignItems={'center'} gap={1} wrap='wrap'>
 					{tags.map((tag, index) => (
 						<Button view='raised' size='s' key={index}>
 							<Text variant='caption-2'>{tag.content}</Text>
