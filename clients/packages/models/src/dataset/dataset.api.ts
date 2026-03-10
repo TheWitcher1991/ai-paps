@@ -1,17 +1,22 @@
+import { useMutation } from '@tanstack/react-query'
+
 import {
+	BaseRepository,
 	createApi,
 	createReadonlyApi,
 	CrudRepository,
 	HttpClientInstance,
+	optimisticInvalidateQueries,
 	ReadonlyRepository,
 } from '@wcsc/toolkit'
-import { Paginated } from '@wcsc/types'
+import { Paginated, RequestResponse } from '@wcsc/types'
 
 import { datasetConfig } from './dataset.config'
 import {
 	DatasetID,
 	ICreateDataset,
 	IDataset,
+	IMergeDataset,
 	IUpdateDataset,
 	UseDatasets,
 } from './dataset.types'
@@ -76,5 +81,31 @@ export const createDatasetApi = (http: HttpClientInstance) => {
 		useUpdateDataset: api.useUpdateEntity,
 		useDeleteDataset: api.useDeleteEntity,
 		datasetRepository: api.repo,
+	}
+}
+
+class DatasetActionRepository extends BaseRepository {
+	async merge(data: IMergeDataset): RequestResponse {
+		return this.http.post(`${this.URL}/merge/`, data)
+	}
+}
+
+export const createDatasetActionRepository = (http: HttpClientInstance) =>
+	new DatasetActionRepository(http, datasetConfig.models)
+
+export const createDatasetActionApi = (http: HttpClientInstance) => {
+	const datasetActionRepository = createDatasetActionRepository(http)
+
+	const useMergeDataset = () =>
+		useMutation({
+			mutationFn: (data: IMergeDataset) =>
+				datasetActionRepository.merge(data),
+			onSuccess: async () => {
+				await optimisticInvalidateQueries([[datasetConfig.models]])
+			},
+		})
+
+	return {
+		useMergeDataset,
 	}
 }

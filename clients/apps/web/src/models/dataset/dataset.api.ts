@@ -1,12 +1,21 @@
+import { useEffect, useState } from 'react'
+
 import { http } from '~infra/http'
 
-import { createReadonlyDatasetApi, IDataset } from '@wcsc/models'
-import { useEffect, useState } from 'react'
+import {
+	createDatasetActionApi,
+	createReadonlyDatasetApi,
+	IDataset,
+} from '@wcsc/models'
 
 const { useDataset, useInfinitDatasets, useDatasets } =
 	createReadonlyDatasetApi(http)
 
 export { useDataset, useInfinitDatasets, useDatasets }
+
+const { useMergeDataset } = createDatasetActionApi(http)
+
+export { useMergeDataset }
 
 export const useStackDatasets = () => {
 	const [datasets, setDatasets] = useState<IDataset[]>([])

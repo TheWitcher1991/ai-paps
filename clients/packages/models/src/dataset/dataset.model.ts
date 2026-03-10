@@ -1,5 +1,5 @@
 import { ClassModel } from '../class'
-import { array, description, number, object } from 'valibot'
+import { array, number, object } from 'valibot'
 
 import { BaseModel, merge, vBrand, vShape } from '@wcsc/toolkit'
 
@@ -38,3 +38,9 @@ export const DatasetModel = merge(
 )
 
 export const WriteableDatasetModel = merge(BaseDatasetModel)
+
+export const DatasetMergeModel = object({
+	name: vShape.title,
+	description: vShape.description,
+	dataset_ids: array(vDatasetId),
+})
