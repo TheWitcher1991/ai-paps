@@ -21,3 +21,11 @@ export type WithInferenceID = InjectProps<'inference', InferenceID>
 export type UseInferences = PaginateQuery & {
 	view?: string
 }
+
+export type IPredictionResult = {
+	mask: number[]
+	shape: number[]
+	confidence?: number
+}
+
+export type ModelID = Branded<number, 'ModelID'>

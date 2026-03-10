@@ -28,6 +28,9 @@ class InferenceService:
         logger.info(f"Loading model from {model_file}")
 
         if hasattr(model_file, "read"):
+        # For Django uploaded files
+            if hasattr(model_file, "seek"):
+                model_file.seek(0)  # Reset pointer to beginning
             checkpoint = torch.load(model_file, map_location="cpu")
         else:
             with open(model_file, "rb") as f:
@@ -77,9 +80,11 @@ class InferenceService:
         return model
     
     def _load_image_from_file(self, image_file):
-        """Загружает изображение из загруженного файла"""
         try:
             if isinstance(image_file, (InMemoryUploadedFile, TemporaryUploadedFile)):
+                # Reset file pointer if possible
+                if hasattr(image_file, 'seek'):
+                    image_file.seek(0)
                 image = Image.open(image_file).convert('RGB')
             elif isinstance(image_file, str):
                 image = Image.open(image_file).convert('RGB')
@@ -123,30 +128,49 @@ class InferenceService:
         return image, original_size
 
     def predict(self, image_file, threshold=0.5, target_size=None):
-        image = self._load_image_from_file(image_file)
-        
-        image_tensor, original_size = self.preprocess_image(image, target_size)
-        image_tensor = image_tensor.unsqueeze(0).to(self.device)
+        """Make prediction on image"""
+        try:
+            # Validate inputs
+            if image_file is None:
+                raise ValueError("Image file cannot be None")
+            
+            if threshold < 0 or threshold > 1:
+                raise ValueError(f"Threshold must be between 0 and 1, got {threshold}")
+            
+            image = self._load_image_from_file(image_file)
+            
+            # Set reasonable target size if not provided
+            if target_size is None:
+                # Default to 512x512 if not specified
+                target_size = (512, 512)
+                logger.info(f"Using default target size: {target_size}")
+            
+            image_tensor, original_size = self.preprocess_image(image, target_size)
+            image_tensor = image_tensor.unsqueeze(0).to(self.device)
 
-        with torch.no_grad():
-            output = self.model(image_tensor)
+            with torch.no_grad():
+                output = self.model(image_tensor)
 
-        if output.shape[1] > 1:
-            prediction = torch.argmax(output, dim=1)
-        else:
-            prediction = (torch.sigmoid(output) > threshold).long()
+            if output.shape[1] > 1:
+                prediction = torch.argmax(output, dim=1)
+            else:
+                prediction = (torch.sigmoid(output) > threshold).long()
 
-        prediction = prediction.cpu().numpy()
-        
-        if target_size and original_size != target_size:
-            from PIL import Image
-            prediction = prediction[0].astype(np.uint8)
-            prediction = Image.fromarray(prediction)
-            prediction = prediction.resize(original_size, Image.NEAREST)
-            prediction = np.array(prediction)
-            return prediction
-        else:
-            return prediction[0]
+            prediction = prediction.cpu().numpy()
+            
+            if target_size and original_size != target_size:
+                from PIL import Image
+                prediction = prediction[0].astype(np.uint8)
+                prediction_img = Image.fromarray(prediction)
+                prediction_img = prediction_img.resize(original_size, Image.NEAREST)
+                prediction = np.array(prediction_img)
+                return prediction
+            else:
+                return prediction[0]
+                
+        except Exception as e:
+            logger.error(f"Prediction failed: {str(e)}")
+            raise
 
     def predict_mask(self, image_file, threshold=0.5):
         return self.predict(image_file, threshold)

@@ -1,11 +1,12 @@
 import {
+	BaseRepository,
 	createApi,
 	createReadonlyApi,
 	CrudRepository,
 	HttpClientInstance,
 	ReadonlyRepository,
 } from '@wcsc/toolkit'
-import { Paginated } from '@wcsc/types'
+import { Paginated, RequestResponse } from '@wcsc/types'
 
 import { inferenceConfig } from './inference.config'
 import {
@@ -13,6 +14,8 @@ import {
 	IInference,
 	InferenceID,
 	IUpdateInference,
+	IPredictionResult,
+	ModelID,
 	UseInferences,
 } from './inference.types'
 
@@ -33,6 +36,48 @@ export const createInferenceRepository = (http: HttpClientInstance) =>
 		UseInferences,
 		InferenceID
 	>(http, inferenceConfig.models)
+
+export class InferencePredictionRepository extends BaseRepository {
+	constructor(http: HttpClientInstance) {
+		super(http, inferenceConfig.models)
+	}
+
+	async predict(
+		modelId: ModelID,
+		image: File | Blob,
+	): RequestResponse<IPredictionResult> {
+		const formData = new FormData()
+		formData.append('image', image)
+
+		return this.http.post<IPredictionResult>(
+			`${this.URL}/${modelId}/predict/`,
+			formData,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			},
+		)
+	}
+
+	async predictWithConfidence(
+		modelId: ModelID,
+		image: File | Blob,
+	): RequestResponse<IPredictionResult> {
+		const formData = new FormData()
+		formData.append('image', image)
+
+		return this.http.post<IPredictionResult>(
+			`${this.URL}/${modelId}/predict_with_confidence/`,
+			formData,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			},
+		)
+	}
+}
 
 export const createReadonlyInferenceApi = (http: HttpClientInstance) => {
 	const api = createReadonlyApi<
@@ -76,5 +121,13 @@ export const createInferenceApi = (http: HttpClientInstance) => {
 		useUpdateInference: api.useUpdateEntity,
 		useDeleteInference: api.useDeleteEntity,
 		taskRepository: api.repo,
+	}
+}
+
+export const createInferencePredictionApi = (http: HttpClientInstance) => {
+	const repository = new InferencePredictionRepository(http)
+
+	return {
+		inferencePredictionRepository: repository,
 	}
 }
