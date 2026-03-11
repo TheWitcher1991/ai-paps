@@ -1797,3 +1797,41 @@ AttributeError: 'ModelUseCase' object has no attribute 'get'
 Internal Server Error: /v1/inferences/9/predict_with_confidence/
 Internal Server Error: /v1/inferences/9/predict_with_confidence/
 Internal Server Error: /v1/inferences/9/predict_with_confidence/
+The number of GET/POST parameters exceeded settings.DATA_UPLOAD_MAX_NUMBER_FIELDS.
+Traceback (most recent call last):
+  File "C:\Projects\ai-paps\venv\Lib\site-packages\asgiref\sync.py", line 557, in thread_handler
+    raise exc_info[1]
+  File "C:\Projects\ai-paps\venv\Lib\site-packages\django\core\handlers\exception.py", line 42, in inner
+    response = await get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projects\ai-paps\venv\Lib\site-packages\django\core\handlers\base.py", line 239, in _get_response_async
+    response = await middleware_method(
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projects\ai-paps\venv\Lib\site-packages\asgiref\sync.py", line 506, in __call__
+    ret = await asyncio.shield(exec_coro)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projects\ai-paps\venv\Lib\site-packages\asgiref\sync.py", line 561, in thread_handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projects\ai-paps\venv\Lib\site-packages\django\middleware\csrf.py", line 465, in process_view
+    self._check_token(request)
+  File "C:\Projects\ai-paps\venv\Lib\site-packages\django\middleware\csrf.py", line 368, in _check_token
+    request_csrf_token = request.POST.get("csrfmiddlewaretoken", "")
+                         ^^^^^^^^^^^^
+  File "C:\Projects\ai-paps\venv\Lib\site-packages\django\core\handlers\asgi.py", line 117, in _get_post
+    self._load_post_and_files()
+  File "C:\Projects\ai-paps\venv\Lib\site-packages\django\http\request.py", line 425, in _load_post_and_files
+    self._post, self._files = self.parse_file_upload(self.META, data)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Projects\ai-paps\venv\Lib\site-packages\django\http\request.py", line 373, in parse_file_upload
+    return parser.parse()
+           ^^^^^^^^^^^^^^
+  File "C:\Projects\ai-paps\venv\Lib\site-packages\django\http\multipartparser.py", line 125, in parse
+    return self._parse()
+           ^^^^^^^^^^^^^
+  File "C:\Projects\ai-paps\venv\Lib\site-packages\django\http\multipartparser.py", line 205, in _parse
+    raise TooManyFieldsSent(
+django.core.exceptions.TooManyFieldsSent: The number of GET/POST parameters exceeded settings.DATA_UPLOAD_MAX_NUMBER_FIELDS.

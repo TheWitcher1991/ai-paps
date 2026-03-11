@@ -13,7 +13,8 @@ export const TrainingRunStartButton = ({
 }: PropsWithAction<WithTraining>) => {
 	const run = useStartTrainingRun(training.id)
 
-	const handleStart = async () =>
+	const handleStart = async e => {
+		e.stopPropagation()
 		await query(async () => {
 			await run.mutateAsync()
 			toaster.add({
@@ -21,6 +22,7 @@ export const TrainingRunStartButton = ({
 				name: 'training-run',
 			})
 		})
+	}
 
 	return (
 		<Action

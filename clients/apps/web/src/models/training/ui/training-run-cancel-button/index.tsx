@@ -13,7 +13,8 @@ export const TrainingRunCancelButton = ({
 }: PropsWithAction<WithTraining>) => {
 	const run = useCancelTrainingRun(training?.runs[0]?.id)
 
-	const handleCancel = async () =>
+	const handleCancel = async e => {
+		e.stopPropagation()
 		await query(async () => {
 			await run.mutateAsync()
 			toaster.add({
@@ -21,6 +22,7 @@ export const TrainingRunCancelButton = ({
 				name: 'training-cancel',
 			})
 		})
+	}
 
 	return (
 		<Action
