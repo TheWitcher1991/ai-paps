@@ -11,7 +11,6 @@ from users.models import User
 
 
 class Command(BaseCommand):
-
     def handle(self, *args, **options):
         username = DJANGO_SUPERUSER_USERNAME
         email = DJANGO_SUPERUSER_EMAIL
@@ -21,7 +20,12 @@ class Command(BaseCommand):
             print("Creating account for %s (%s)" % (username, email))
             try:
                 User.objects.create_superuser(
-                    email=email, password=password, username=username, first_name="admin", last_name="admin", cvat_id=16
+                    email=email,
+                    password=password,
+                    username=username,
+                    first_name="admin",
+                    last_name="admin",
+                    cvat_id=16,
                 )
             except Exception as e:
                 print(f"Failed to create admin account: {str(e)}")

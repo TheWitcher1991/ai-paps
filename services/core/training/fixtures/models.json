@@ -128,7 +128,7 @@
       "file": null,
       "subset": "segmentation",
       "framework": "pytorch",
-      "architecture": "vision_net",
+      "architecture": "deeplabv3",
       "backbone": "resnet50",
       "status": "ready",
       "created_date": "2024-01-01T00:00:00Z",

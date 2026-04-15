@@ -78,5 +78,5 @@ class CombinedLoss(nn.Module):
         ce = self.ce(logits, targets)
         dice = self.dice(logits, targets)
         focal = self.focal(logits, targets)
-
+        
         return 0.4 * ce + 0.4 * dice + 0.2 * focal

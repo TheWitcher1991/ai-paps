@@ -62,4 +62,3 @@ class VisionNetAdapter(nn.Module):
             logits = output
 
         return logits
-
