@@ -24,7 +24,6 @@ from packages.kernel.utils import get_content_type, validation_error
 
 
 class COCODatasetRegistry:
-
     def __init__(self):
         self.coco = {
             "images": [],
@@ -71,27 +70,33 @@ class COCODatasetRegistry:
             self.coco["annotations"].append(ann)
 
         if coco.get("annotations"):
-            self.annotation_id_offset = max(a["id"] for a in self.coco["annotations"]) + 1
+            self.annotation_id_offset = (
+                max(a["id"] for a in self.coco["annotations"]) + 1
+            )
 
 
 class DatasetRegistry:
-
     @staticmethod
     def export(source: DatasetSource, source_id: int) -> RqId:
         if source == DatasetSource.PROJECTS.value:
-            return cvat.projects.export_dataset(project_id=source_id, format=CVATDatasetFormat.COCO)
+            return cvat.projects.export_dataset(
+                project_id=source_id, format=CVATDatasetFormat.COCO
+            )
 
         if source == DatasetSource.TASKS.value:
-            return cvat.tasks.export_dataset(task_id=source_id, format=CVATDatasetFormat.COCO)
+            return cvat.tasks.export_dataset(
+                task_id=source_id, format=CVATDatasetFormat.COCO
+            )
 
         if source == DatasetSource.JOBS.value:
-            return cvat.jobs.export_dataset(job_id=source_id, format=CVATDatasetFormat.COCO)
+            return cvat.jobs.export_dataset(
+                job_id=source_id, format=CVATDatasetFormat.COCO
+            )
 
         raise ValueError("Unsupported dataset source")
 
 
 class DatasetEngine:
-
     def __init__(self):
         self.registry = COCODatasetRegistry()
         self.source: Optional[DatasetSource] = None
@@ -233,7 +238,12 @@ class DatasetEngine:
 
         ann_path = extract_dir / "annotations" / "instances_default.json"
         if not ann_path.exists():
-            raise FileNotFoundError(f"Файл COCO не найден: {ann_path}")
+            print(f"[WARNING] COCO файл не найден, пропускаем: {ann_path}")
+            return (
+                {"images": [], "annotations": [], "categories": []},
+                extract_dir,
+                zip_path,
+            )
 
         with open(ann_path, "r", encoding="utf-8") as f:
             coco = json.load(f)
@@ -256,7 +266,9 @@ class DatasetEngine:
 
         zip_path = export_dir / f"cvat_export_{rq_id.rq_id}.zip"
 
-        response = requests.get(url, headers={"Authorization": "Bearer " + CVAT_TOKEN}, stream=True)
+        response = requests.get(
+            url, headers={"Authorization": "Bearer " + CVAT_TOKEN}, stream=True
+        )
         response.raise_for_status()
 
         with open(zip_path, "wb") as f:
