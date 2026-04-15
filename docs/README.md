@@ -1,16 +1,66 @@
 # AI-PAPS: Техническая документация
 
-## Содержание
+## 📚 Структура документации
 
-1. [Общее описание](#общее-описание)
-2. [Архитектура системы](#архитектура-системы)
-3. [Технологический стек](#технологический-стек)
-4. [Структура проекта](#структура-проекта)
-5. [Модули и компоненты](#модули-и-компоненты)
-6. [API](#api)
-7. [База данных](#база-данных)
-8. [AI/ML компоненты](#aiml-компоненты)
-9. [Развертывание](#развертывание)
+```
+docs/
+├── README.md                 # Этот файл
+├── getting-started/          # Быстрый старт
+│   └── PRODUCT.md           # Описание продукта
+├── architecture/             # Архитектура системы
+│   └── ARCHITECTURE.md      # Компоненты, потоки данных
+├── api/                      # API документация
+│   └── API.md               # Endpoints, схемы, примеры
+├── modules/                  # Модули системы
+│   ├── MODELS.md            # Модели данных (БД)
+│   ├── BACKEND.md           # Backend (Django)
+│   ├── FRONTEND.md          # Frontend (Next.js)
+│   ├── AI_ML.md             # AI/ML компоненты
+│   ├── AI_MODELS.md         # Модели машинного обучения
+│   └── TRAINING_PIPELINE.md # Пайплайн обучения
+├── guides/                   # Руководства
+│   └── DEPLOYMENT.md        # Развертывание, Docker, CI/CD
+├── ui-mockups/               # UI mockups (HTML)
+│   ├── recognition.html
+│   ├── asset-detail.html
+│   ├── model-detail.html
+│   ├── monitoring.html
+│   ├── training-detail.html
+│   └── test_ui/
+└── for-ai/                   # Для AI-агентов (зарезервировано)
+```
+
+---
+
+## 📖 Документация по разделам
+
+### Быстрый старт
+- [Продуктовая документация](./getting-started/PRODUCT.md) — Описание продукта, функционал, глоссарий
+
+### Архитектура
+- [Архитектура системы](./architecture/ARCHITECTURE.md) — Компоненты, потоки данных, инфраструктура
+
+### API
+- [API документация](./api/API.md) — Endpoints, схемы, примеры
+
+### Модули
+- [Модели данных](./modules/MODELS.md) — Database models, связи, типы
+- [Backend](./modules/BACKEND.md) — Django, сервисы, Celery
+- [Frontend](./modules/FRONTEND.md) — Next.js, компоненты, стейт
+- [AI/ML](./modules/AI_ML.md) — Vision модели, обучение, inference
+- [AI модели](./modules/AI_MODELS.md) — Подробности о моделях машинного обучения
+- [Пайплайн обучения](./modules/TRAINING_PIPELINE.md) — Процесс обучения моделей
+
+### Развертывание
+- [Развертывание](./guides/DEPLOYMENT.md) — Docker, CI/CD, мониторинг, backup
+
+### AI Developer Guides (для AI-агентов)
+| Раздел | Путь | Описание |
+|--------|------|----------|
+| Backend | `services/core/AI_DEV_GUIDE.md` | Django, controllers, models, Celery |
+| Frontend | `clients/AI_DEV_GUIDE.md` | Monorepo, pnpm, packages |
+| Packages | `clients/packages/AI_DEV_GUIDE.md` | @wcsc/toolkit, @wcsc/models, etc. |
+| Web App | `clients/apps/web/AI_DEV_GUIDE.md` | Next.js, widgets, features, pages |
 
 ---
 
@@ -18,83 +68,10 @@
 
 **AI-PAPS** (Intelligent Plant Automated Pest System) — интеллектуальная система определения признаков растений, прогнозирования развития болезней и вредителей и принятия решений на основе технологий машинного зрения, искусственного интеллекта и нейронных сетей.
 
-Система предназначена для:
+### Система предназначена для:
 - Обнаружения болезней и вредителей растений
 - Прогнозирования фитосостояния растений
 - Предоставления рекомендаций на основе визуального анализа
-
----
-
-## Архитектура системы
-
-Проект представляет собой **модульный монолит** с разделением на клиентскую и серверную части:
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     Frontend (Next.js)                       │
-│              clients/apps/web (pnpm monorepo)               │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                     Backend (Django)                          │
-│                  services/core (Python)                      │
-└─────────────────────────────────────────────────────────────┘
-                              │
-          ┌───────────────────┼───────────────────┐
-          ▼                   ▼                   ▼
-    ┌──────────┐       ┌──────────┐       ┌──────────┐
-    │PostgreSQL│       │  Redis   │       │ RabbitMQ │
-    └──────────┘       └──────────┘       └──────────┘
-                                              │
-                                              ▼
-                                    ┌──────────────────┐
-                                    │ Celery Workers   │
-                                    │ (AI Training)    │
-                                    └──────────────────┘
-```
-
----
-
-## Технологический стек
-
-### Backend
-
-| Компонент | Технология | Версия |
-|-----------|-------------|--------|
-| Framework | Django + DRF | 5.2+ |
-| Python | Python | 3.12-3.14 |
-| Database | PostgreSQL | 15+ |
-| Cache | Redis | 7+ |
-| Task Queue | Celery + RabbitMQ | - |
-| API Docs | drf-spectacular | - |
-| Image Processing | Pillow, OpenCV | - |
-| AI/ML | PyTorch, Ultralytics | - |
-
-### Frontend
-
-| Компонент | Технология | Версия |
-|-----------|------------|--------|
-| Framework | Next.js | 16.1.1 |
-| React | React | 19.1.1 |
-| State Management | Effector | - |
-| UI Library | Gravity UI | - |
-| Forms | React Hook Form + Valibot | - |
-| HTTP Client | Axios | - |
-| Package Manager | pnpm | - |
-| Build Tool | Turbo | - |
-
-### Инфраструктура
-
-| Сервис | Назначение |
-|--------|------------|
-| PostgreSQL | Основная база данных |
-| Redis | Кэширование и сессии |
-| RabbitMQ | Очередь задач |
-| Portainer | Управление Docker |
-| Prometheus | Метрики |
-| Grafana | Дашборды |
-| Loki | Логирование |
 
 ---
 
@@ -103,376 +80,125 @@
 ```
 ai-paps/
 ├── clients/                    # Frontend (monorepo)
-│   ├── apps/
-│   │   └── web/               # Next.js веб-приложение
-│   │       └── src/
-│   │           ├── app/       # Страницы App Router
-│   │           ├── widgets/   # Переиспользуемые виджеты
-│   │           ├── features/  # Компоненты функций
-│   │           ├── models/    # Модели данных и API
-│   │           └── infra/     # Инфраструктура UI
-│   ├── packages/              # Общие пакеты
-│   │   ├── toolkit/           # @wcsc/toolkit
-│   │   ├── models/           # @wcsc/models
-│   │   ├── hooks/            # @wcsc/hooks
-│   │   ├── href/             # @wcsc/href
-│   │   ├── system/           # @wcsc/system
-│   │   ├── types/            # @wcsc/types
-│   │   └── eslint-config     # ESLint конфиг
-│   └── pnpm-workspace.yaml    # Конфигурация workspaces
+│   ├── apps/web/              # Next.js приложение
+│   └── packages/              # Переиспользуемые пакеты
 │
-├── services/
-│   └── core/                  # Django приложение
-│       ├── config/            # Настройки Django
-│       │   ├── settings/      # Модульные настройки
-│       │   ├── urls.py        # Маршрутизация
-│       │   └── wsgi.py        # WSGI приложение
-│       ├── users/             # Управление пользователями
-│       ├── recognitions/      # Распознавание болезней/вредителей
-│       ├── directory/         # Справочник растений и болезней
-│       ├── projects/         # Управление проектами
-│       ├── datasets/         # Управление датасетами
-│       ├── training/         # Обучение ИИ моделей
-│       │   └── usecases.py   # Бизнес-логика обучения
-│       ├── vision/            # Компьютерное зрение
-│       │   ├── models/        # Реализации моделей ИИ
-│       │   ├── arch/          # Архитектуры нейросетей
-│       │   ├── dataset/       # Загрузчики данных
-│       │   ├── training.py    # Утилиты обучения
-│       │   └── inference.py   # Инференс
-│       ├── packages/          # Фреймворк
-│       │   ├── framework/     # Базовые контроллеры, мидлвар
-│       │   ├── kernel/        # Утилиты ядра
-│       │   └── usecases/      # Бизнес-логика
-│       ├── cvat/              # Интеграция с CVAT
-│       └── cifra/             # Дополнительный модуль
+├── services/core/              # Backend (Django)
+│   ├── users/                 # Пользователи
+│   ├── datasets/              # Датасеты
+│   ├── training/              # Обучение моделей
+│   ├── vision/                # AI/ML ядро
+│   ├── cvat/                  # CVAT интеграция
+│   └── packages/              # Внутренний фреймворк
 │
 ├── deploy/                    # Конфигурация деплоя
-│   └── nginx/                # Nginx конфиги
-│
 ├── docs/                      # Документация
-├── docker-compose.*.yml       # Docker Compose конфиги
-└── bin/                       # Скрипты
+└── docker-compose.*.yml       # Docker конфиги
 ```
 
 ---
 
-## Модули и компоненты
+## Технологический стек
 
-### users — Управление пользователями
+### Backend
+| Компонент | Технология |
+|-----------|------------|
+| Framework | Django 5.2 + DRF |
+| Python | 3.12-3.14 |
+| Database | PostgreSQL 15+ |
+| Cache | Redis 7+ |
+| Task Queue | Celery + RabbitMQ |
+| AI/ML | PyTorch, Ultralytics |
 
-Модуль аутентификации и управления пользователями.
+### Frontend
+| Компонент | Технология |
+|-----------|------------|
+| Framework | Next.js 16.1.1 |
+| React | 19.1.1 |
+| State | Effector |
+| UI Kit | Gravity UI |
+| Forms | React Hook Form + Valibot |
+| Package Manager | pnpm |
+| Build Tool | Turbo |
 
-**Файлы:**
-- `models.py` — Модель User с расширениями
-- `routers.py` — API маршруты
-- `serializers.py` — DRF сериализаторы
-- `controllers.py` — Бизнес-логика
-- `managers.py` — Менеджеры пользователей
-
-**Особенности:**
-- JWT аутентификация
-- Интеграция с CVAT
-- Расширенные роли пользователей
-
----
-
-### recognitions — Распознавание
-
-Модуль для выполнения распознавания болезней и вредителей.
-
-**Файлы:**
-- `models.py` — Модели распознавания
-- `routers.py` — API endpoints
-- `serializers.py` — Сериализаторы
-- `controllers.py` — Логика распознавания
-- `types.py` — Типы данных
-
----
-
-### directory — Справочник
-
-Каталог растений, болезней и вредителей.
-
-**Файлы:**
-- `models.py` — Модели справочника
-- `routers.py` — API endpoints
-- `serializers.py` — Сериализаторы
-- `filters.py` — Фильтры
+### Инфраструктура
+| Сервис | Назначение |
+|--------|------------|
+| PostgreSQL | База данных |
+| Redis | Кэш и сессии |
+| RabbitMQ | Очередь задач |
+| Prometheus | Метрики |
+| Grafana | Дашборды |
 
 ---
 
-### projects — Проекты
+## Быстрый старт
 
-Управление рабочими проектами.
-
-**Функционал:**
-- Создание/редактирование проектов
-- Привязка датасетов
-- Управление доступом
-
----
-
-### datasets — Датасеты
-
-Управление данными для обучения.
-
-**Файлы:**
-- `models.py` — Dataset, DatasetAsset, DatasetAnnotation
-- `routers.py` — CRUD операции
-- `repositories.py` — Репозиторий данных
-- `usecases.py` — Бизнес-логика
-- `engine.py` — Движок датасета
-
----
-
-### training — Обучение моделей
-
-Оркестрация процесса обучения ИИ.
-
-**Файлы:**
-- `models.py` — Training, TrainingRun, Model
-- `routers.py` — API endpoints
-- `usecases.py` — Бизнес-логика
-- `services/dataset_loader.py` — Загрузчик данных
-- `services/training_service.py` — Сервис обучения
-
-**Процесс обучения:**
-1. Создание Model (конфигурация модели в БД)
-2. Создание Training (параметры обучения)
-3. Привязка датасетов через TrainingDataset
-4. Запуск обучения POST /training/{id}/start/
-5. Мониторинг GET /training/{id}/runs/
-
----
-
-### vision — Компьютерное зрение
-
-Ядро AI/ML системы.
-
-**Модели:**
-| Модель | Файл | Назначение |
-|--------|------|------------|
-| U-Net | `models/u_net.py` | Семантическая сегментация |
-| DeepLabV3 | `models/deeplabv3.py` | Сегментация (ResNet backbone) |
-| FPN | `models/fpn.py` | Feature Pyramid Network |
-| YOLO | `models/yolo.py` | Object detection/instance segmentation |
-| Mask R-CNN | `models/mask_rcnn.py` | Instance detection & segmentation |
-
-**Бэкбоны:**
-- ResNet50, ResNet101, ResNet152
-- EfficientNet
-- VisionNet
-
----
-
-### packages — Фреймворк
-
-Переиспользуемая библиотека для Django.
-
-**Структура:**
-```
-packages/
-├── framework/
-│   ├── controllers.py    # Базовые контроллеры
-│   ├── routers.py        # Маршрутизация
-│   ├── middleware.py     # Промежуточное ПО
-│   ├── authentication.py # Аутентификация
-│   ├── caching.py        # Кэширование
-│   ├── pagination.py     # Пагинация
-│   └── throttling.py     # Rate limiting
-├── kernel/
-│   ├── types.py          # Базовые типы
-│   ├── exceptions.py     # Исключения
-│   └── utils.py          # Утилиты
-└── usecases/
-    ├── logging.py        # Логирование
-    ├── jwt.py            # JWT утилиты
-    └── serializer.py    # Сериализация
-```
-
----
-
-## API
-
-### Версионирование
-
-API использует версионирование: `/v1/`
-
-### Основные endpoints
-
-| Метод | URL | Модуль | Описание |
-|-------|-----|--------|----------|
-| GET/POST | `/v1/users/` | users | Управление пользователями |
-| GET/POST | `/v1/recognitions/` | recognitions | Распознавание |
-| GET/POST | `/v1/directory/` | directory | Справочник |
-| GET/POST | `/v1/projects/` | projects | Проекты |
-| GET/POST | `/v1/datasets/` | datasets | Датасеты |
-| GET/POST | `/v1/training/` | training | Обучение |
-| POST | `/v1/training/{id}/start/` | training | Запуск обучения |
-| GET | `/v1/training/{id}/runs/` | training | Мониторинг обучения |
-| GET | `/v1/cvat/` | cvat | Интеграция CVAT |
-| GET | `/v1/schema/` | drf-spectacular | OpenAPI схема |
-| GET | `/v1/docs/` | drf-spectacular | Swagger UI |
-
-### OpenAPI документация
-
-Доступна по адресу: `/v1/docs/`
-
----
-
-## База данных
-
-### Основные модели
-
-**users**
-- User (расширенная модель пользователя)
-- UserProfile
-
-**recognitions**
-- Recognition
-- RecognitionResult
-
-**directory**
-- Plant (растение)
-- Disease (болезнь)
-- Pest (вредитель)
-
-**projects**
-- Project
-
-**datasets**
-- Dataset
-- DatasetAsset (изображение)
-- DatasetAnnotation (аннотация)
-
-**training**
-- Model (конфигурация модели)
-- Training (конфигурация обучения)
-- TrainingRun (запуск обучения)
-- TrainingDataset (связь обучения с датасетами)
-
----
-
-## AI/ML компоненты
-
-### Поддерживаемые архитектуры
-
-#### Сегментация
-| Архитектура | Класс | Бэкбоун |
-|-------------|-------|---------|
-| U-Net | UNetAdapter | - |
-| DeepLabV3 | DeepLabV3Adapter | resnet50, resnet101 |
-| FPN | FPNWithBackboneAdapter | resnet50, resnet101, resnet152 |
-
-#### Детекция
-| Архитектура | Библиотека |
-|-------------|------------|
-| YOLO | Ultralytics |
-| Mask R-CNN | torchvision |
-
-### Параметры обучения
-
-| Параметр | По умолчанию | Описание |
-|----------|--------------|----------|
-| epochs | 20 | Количество эпох |
-| learning_rate | 0.0001 | Скорость обучения |
-| optimizer | adam | Оптимизатор |
-| loss_function | BCEWithLogits | Функция потерь |
-| lr_scheduler | plateau | Планировщик LR |
-| train_batch_size | 4 | Размер батча |
-| image_width/height | 512 | Размер изображения |
-| early_stopping_patience | 5 | Ранняя остановка |
-
-### Статусы обучения
-
-| Статус | Описание |
-|--------|----------|
-| pending | Ожидает |
-| queued | В очереди |
-| running | Обучение |
-| validating | Валидация |
-| finished | Завершено |
-| failed | Ошибка |
-| cancelled | Отменено |
-
----
-
-## Развертывание
-
-### Docker Compose
-
-Проект использует несколько docker-compose файлов:
-
-- `docker-compose.base.yml` — Базовая инфраструктура
-- `docker-compose.local.yml` — Локальная разработка
-- `docker-compose.prod.yml` — Продакшн
-
-### Сервисы инфраструктуры
-
-```yaml
-postgres:     # База данных
-redis:        # Кэш и сессии
-rabbitmq:     # Очередь задач
-portainer:    # Управление Docker
-grafana:      # Дашборды
-prometheus:   # Метрики
-loki:         # Логирование
-promtail:     # Сбор логов
-```
-
-### Сети
-
-- `frontend` — Сеть для фронтенда
-- `backend` — Сеть для бэкенда и БД
+### Требования
+- Docker и Docker Compose
+- Python 3.12+
+- Node.js 20+
+- pnpm
 
 ### Запуск
 
 ```bash
-# Локальная разработка
-docker-compose -f docker-compose.local.yml up -d
+# Клонирование
+git clone <repository-url>
+cd ai-paps
 
-# Продакшн
-docker-compose -f docker-compose.prod.yml up -d
+# Запуск инфраструктуры
+docker-compose -f docker-compose.base.yml up -d
+
+# Запуск приложения
+docker-compose -f docker-compose.local.yml up -d
 ```
 
----
+### Доступ к сервисам
 
-## Скрипты
-
-| Скрипт | Назначение |
-|--------|------------|
-| `bin/dev.sh` | Запуск dev сервера |
-| `bin/migrate.sh` | Миграции БД |
-| `bin/deploy.sh` | Деплой |
-| `bin/release.sh` | Релиз |
-| `bin/certbot.sh` | SSL сертификаты |
+| Сервис | URL |
+|--------|-----|
+| Frontend | http://localhost:3000 |
+| Backend API | http://localhost:8000 |
+| Swagger UI | http://localhost:8000/v1/docs/ |
+| Grafana | http://localhost:3001 |
 
 ---
 
-## Зависимости
+## API Endpoints
 
-### Python (services/core/pyproject.toml)
+| Модуль | Endpoints |
+|--------|-----------|
+| `/v1/users/` | Управление пользователями |
+| `/v1/datasets/` | Датасеты |
+| `/v1/training/` | Обучение моделей |
+| `/v1/models/` | AI модели |
+| `/v1/cvat/` | CVAT интеграция |
+| `/v1/directory/` | Справочник |
 
-- django>=5.2
-- djangorestframework
-- drf-spectacular
-- psycopg2-binary
-- redis
-- celery
-- pytorch
-- ultralytics
-- albumentations
-- opencv-python
-- pillow
+Swagger UI: http://localhost:8000/v1/docs/
 
-### Node.js (clients/package.json)
+---
 
-- next>=16.1.1
-- react>=19.1.1
-- effector
-- @gravity-ui/components
-- react-hook-form
-- valibot
-- axios
-- @tanstack/react-query
+## AI/ML Архитектуры
+
+| Архитектура | Тип | Назначение |
+|-------------|------|------------|
+| U-Net | Сегментация | Семантическая сегментация |
+| DeepLabV3 | Сегментация | Сегментация с ASPP |
+| FPN | Сегментация | Feature Pyramid Network |
+| YOLO | Детекция | Object detection |
+| Mask R-CNN | Детекция | Instance segmentation |
+
+---
+
+## Команда разработки
+
+- **@TheWitcher** — Tech Lead, Fullstack Developer
+
+---
+
+## Полезные ссылки
+
+- [AGENTS.md](../AGENTS.md) — Правила для AI-агентов
+- [README.md](../README.md) — Главный README проекта

@@ -1,0 +1,66 @@
+{
+	"permissions": {
+		"allow": [
+			"Bash(docker ps:*)",
+			"Bash(docker exec:*)",
+			"Bash(node -e \":*)",
+			"Bash(pnpm --filter api add drizzle-orm)",
+			"Bash(find d:/repository/learn-startup/node_modules/.pnpm -path */better-auth/dist/*.js -name *.js)",
+			"Bash(find d:/repository/learn-startup -path */node_modules/better-auth/dist -type d)",
+			"Bash(pnpm --filter api add kysely)",
+			"Bash(find d:/repository/learn-startup/node_modules/.pnpm/better-auth@1.5.3_3a54e407e57578481b2bb039e7d3a5df -name *.mjs)",
+			"Bash(xargs -I{} find {} -name adapter-kysely*)",
+			"Bash(find d:/repository/learn-startup/node_modules/.pnpm -maxdepth 1 -name @better-auth+kysely-adapter* -type d)",
+			"Bash(find d:repositorylearn-startupappswebsrc -type f \\\\\\(-name *.ts -o -name *.tsx \\\\\\))",
+			"Bash(grep -E \"\\\\.\\(ts|tsx\\)$\")",
+			"Bash(xargs grep:*)",
+			"Bash(grep -r Fetcher d:repositorylearn-startupappswebwidgets --include=*.tsx)",
+			"Bash(grep -rn \"useProjects\\\\|useDocuments\" d:repositorylearn-startupappswebwidgets --include=*.tsx)",
+			"Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3001/v1/health)",
+			"Bash(curl -s -I -H \"Origin: http://localhost:3000\" http://localhost:3001/v1/health)",
+			"Bash(netstat -ano)",
+			"Read(//d/repository/learn-startup/**)",
+			"Bash(xargs -I{} taskkill /PID {} /F)",
+			"Bash(findstr \":3001\")",
+			"Bash(taskkill /PID 36428 /F)",
+			"Bash(cmd /c \"taskkill /PID 36428 /F\")",
+			"Bash(cmd /c \"netstat -ano | findstr :3001\")",
+			"Bash(cmd /c \"wmic process where \"\"name=''''node.exe''''\"\" get processid,commandline 2>nul\")",
+			"Bash(find d:/repository/learn-startup/node_modules/.pnpm -path *nestjs-better-auth*/dist/*.js)",
+			"Bash(find d:/repository/learn-startup/node_modules/.pnpm -path *thallesp*nestjs-better-auth* -name *.mjs -o -path *thallesp*nestjs-better-auth* -name *.js)",
+			"Bash(cmd /c \"taskkill /F /IM node.exe 2>nul & echo done\")",
+			"Bash(node dist/main)",
+			"Bash(find d:/repository/learn-startup -path */node_modules/@thallesp/nestjs-better-auth -type d)",
+			"Bash(tasklist /FI \"PID eq 36428\")",
+			"Bash(taskkill /F /PID 36428)",
+			"Bash(xargs cat:*)",
+			"Bash(ls /d/repository/learn-startup/apps/web/app/\\\\\\(auth\\\\\\)/)",
+			"Bash(find /d/repository/learn-startup/apps/api -name *.middleware.ts)",
+			"Bash(find /d/repository/learn-startup/apps/web/widgets/documents/documents-filter/documents-search -name *.tsx)",
+			"Bash(grep -r \"signInEmail\\\\|signUpEmail\\\\|token\\\\|json\\\\|getSession\" d:/repository/learn-startup/node_modules/.pnpm/better-auth@*/node_modules/better-auth/dist/index.js)",
+			"Bash(find d:/repository/learn-startup/node_modules/.pnpm -name index.d.ts -path */better-auth/dist/*)",
+			"Bash(find d:/repository/learn-startup/node_modules/.pnpm -name *.d.ts -path *better-auth*)",
+			"Bash(find d:/repository/learn-startup/node_modules/.pnpm -path */node_modules/better-auth/dist -type d)",
+			"Read(//d/загрузки/**)",
+			"Bash(find D:/repository/learn-startup/packages/models -name *.ts -not -path */node_modules/*)",
+			"Bash(find D:/repository/learn-startup/packages/types -name *.ts -not -path */node_modules/*)",
+			"Bash(pnpm --filter @learn/api prisma generate)",
+			"Bash(npx tsx:*)",
+			"Bash(ls /d/repository/learn-startup/apps/web/app/'\\(auth\\)'/)",
+			"Bash(find /d/repository/learn-startup/apps/api/src/generated -name *.d.ts)"
+		]
+	},
+	"hooks": {
+		"PostToolUse": [
+			{
+				"matcher": "Write|Edit",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "pnpm dlx ultracite fix"
+					}
+				]
+			}
+		]
+	}
+}

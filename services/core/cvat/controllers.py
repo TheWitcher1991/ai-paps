@@ -177,13 +177,13 @@ class TaskSetController(APISetController):
         return self.get_response(serializer.data)
 
     @action(detail=True, methods=["POST"], url_path="export")
-    def export(self, pk: int, request: ExtendedRequest, *args, **kwargs):
-        result = self.commands.export(pk)
+    def export(self, request: ExtendedRequest, pk: str, *args, **kwargs):
+        result = self.commands.export(int(pk))
         return self.get_response(result)
 
     @action(detail=True, methods=["POST"], url_path="request")
-    def request(self, pk: int, request: ExtendedRequest, *args, **kwargs):
-        result = self.commands.export_dataset(pk, request)
+    def request(self, request: ExtendedRequest, pk: str, *args, **kwargs):
+        result = self.commands.export_dataset(int(pk), request)
         return self.get_response(result)
 
 
