@@ -1,0 +1,90 @@
+{
+  "project": "ai-paps-admin",
+  "source": "clients/apps/web",
+  "target": "clients/apps/admin",
+  "migration": "Gravity UI -> Shadcn UI (Tailwind CSS v4)",
+  "started": "2026-05-01",
+  "completed": "2026-05-01",
+  "status": "complete",
+  "verification": {
+    "devServer": "OK - http://localhost:3001",
+    "typeErrors": "0 in admin app",
+    "pagesServed": "200 OK"
+  },
+  "shadcnComponents": [
+    "Button", "Input", "Textarea", "Label", "Card", "Badge",
+    "Select", "Dialog", "DropdownMenu", "Slider", "Tabs", "Tooltip",
+    "Separator", "Progress", "Switch", "Popover", "Pagination",
+    "Spinner", "Avatar", "Alert"
+  ],
+  "widgets": [
+    "aside", "nav", "footer",
+    "dashkit (5 indicators)",
+    "datasets (filter, table, grid, pagination)",
+    "models (cards grid)",
+    "trainings (cards grid with progress)",
+    "training-create (form with validation)",
+    "training (detail view)",
+    "model (detail view)",
+    "users (table with avatars)",
+    "assets (list for dataset detail)",
+    "asset (detail with preview, annotations, tabs)",
+    "projects (CVAT table)",
+    "tasks (CVAT table)",
+    "jobs (CVAT table)",
+    "requests (CVAT table)"
+  ],
+  "features": [
+    "dataset (filter, pagination, table, grid, actions)",
+    "model (actions)",
+    "training (actions)",
+    "user (actions)",
+    "asset (actions)",
+    "project (actions)",
+    "task (actions)",
+    "job (actions)",
+    "request (actions)",
+    "cvat (segmented tabs)",
+    "import (button)",
+    "department (button)",
+    "notifications (popover)",
+    "shared (theme-button)"
+  ],
+  "models": [
+    "dataset", "model", "training", "user", "asset",
+    "project", "task", "job", "request", "annotation", "inference", "class"
+  ],
+  "pages": {
+    "complete": [
+      "/", "/login", "/workspace (dashboard with indicators)",
+      "/workspace/datasets (full widget)",
+      "/workspace/datasets/[id] (assets list widget)",
+      "/workspace/datasets/assets/[id] (asset detail widget)",
+      "/workspace/models (full widget)",
+      "/workspace/models/[id] (model detail widget)",
+      "/workspace/trainings (full widget)",
+      "/workspace/trainings/create (full form)",
+      "/workspace/trainings/[id] (training detail widget)",
+      "/workspace/users (full widget)",
+      "/workspace/directory (classes overview)",
+      "/workspace/recognitions (inference with upload)",
+      "/workspace/cvat/projects (table + segmented tabs)",
+      "/workspace/cvat/tasks (table + segmented tabs)",
+      "/workspace/cvat/jobs (table + segmented tabs)",
+      "/workspace/cvat/requests (table + segmented tabs)"
+    ],
+    "hasNav": true,
+    "hasBreadcrumbs": true,
+    "hasThemeToggle": true,
+    "hasNotifications": true,
+    "hasImportButton": true,
+    "hasDepartmentSelector": true
+  },
+  "infrastructure": {
+    "http": "axios with JWT interceptor",
+    "providers": "React Query + ToastProvider",
+    "ui": "20 components (Container, PageTitle, Group, ValueCard, Placeholder, FormCard, FormSection, Spacing, FormLink, Actions, ActionButton, InputSkeleton, Skeleton, Divider, Flex, Grid, FormRow, Breadcrumbs, Table, MetaList, Cell)",
+    "lib": "data-loader, http, handlers, effector, api factory"
+  },
+  "runCommand": "cd clients && pnpm --filter admin dev"
+}

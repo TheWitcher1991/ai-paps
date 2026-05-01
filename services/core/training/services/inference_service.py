@@ -1,9 +1,11 @@
 import io
+import json 
 
 import numpy as np
 import torch
 import torch.nn as nn
 from PIL import Image
+from pathlib import Path
 
 from packages.usecases.logging import logger
 from vision.models.deeplabv3 import DeepLabV3Adapter
@@ -26,49 +28,72 @@ class InferenceService:
 
     def _load_model(self, model_file):
         logger.info(f"Loading model from {model_file}")
-
+        
         if hasattr(model_file, "read"):
-        # For Django uploaded files
             if hasattr(model_file, "seek"):
-                model_file.seek(0)  # Reset pointer to beginning
+                model_file.seek(0)
             checkpoint = torch.load(model_file, map_location="cpu")
+            base_name = None
         else:
+            model_file = Path(model_file)
+            base_name = model_file.stem
+
             with open(model_file, "rb") as f:
                 checkpoint = torch.load(f, map_location="cpu")
 
-        architecture = checkpoint.get("architecture", self.architecture)
-        backbone = checkpoint.get("backbone", self.backbone)
-        num_classes = checkpoint.get("num_classes", self.num_classes)
-        
-        if num_classes is None:
-            if "model_state_dict" in checkpoint:
-                state_dict = checkpoint["model_state_dict"]
-                for key in state_dict.keys():
-                    if key.endswith('weight') and ('classifier' in key or 'head' in key or 'out_conv' in key):
-                        num_classes = state_dict[key].shape[0]
-                        logger.info(f"Detected num_classes={num_classes} from model state_dict")
-                        break
-            
-            if num_classes is None:
-                num_classes = 21
-                logger.info(f"Using default num_classes={num_classes}")
+        config = {}
 
-        logger.info(f"Creating model with architecture={architecture}, backbone={backbone}, num_classes={num_classes}")
+        try:
+            if base_name:
+                config_path = model_file.with_suffix(".json")
+                if config_path.exists():
+                    with open(config_path, "r", encoding="utf-8") as f:
+                        config = json.load(f)
+                        logger.info(f"Loaded config from {config_path}")
+        except Exception as e:
+            logger.warning(f"Failed to load config: {e}")
+
+        # fallback: config inside checkpoint (если старые модели)
+        architecture = config.get("architecture") or checkpoint.get("architecture") or self.architecture
+        backbone = config.get("backbone") or checkpoint.get("backbone") or self.backbone
+        num_classes = config.get("num_classes") or checkpoint.get("num_classes") or self.num_classes
+
+
+        if num_classes is None:
+            state_dict = checkpoint.get("model_state_dict", checkpoint)
+
+            for key, value in state_dict.items():
+                if "weight" in key and any(x in key for x in ["classifier", "head", "out_conv"]):
+                    num_classes = value.shape[0]
+                    logger.info(f"Detected num_classes={num_classes} from weights")
+                    break
+
+        if num_classes is None:
+            num_classes = 21
+            logger.info("Using default num_classes=21")
+
+        logger.info(
+            f"Model config: architecture={architecture}, backbone={backbone}, num_classes={num_classes}"
+        )
 
         if architecture == "unet":
-            return UNetAdapter(in_channels=3, num_classes=num_classes)
-        if architecture == "vision_net":
-            return VisionNetAdapter(in_channels=3, num_classes=num_classes)
+            model = UNetAdapter(in_channels=3, num_classes=num_classes)
+
+        elif architecture == "vision_net":
+            model = VisionNetAdapter(in_channels=3, num_classes=num_classes)
+
         elif architecture == "deeplabv3":
             model = DeepLabV3Adapter(
                 backbone=VisionModelBackbone[backbone.upper()],
                 num_classes=num_classes,
             )
+
         elif architecture == "fpn":
             model = FPNWithBackboneAdapter(
                 backbone=VisionModelBackbone[backbone.upper()],
                 num_classes=num_classes,
             )
+
         else:
             raise ValueError(f"Unknown architecture: {architecture}")
 
@@ -76,13 +101,12 @@ class InferenceService:
             model.load_state_dict(checkpoint["model_state_dict"])
         else:
             model.load_state_dict(checkpoint)
-            
+
         return model
     
     def _load_image_from_file(self, image_file):
         try:
             if isinstance(image_file, (InMemoryUploadedFile, TemporaryUploadedFile)):
-                # Reset file pointer if possible
                 if hasattr(image_file, 'seek'):
                     image_file.seek(0)
                 image = Image.open(image_file).convert('RGB')
@@ -130,7 +154,6 @@ class InferenceService:
     def predict(self, image_file, threshold=0.5, target_size=None):
         """Make prediction on image"""
         try:
-            # Validate inputs
             if image_file is None:
                 raise ValueError("Image file cannot be None")
             
@@ -139,9 +162,7 @@ class InferenceService:
             
             image = self._load_image_from_file(image_file)
             
-            # Set reasonable target size if not provided
             if target_size is None:
-                # Default to 512x512 if not specified
                 target_size = (512, 512)
                 logger.info(f"Using default target size: {target_size}")
             

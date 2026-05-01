@@ -1,4 +1,5 @@
 import io
+import json
 import os
 import random
 from datetime import datetime
@@ -253,7 +254,28 @@ class TrainingService:
         )
         buffer.seek(0)
 
-        filename = f"{self.model.alias or self.model.name}_{self.training.id}.pth"
-        self.model.file.save(filename, buffer, save=True)
+        base_filename = f"{self.model.alias or self.model.name}_{self.training.id}"
+        model_filename = f"{base_filename}.pth"
 
-        logger.info(f"Model saved: {filename}")
+        self.model.file.save(model_filename, buffer, save=True)
+
+        config = {
+            "architecture": self.model.architecture,
+            "backbone": self.model.backbone,
+            "num_classes": num_classes,
+            "model_name": self.model.name,
+            "alias": self.model.alias,
+            "training_id": self.training.id,
+        }
+
+        config_buffer = io.BytesIO()
+        config_buffer.write(json.dumps(config, indent=4, ensure_ascii=False).encode("utf-8"))
+        config_buffer.seek(0)
+
+        config_filename = f"{base_filename}.json"
+
+        # если у тебя FileField — сохраняем аналогично
+        self.model.config_file.save(config_filename, config_buffer, save=True)
+
+        logger.info(f"Model saved: {model_filename}")
+        logger.info(f"Config saved: {config_filename}")

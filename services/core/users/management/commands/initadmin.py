@@ -25,7 +25,7 @@ class Command(BaseCommand):
                     username=username,
                     first_name="admin",
                     last_name="admin",
-                    cvat_id=16,
+                    cvat_id=12,
                 )
             except Exception as e:
                 print(f"Failed to create admin account: {str(e)}")

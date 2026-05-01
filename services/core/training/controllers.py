@@ -12,7 +12,7 @@ from training.serializers import (
     TrainingSerializer,
 )
 from training.usecases import model_use_case, training_run_use_case, training_use_case
-from vision.inference import InferenceService
+from training.services.inference_service import InferenceService
 
 
 class ModelSetController(ModelSetController):

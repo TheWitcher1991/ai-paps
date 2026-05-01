@@ -8,14 +8,14 @@ from torchvision.models.segmentation import (
 )
 
 from vision.assp import ASPP
-from vision.types import Backbone
+from vision.types import VisionModelBackbone
 
 
 class VisionNetAdapter(nn.Module):
     def __init__(
         self,
         num_classes: int = 12,
-        backbone: Backbone = Backbone.resnet50,
+        backbone: VisionModelBackbone = VisionModelBackbone.resnet50,
         pretrained: bool = True,
         use_aspp: bool = False,
         use_aux_loss: bool = True,
@@ -23,12 +23,12 @@ class VisionNetAdapter(nn.Module):
     ):
         super(VisionNetAdapter, self).__init__()
 
-        if backbone == Backbone.resnet50:
+        if backbone == VisionModelBackbone.resnet50:
             weights = DeepLabV3_ResNet50_Weights.DEFAULT if pretrained else None
             self.model = deeplabv3_resnet50(
                 weights=weights, aux_loss=use_aux_loss, **kwargs
             )
-        elif backbone == Backbone.resnet101:
+        elif backbone == VisionModelBackbone.resnet101:
             weights = DeepLabV3_ResNet101_Weights.DEFAULT if pretrained else None
             self.model = deeplabv3_resnet101(
                 weights=weights, aux_loss=use_aux_loss, **kwargs
@@ -36,13 +36,13 @@ class VisionNetAdapter(nn.Module):
         else:
             raise ValueError("Unsupported backbone")
 
-        in_channels = self.model.classifier[4].in_channels
-        self.model.classifier[4] = nn.Conv2d(in_channels, num_classes, kernel_size=1)
+        in_channels = self.model.classifier[-1].in_channels
+        self.model.classifier[-1] = nn.Conv2d(in_channels, num_classes, kernel_size=1)
 
         self.use_aux_loss = use_aux_loss
         if use_aux_loss and hasattr(self.model, "aux_classifier"):
-            in_channels_aux = self.model.aux_classifier[4].in_channels
-            self.model.aux_classifier[4] = nn.Conv2d(
+            in_channels_aux = self.model.aux_classifier[-1].in_channels
+            self.model.aux_classifier[-1] = nn.Conv2d(
                 in_channels_aux, num_classes, kernel_size=1
             )
 

@@ -1,0 +1,30 @@
+{
+  "extends": "@wcsc/typescript-config/nextjs.json",
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "jsx": "preserve",
+    "paths": {
+      "~/*": ["./src/*"],
+      "~widgets/*": ["./src/widgets/*"],
+      "~features/*": ["./src/features/*"],
+      "~models/*": ["./src/models/*"],
+      "~infra/*": ["./src/infra/*"],
+      "~components/*": ["./src/components/*"],
+      "@/*": ["./src/*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

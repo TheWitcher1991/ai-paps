@@ -1,0 +1,1 @@
+export { AssetsWidget } from './assets'
